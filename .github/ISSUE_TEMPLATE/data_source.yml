@@ -1,0 +1,38 @@
+name: Data source proposal
+description: Propose an authoritative dataset or a source-version change
+title: "[Data]: "
+labels: [data, research]
+body:
+  - type: input
+    id: publisher
+    attributes:
+      label: Publisher and dataset
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Canonical documentation URL
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: Decision value
+      description: Which RecoveryLens question or metric would this source improve?
+    validations:
+      required: true
+  - type: textarea
+    id: coverage
+    attributes:
+      label: Coverage and grain
+      description: Geographic level, time period, update frequency, and row-level meaning.
+    validations:
+      required: true
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Known limitations
+      description: Suppression, missingness, licensing, comparability, or methodology concerns.
+    validations:
+      required: true

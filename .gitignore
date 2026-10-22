@@ -9,6 +9,8 @@ dist/
 build/
 *.egg-info/
 pip-build-env-*/
+/pip-*/
+/tmp*
 .env
 .DS_Store
 

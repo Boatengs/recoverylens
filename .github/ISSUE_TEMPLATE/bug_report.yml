@@ -1,0 +1,34 @@
+name: Bug report
+description: Report a reproducible code, data, or documentation defect
+title: "[Bug]: "
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for helping make RecoveryLens more reliable.
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem
+      description: What happened, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      placeholder: Include the smallest command, input, or data sample that reproduces the issue.
+    validations:
+      required: true
+  - type: input
+    id: source_version
+    attributes:
+      label: Source dataset and version
+      description: Include this when the problem involves government-source data.
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: OS, Python version, RecoveryLens commit or release
+    validations:
+      required: true
