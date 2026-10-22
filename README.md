@@ -29,6 +29,7 @@ The completed foundation and current funding-pipeline slice include:
 - county FIPS normalization that preserves unmatched records;
 - county-level project and obligation aggregation;
 - disaster- and state-level funding reconciliation with duplicate diagnostics;
+- county-attribution coverage, warning thresholds, and unmatched-record extracts;
 - a transparent, configurable recovery-equity score;
 - automated tests and continuous integration;
 - source, methodology, and data-quality documentation.
@@ -74,7 +75,13 @@ Generate raw-to-curated reconciliation tables and a machine-readable summary:
 recoverylens pa-reconcile --state MA --start-year 2020 --max-records 500
 ```
 
-The command writes a county-level CSV to `data/processed/`. Raw and processed data are excluded from version control because the pipeline should reproduce them from official sources.
+Audit county attribution and preserve unmatched records:
+
+```bash
+recoverylens pa-coverage --state MA --start-year 2020 --max-records 500
+```
+
+The commands write their analytical outputs to `data/processed/`. Raw and processed data are excluded from version control because the pipeline should reproduce them from official sources.
 
 ## Repository structure
 
