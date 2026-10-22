@@ -1,0 +1,19 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+pip-build-env-*/
+.env
+.DS_Store
+
+# Reproducible government-source extracts are generated locally.
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
