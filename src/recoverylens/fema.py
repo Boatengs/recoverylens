@@ -256,36 +256,66 @@ def prepare_pa_projects(records: Sequence[Mapping[str, Any]]) -> pd.DataFrame:
     ]
     frame = pd.DataFrame.from_records(records)
     if frame.empty:
-        return pd.DataFrame(columns=[*columns, "county_fips", "is_county_attributed"])
+        return pd.DataFrame(
+            columns=[
+                *columns,
+                "county_fips",
+                "is_county_attributed",
+                "county_attribution_status",
+            ]
+        )
 
     missing = sorted(set(columns) - set(frame.columns))
     if missing:
         raise ValueError(f"Public Assistance records are missing required fields: {missing}")
 
-    state_fips = (
-        frame["stateNumberCode"].astype("string").str.extract(r"(\d+)", expand=False).str.zfill(2)
-    )
-    county_fips = (
-        frame["countyCode"].astype("string").str.extract(r"(\d+)", expand=False).str.zfill(3)
-    )
-    valid_county = (
+    state_raw = frame["stateNumberCode"].astype("string").str.strip()
+    county_raw = frame["countyCode"].astype("string").str.strip()
+    state_fips = state_raw.str.extract(r"^(\d+)(?:\.0+)?$", expand=False).str.zfill(2)
+    county_fips = county_raw.str.extract(r"^(\d+)(?:\.0+)?$", expand=False).str.zfill(3)
+    valid_code = (
         state_fips.str.fullmatch(r"\d{2}", na=False)
         & county_fips.str.fullmatch(r"\d{3}", na=False)
+        & state_fips.ne("00")
         & county_fips.ne("000")
     )
+    missing_code = state_raw.isna() | state_raw.eq("") | county_raw.isna() | county_raw.eq("")
+    county_name = frame["county"].astype("string").str.strip()
+    statewide = county_name.str.fullmatch(r"state[\s-]*wide", case=False, na=False)
+    multi_county = county_name.str.contains(
+        r"\b(?:multiple|multi|various|several)\b.*\b(?:count(?:y|ies)|jurisdictions?)\b",
+        case=False,
+        regex=True,
+        na=False,
+    )
+
+    attribution_status = pd.Series("invalid_code", index=frame.index, dtype="string")
+    attribution_status.loc[valid_code] = "attributed"
+    attribution_status.loc[missing_code] = "missing_code"
+    attribution_status.loc[multi_county] = "multi_county"
+    attribution_status.loc[statewide] = "statewide"
+    is_county_attributed = attribution_status.eq("attributed")
 
     frame = frame.assign(
         stateNumberCode=state_fips,
         countyCode=county_fips,
-        county_fips=(state_fips + county_fips).where(valid_county).astype("string"),
-        is_county_attributed=valid_county,
+        county_fips=(state_fips + county_fips).where(is_county_attributed).astype("string"),
+        is_county_attributed=is_county_attributed,
+        county_attribution_status=attribution_status,
     )
     for column in ("projectAmount", "federalShareObligated", "totalObligated"):
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     for column in ("firstObligationDate", "lastObligationDate"):
         frame[column] = pd.to_datetime(frame[column], errors="coerce", utc=True)
 
-    return frame[[*columns, "county_fips", "is_county_attributed"]]
+    return frame[
+        [
+            *columns,
+            "county_fips",
+            "is_county_attributed",
+            "county_attribution_status",
+        ]
+    ]
 
 
 def _sum_if_present(values: pd.Series) -> float:
