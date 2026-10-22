@@ -6,6 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
+from .coverage import CoverageThresholds, assess_county_coverage
 from .fema import (
     Query,
     aggregate_county_declarations,
@@ -120,6 +121,52 @@ def pa_reconciliation_command(args: argparse.Namespace) -> int:
     return 0
 
 
+def pa_coverage_command(args: argparse.Namespace) -> int:
+    query = Query(
+        dataset="pa_projects",
+        filter_expression=pa_project_filter(
+            state=args.state,
+            start_year=args.start_year,
+            disaster_number=args.disaster_number,
+        ),
+        select=PA_PROJECT_FIELDS,
+        order_by="disasterNumber asc",
+        max_records=args.max_records,
+    )
+    records = list(iter_records(query))
+    prepared = prepare_pa_projects(records)
+    reconciliation = reconcile_pa_projects(prepared)
+    result = assess_county_coverage(
+        reconciliation.curated_projects,
+        thresholds=CoverageThresholds(
+            minimum_record_coverage=args.minimum_record_coverage,
+            minimum_obligation_coverage=args.minimum_obligation_coverage,
+        ),
+    )
+    summary = {
+        **result.summary,
+        "source_record_count": reconciliation.summary["source_record_count"],
+        "curated_record_count": reconciliation.summary["curated_record_count"],
+        "duplicate_key_count": reconciliation.summary["duplicate_key_count"],
+        "conflicting_key_count": reconciliation.summary["conflicting_key_count"],
+    }
+
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    result.coverage_by_status.to_csv(output_dir / "coverage_by_status.csv", index=False)
+    result.unmatched_projects.to_csv(output_dir / "unmatched_projects.csv", index=False)
+    (output_dir / "summary.json").write_text(
+        json.dumps(summary, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    print(
+        f"County attribution status: {summary['publication_status']}; "
+        f"{summary['attributed_record_count']:,}/{summary['input_record_count']:,} "
+        f"curated records attributed"
+    )
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="recoverylens")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -165,6 +212,19 @@ def build_parser() -> argparse.ArgumentParser:
         "--output-dir", default="data/processed/pa_reconciliation"
     )
     pa_reconciliation.set_defaults(handler=pa_reconciliation_command)
+
+    pa_coverage = subparsers.add_parser(
+        "pa-coverage",
+        help="Measure and report county-attribution coverage",
+    )
+    pa_coverage.add_argument("--state", help="Optional two-letter state abbreviation")
+    pa_coverage.add_argument("--start-year", type=int, default=2000)
+    pa_coverage.add_argument("--disaster-number", type=int)
+    pa_coverage.add_argument("--max-records", type=int, default=10_000)
+    pa_coverage.add_argument("--minimum-record-coverage", type=float, default=0.95)
+    pa_coverage.add_argument("--minimum-obligation-coverage", type=float, default=0.95)
+    pa_coverage.add_argument("--output-dir", default="data/processed/pa_coverage")
+    pa_coverage.set_defaults(handler=pa_coverage_command)
     return parser
 
 

@@ -31,6 +31,16 @@ Dollar comparisons use a default tolerance equal to the greater of one cent or `
 
 These checks validate the internal raw-to-curated transformation. They do not establish equivalence with FEMA's official financial reporting systems.
 
+## County-attribution coverage
+
+County attribution is assigned only when FEMA supplies valid state and nonzero county FIPS components and the county label does not indicate a statewide or multi-county project. The classification order prevents a `Statewide` label from being assigned to a county even when the source also contains a nonzero county code.
+
+Every curated project receives one status: `attributed`, `statewide`, `multi_county`, `missing_code`, or `invalid_code`. Multi-county detection is limited to explicit labels such as “multiple counties” or “various counties”; ambiguous names are not inferred. All non-attributed curated records are written with their normalized source fields to an auditable unmatched extract.
+
+The record-attribution rate uses all curated project records as its denominator. The obligation-attribution rate uses the sum of absolute, nonmissing `totalObligated` values so deobligations cannot cancel positive obligations and inflate coverage. Net obligated dollars and missing obligation counts remain visible separately.
+
+The default publication thresholds are 95% for both record and obligation attribution. Falling below either threshold produces a warning. Missing obligation values also produce a warning, while an empty dataset or an absent dollar denominator blocks publication. These are data-quality gates, not evidence that unmatched funding was distributed incorrectly.
+
 ## Prototype recovery-equity score
 
 For county *i*, each observed component is converted to a national percentile rank:
