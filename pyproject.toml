@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "recoverylens"
+version = "0.1.0"
+description = "Reproducible U.S. disaster recovery funding and equity analysis"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "Sampson Boateng" }]
+dependencies = [
+  "numpy>=1.26,<3",
+  "pandas>=2.2,<3",
+  "requests>=2.32,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<9",
+  "pytest-cov>=5,<7",
+  "ruff>=0.9,<1",
+]
+
+[project.scripts]
+recoverylens = "recoverylens.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/recoverylens"]
+
+[tool.pytest.ini_options]
+addopts = "-q --cov=recoverylens --cov-report=term-missing"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["pip-build-env-*"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
