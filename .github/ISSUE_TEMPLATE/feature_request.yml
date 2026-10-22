@@ -1,0 +1,30 @@
+name: Feature request
+description: Propose a focused analytical or product improvement
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: decision_need
+    attributes:
+      label: Decision need
+      description: What should a user be able to understand or do?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      placeholder: List observable, testable completion conditions.
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks or limitations
+      description: Include analytical, accessibility, performance, or interpretation risks.
