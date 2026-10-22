@@ -18,13 +18,16 @@ RecoveryLens will help analysts, public officials, journalists, researchers, and
 - whether highly vulnerable communities experience persistent funding gaps; and
 - which results are robust enough to support decisions—and which require caution.
 
-## Current milestone: project foundation
+## Current milestone: FEMA funding pipeline
 
-The first working slice includes:
+The completed foundation and current funding-pipeline slice include:
 
 - a resilient OpenFEMA API client with pagination and retry handling;
 - county FIPS normalization for FEMA disaster declarations;
 - county-level declaration aggregation;
+- bounded Public Assistance funded-project extraction;
+- county FIPS normalization that preserves unmatched records;
+- county-level project and obligation aggregation;
 - a transparent, configurable recovery-equity score;
 - automated tests and continuous integration;
 - source, methodology, and data-quality documentation.
@@ -56,6 +59,12 @@ Fetch and aggregate a bounded declaration sample:
 
 ```bash
 recoverylens declarations --state MA --start-year 2020 --max-records 500
+```
+
+Fetch and aggregate a bounded Public Assistance sample:
+
+```bash
+recoverylens pa-projects --state MA --start-year 2020 --max-records 500
 ```
 
 The command writes a county-level CSV to `data/processed/`. Raw and processed data are excluded from version control because the pipeline should reproduce them from official sources.
