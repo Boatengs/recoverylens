@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 from .fema import (
@@ -14,6 +15,23 @@ from .fema import (
     pa_project_filter,
     prepare_county_declarations,
     prepare_pa_projects,
+)
+from .reconciliation import ReconciliationTolerance, reconcile_pa_projects
+
+PA_PROJECT_FIELDS = (
+    "disasterNumber",
+    "stateAbbreviation",
+    "county",
+    "stateNumberCode",
+    "countyCode",
+    "damageCategoryCode",
+    "projectStatus",
+    "gmProjectId",
+    "projectAmount",
+    "federalShareObligated",
+    "totalObligated",
+    "firstObligationDate",
+    "lastObligationDate",
 )
 
 
@@ -50,21 +68,7 @@ def pa_projects_command(args: argparse.Namespace) -> int:
             start_year=args.start_year,
             disaster_number=args.disaster_number,
         ),
-        select=(
-            "disasterNumber",
-            "stateAbbreviation",
-            "county",
-            "stateNumberCode",
-            "countyCode",
-            "damageCategoryCode",
-            "projectStatus",
-            "gmProjectId",
-            "projectAmount",
-            "federalShareObligated",
-            "totalObligated",
-            "firstObligationDate",
-            "lastObligationDate",
-        ),
+        select=PA_PROJECT_FIELDS,
         order_by="disasterNumber asc",
         max_records=args.max_records,
     )
@@ -74,6 +78,45 @@ def pa_projects_command(args: argparse.Namespace) -> int:
     output.parent.mkdir(parents=True, exist_ok=True)
     counties.to_csv(output, index=False)
     print(f"Wrote {len(counties):,} county funding records to {output}")
+    return 0
+
+
+def pa_reconciliation_command(args: argparse.Namespace) -> int:
+    query = Query(
+        dataset="pa_projects",
+        filter_expression=pa_project_filter(
+            state=args.state,
+            start_year=args.start_year,
+            disaster_number=args.disaster_number,
+        ),
+        select=PA_PROJECT_FIELDS,
+        order_by="disasterNumber asc",
+        max_records=args.max_records,
+    )
+    records = list(iter_records(query))
+    prepared = prepare_pa_projects(records)
+    result = reconcile_pa_projects(
+        prepared,
+        tolerance=ReconciliationTolerance(
+            absolute_dollars=args.absolute_tolerance,
+            relative=args.relative_tolerance,
+        ),
+    )
+
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    result.curated_projects.to_csv(output_dir / "curated_projects.csv", index=False)
+    result.duplicate_projects.to_csv(output_dir / "duplicate_projects.csv", index=False)
+    result.disaster_totals.to_csv(output_dir / "disaster_totals.csv", index=False)
+    result.state_totals.to_csv(output_dir / "state_totals.csv", index=False)
+    (output_dir / "summary.json").write_text(
+        json.dumps(result.summary, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    print(
+        f"Reconciled {result.summary['source_record_count']:,} source records; "
+        f"wrote outputs to {output_dir}"
+    )
     return 0
 
 
@@ -107,6 +150,21 @@ def build_parser() -> argparse.ArgumentParser:
         "--output", default="data/processed/county_pa_projects.csv"
     )
     pa_projects.set_defaults(handler=pa_projects_command)
+
+    pa_reconciliation = subparsers.add_parser(
+        "pa-reconcile",
+        help="Reconcile source and curated Public Assistance funding totals",
+    )
+    pa_reconciliation.add_argument("--state", help="Optional two-letter state abbreviation")
+    pa_reconciliation.add_argument("--start-year", type=int, default=2000)
+    pa_reconciliation.add_argument("--disaster-number", type=int)
+    pa_reconciliation.add_argument("--max-records", type=int, default=10_000)
+    pa_reconciliation.add_argument("--absolute-tolerance", type=float, default=0.01)
+    pa_reconciliation.add_argument("--relative-tolerance", type=float, default=1e-9)
+    pa_reconciliation.add_argument(
+        "--output-dir", default="data/processed/pa_reconciliation"
+    )
+    pa_reconciliation.set_defaults(handler=pa_reconciliation_command)
     return parser
 
 

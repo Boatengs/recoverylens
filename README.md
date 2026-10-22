@@ -28,6 +28,7 @@ The completed foundation and current funding-pipeline slice include:
 - bounded Public Assistance funded-project extraction;
 - county FIPS normalization that preserves unmatched records;
 - county-level project and obligation aggregation;
+- disaster- and state-level funding reconciliation with duplicate diagnostics;
 - a transparent, configurable recovery-equity score;
 - automated tests and continuous integration;
 - source, methodology, and data-quality documentation.
@@ -65,6 +66,12 @@ Fetch and aggregate a bounded Public Assistance sample:
 
 ```bash
 recoverylens pa-projects --state MA --start-year 2020 --max-records 500
+```
+
+Generate raw-to-curated reconciliation tables and a machine-readable summary:
+
+```bash
+recoverylens pa-reconcile --state MA --start-year 2020 --max-records 500
 ```
 
 The command writes a county-level CSV to `data/processed/`. Raw and processed data are excluded from version control because the pipeline should reproduce them from official sources.

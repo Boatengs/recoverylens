@@ -14,3 +14,4 @@ All notable changes will be documented here. RecoveryLens follows semantic versi
 - Automated linting, tests, and coverage reporting.
 - Contribution, security, issue, and pull-request standards.
 - Bounded Public Assistance funded-project extraction, normalization, and county aggregation.
+- Disaster- and state-level funding reconciliation with duplicate and conflict diagnostics.

@@ -21,6 +21,16 @@ RecoveryLens treats each OpenFEMA Public Assistance record as a funded project r
 
 Records without a valid county key remain in the prepared data with an explicit attribution flag. They are excluded from county aggregates but are not discarded, imputed by name, or silently reassigned. A later quality-report step will quantify the affected record counts and obligated dollars.
 
+## Funding reconciliation
+
+Public Assistance totals are independently aggregated from the prepared source records and from the curated project table at two grains: `(state, disaster number)` and state. Reconciliation reports retain record counts, unique project counts, project amounts, federal shares, total obligations, and signed source-to-curated variances.
+
+The project key is `(disaster number, FEMA Grants Manager project ID)`. Exact duplicate keys are collapsed. If records sharing a key disagree on geography, category, status, financial values, or obligation dates, every record in that key group is excluded from curated totals and written to the duplicate diagnostic table. Records missing a project ID remain visible because automatically treating them as duplicates would require an unsupported identity assumption.
+
+Dollar comparisons use a default tolerance equal to the greater of one cent or `1e-9 × the absolute source total`. Count comparisons must be exact. Any material monetary difference, count difference, missing-value mismatch, or excluded conflict produces a visible `variance` status.
+
+These checks validate the internal raw-to-curated transformation. They do not establish equivalence with FEMA's official financial reporting systems.
+
 ## Prototype recovery-equity score
 
 For county *i*, each observed component is converted to a national percentile rank:
