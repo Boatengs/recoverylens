@@ -15,6 +15,7 @@ DUPLICATE_COMPARISON_COLUMNS = (
     "stateNumberCode",
     "countyCode",
     "county_fips",
+    "county_attribution_status",
     "damageCategoryCode",
     "projectStatus",
     *MONEY_COLUMNS,

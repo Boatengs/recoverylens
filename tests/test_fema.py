@@ -164,6 +164,7 @@ def test_prepare_and_aggregate_pa_projects_preserves_unmatched_geography():
     assert prepared["county_fips"].tolist()[:2] == ["25025", "25025"]
     assert not bool(prepared.loc[2, "is_county_attributed"])
     assert pd.isna(prepared.loc[2, "county_fips"])
+    assert prepared.loc[2, "county_attribution_status"] == "statewide"
 
     aggregated = aggregate_county_pa_projects(prepared)
     assert aggregated.loc[0, "county_fips"] == "25025"
