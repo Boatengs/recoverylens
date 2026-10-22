@@ -1,13 +1,17 @@
 from __future__ import annotations
 
+import pandas as pd
 import pytest
 
 from recoverylens.fema import (
     Query,
     aggregate_county_declarations,
+    aggregate_county_pa_projects,
     declaration_filter,
     iter_records,
+    pa_project_filter,
     prepare_county_declarations,
+    prepare_pa_projects,
 )
 
 
@@ -91,3 +95,80 @@ def test_prepare_and_aggregate_county_declarations():
     aggregated = aggregate_county_declarations(prepared)
     assert aggregated.loc[0, "declaration_count"] == 1
     assert aggregated.loc[0, "state"] == "MA"
+
+
+def test_pa_project_filter_validates_inputs():
+    assert pa_project_filter(state="ma", start_year=2020, disaster_number=4496) == (
+        "stateAbbreviation eq 'MA' and "
+        "declarationDate ge '2020-01-01T00:00:00.000Z' and "
+        "disasterNumber eq 4496"
+    )
+    with pytest.raises(ValueError):
+        pa_project_filter(state="Massachusetts")
+    with pytest.raises(ValueError):
+        pa_project_filter(disaster_number=0)
+    with pytest.raises(ValueError):
+        pa_project_filter(start_year=0)
+
+
+def test_prepare_and_aggregate_pa_projects_preserves_unmatched_geography():
+    records = [
+        {
+            "disasterNumber": 4496,
+            "stateAbbreviation": "MA",
+            "county": "Suffolk County",
+            "stateNumberCode": "25",
+            "countyCode": "25",
+            "damageCategoryCode": "B",
+            "projectStatus": "Eligible",
+            "gmProjectId": 101,
+            "projectAmount": "100.50",
+            "federalShareObligated": "90.45",
+            "totalObligated": "90.45",
+            "firstObligationDate": "2020-04-01T00:00:00Z",
+            "lastObligationDate": "2020-04-02T00:00:00Z",
+        },
+        {
+            "disasterNumber": 4496,
+            "stateAbbreviation": "MA",
+            "county": "Suffolk County",
+            "stateNumberCode": 25,
+            "countyCode": 25,
+            "damageCategoryCode": "E",
+            "projectStatus": "Eligible",
+            "gmProjectId": 102,
+            "projectAmount": 200,
+            "federalShareObligated": 180,
+            "totalObligated": 180,
+            "firstObligationDate": "2020-05-01T00:00:00Z",
+            "lastObligationDate": "2020-05-03T00:00:00Z",
+        },
+        {
+            "disasterNumber": 4496,
+            "stateAbbreviation": "MA",
+            "county": "Statewide",
+            "stateNumberCode": "25",
+            "countyCode": "000",
+            "damageCategoryCode": "Z",
+            "projectStatus": "Eligible",
+            "gmProjectId": 103,
+            "projectAmount": 500,
+            "federalShareObligated": 450,
+            "totalObligated": 450,
+            "firstObligationDate": "2020-06-01T00:00:00Z",
+            "lastObligationDate": "2020-06-01T00:00:00Z",
+        },
+    ]
+
+    prepared = prepare_pa_projects(records)
+    assert prepared["county_fips"].tolist()[:2] == ["25025", "25025"]
+    assert not bool(prepared.loc[2, "is_county_attributed"])
+    assert pd.isna(prepared.loc[2, "county_fips"])
+
+    aggregated = aggregate_county_pa_projects(prepared)
+    assert aggregated.loc[0, "county_fips"] == "25025"
+    assert aggregated.loc[0, "project_count"] == 2
+    assert aggregated.loc[0, "disaster_count"] == 1
+    assert aggregated.loc[0, "project_amount"] == pytest.approx(300.50)
+    assert aggregated.loc[0, "federal_share_obligated"] == pytest.approx(270.45)
+    assert aggregated.loc[0, "total_obligated"] == pytest.approx(270.45)

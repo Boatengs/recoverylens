@@ -15,6 +15,12 @@ RecoveryLens separates four questions that are often incorrectly collapsed:
 
 These components are displayed individually. A composite score is an optional prioritization aid, not the primary evidence.
 
+## Public Assistance project normalization
+
+RecoveryLens treats each OpenFEMA Public Assistance record as a funded project record. Monetary fields are converted to numeric values and obligation dates are parsed in UTC. County attribution is accepted only when the source provides a valid two-character state FIPS code and a nonzero three-character county FIPS code.
+
+Records without a valid county key remain in the prepared data with an explicit attribution flag. They are excluded from county aggregates but are not discarded, imputed by name, or silently reassigned. A later quality-report step will quantify the affected record counts and obligated dollars.
+
 ## Prototype recovery-equity score
 
 For county *i*, each observed component is converted to a national percentile rank:
