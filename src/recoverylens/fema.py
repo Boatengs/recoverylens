@@ -132,10 +132,35 @@ def declaration_filter(*, state: str | None = None, start_year: int | None = Non
         if len(normalized) != 2 or not normalized.isalpha():
             raise ValueError("state must be a two-letter postal abbreviation")
         clauses.append(f"state eq '{normalized}'")
-    if start_year:
+    if start_year is not None:
         if not 1953 <= start_year <= 2100:
             raise ValueError("start_year must be between 1953 and 2100")
         clauses.append(f"declarationDate ge '{start_year}-01-01T00:00:00.000Z'")
+    return " and ".join(clauses)
+
+
+def pa_project_filter(
+    *,
+    state: str | None = None,
+    start_year: int | None = None,
+    disaster_number: int | None = None,
+) -> str:
+    """Create a validated filter for Public Assistance funded projects."""
+
+    clauses: list[str] = []
+    if state:
+        normalized = state.strip().upper()
+        if len(normalized) != 2 or not normalized.isalpha():
+            raise ValueError("state must be a two-letter postal abbreviation")
+        clauses.append(f"stateAbbreviation eq '{normalized}'")
+    if start_year is not None:
+        if not 1953 <= start_year <= 2100:
+            raise ValueError("start_year must be between 1953 and 2100")
+        clauses.append(f"declarationDate ge '{start_year}-01-01T00:00:00.000Z'")
+    if disaster_number is not None:
+        if not 1 <= disaster_number <= 99_999:
+            raise ValueError("disaster_number must be between 1 and 99,999")
+        clauses.append(f"disasterNumber eq {disaster_number}")
     return " and ".join(clauses)
 
 
@@ -209,3 +234,116 @@ def aggregate_county_declarations(frame: pd.DataFrame) -> pd.DataFrame:
         .sort_values(["declaration_count", "county_fips"], ascending=[False, True])
         .reset_index(drop=True)
     )
+
+
+def prepare_pa_projects(records: Sequence[Mapping[str, Any]]) -> pd.DataFrame:
+    """Normalize Public Assistance projects without hiding unmatched geography."""
+
+    columns = [
+        "disasterNumber",
+        "stateAbbreviation",
+        "county",
+        "stateNumberCode",
+        "countyCode",
+        "damageCategoryCode",
+        "projectStatus",
+        "gmProjectId",
+        "projectAmount",
+        "federalShareObligated",
+        "totalObligated",
+        "firstObligationDate",
+        "lastObligationDate",
+    ]
+    frame = pd.DataFrame.from_records(records)
+    if frame.empty:
+        return pd.DataFrame(columns=[*columns, "county_fips", "is_county_attributed"])
+
+    missing = sorted(set(columns) - set(frame.columns))
+    if missing:
+        raise ValueError(f"Public Assistance records are missing required fields: {missing}")
+
+    state_fips = (
+        frame["stateNumberCode"].astype("string").str.extract(r"(\d+)", expand=False).str.zfill(2)
+    )
+    county_fips = (
+        frame["countyCode"].astype("string").str.extract(r"(\d+)", expand=False).str.zfill(3)
+    )
+    valid_county = (
+        state_fips.str.fullmatch(r"\d{2}", na=False)
+        & county_fips.str.fullmatch(r"\d{3}", na=False)
+        & county_fips.ne("000")
+    )
+
+    frame = frame.assign(
+        stateNumberCode=state_fips,
+        countyCode=county_fips,
+        county_fips=(state_fips + county_fips).where(valid_county).astype("string"),
+        is_county_attributed=valid_county,
+    )
+    for column in ("projectAmount", "federalShareObligated", "totalObligated"):
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    for column in ("firstObligationDate", "lastObligationDate"):
+        frame[column] = pd.to_datetime(frame[column], errors="coerce", utc=True)
+
+    return frame[[*columns, "county_fips", "is_county_attributed"]]
+
+
+def _sum_if_present(values: pd.Series) -> float:
+    """Sum numeric values while retaining missingness when every value is absent."""
+
+    return values.sum(min_count=1)
+
+
+def aggregate_county_pa_projects(frame: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate county-attributed Public Assistance projects and obligations."""
+
+    output_columns = [
+        "county_fips",
+        "stateAbbreviation",
+        "project_count",
+        "disaster_count",
+        "project_amount",
+        "federal_share_obligated",
+        "total_obligated",
+        "first_obligation",
+        "latest_obligation",
+    ]
+    if frame.empty:
+        return pd.DataFrame(columns=output_columns)
+
+    required = {
+        "county_fips",
+        "stateAbbreviation",
+        "gmProjectId",
+        "disasterNumber",
+        "projectAmount",
+        "federalShareObligated",
+        "totalObligated",
+        "firstObligationDate",
+        "lastObligationDate",
+    }
+    missing = sorted(required - set(frame.columns))
+    if missing:
+        raise ValueError(f"Prepared Public Assistance data are missing fields: {missing}")
+
+    attributed = frame.loc[frame["county_fips"].notna()].copy()
+    if attributed.empty:
+        return pd.DataFrame(columns=output_columns)
+
+    aggregated = (
+        attributed.groupby(["county_fips", "stateAbbreviation"], as_index=False)
+        .agg(
+            project_count=("gmProjectId", "nunique"),
+            disaster_count=("disasterNumber", "nunique"),
+            project_amount=("projectAmount", _sum_if_present),
+            federal_share_obligated=("federalShareObligated", _sum_if_present),
+            total_obligated=("totalObligated", _sum_if_present),
+            first_obligation=("firstObligationDate", "min"),
+            latest_obligation=("lastObligationDate", "max"),
+        )
+        .sort_values(["total_obligated", "county_fips"], ascending=[False, True])
+        .reset_index(drop=True)
+    )
+    money_columns = ["project_amount", "federal_share_obligated", "total_obligated"]
+    aggregated[money_columns] = aggregated[money_columns].round(2)
+    return aggregated
