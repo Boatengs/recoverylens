@@ -21,9 +21,17 @@ from .storm_damage import (
     parse_damage_amount,
     read_storm_event_details,
 )
+from .storm_impacts import (
+    ImpactCount,
+    StormImpactResult,
+    analyze_storm_event_impacts,
+    parse_impact_count,
+    read_storm_event_fatalities,
+)
 
 __all__ = [
     "EquityWeights",
+    "ImpactCount",
     "CoverageThresholds",
     "DamageAmount",
     "ObligationMetricsResult",
@@ -32,8 +40,10 @@ __all__ = [
     "StormEventsDownloadResult",
     "StormEventsFile",
     "StormDamageResult",
+    "StormImpactResult",
     "VerifiedStormEventsFile",
     "analyze_storm_event_damage",
+    "analyze_storm_event_impacts",
     "assess_county_coverage",
     "analyze_obligation_metrics",
     "build_pa_quality_report",
@@ -41,7 +51,9 @@ __all__ = [
     "catalog_storm_events_files",
     "download_storm_events_files",
     "parse_damage_amount",
+    "parse_impact_count",
     "read_storm_event_details",
+    "read_storm_event_fatalities",
     "reconcile_pa_projects",
     "select_storm_events_files",
     "verified_storm_events_files",
