@@ -41,6 +41,10 @@ The record-attribution rate uses all curated project records as its denominator.
 
 The default publication thresholds are 95% for both record and obligation attribution. Falling below either threshold produces a warning. Missing obligation values also produce a warning, while an empty dataset or an absent dollar denominator blocks publication. These are data-quality gates, not evidence that unmatched funding was distributed incorrectly.
 
+## Run-level data-quality reporting
+
+Every Public Assistance quality-report run records its source request and retrieval timestamp alongside source and curated schemas, row counts, duplicate diagnostics, null rates, financial-field coverage, and county-attribution metrics. Validation checks use three explicit severities: `none`, `warning`, and `error`; these roll up to `passed`, `warning`, or `failed` report states. See [data-quality.md](data-quality.md) for interpretation and review guidance.
+
 ## Prototype recovery-equity score
 
 For county *i*, each observed component is converted to a national percentile rank:
