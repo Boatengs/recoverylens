@@ -29,6 +29,8 @@ Obligation timing coverage counts only intervals supported by present, chronolog
 
 NOAA damage parsing uses four explicit states: `parsed`, `reported_zero`, `missing`, and `invalid`. A missing or invalid component never becomes zero. Event-level `known_total_damage_dollars` sums only valid observed components, while `is_damage_complete` identifies events for which both property and crop values are valid. Missing or invalid values, duplicate event IDs, and source-year inconsistencies trigger review flags rather than silent correction.
 
+NOAA injury and death counts use the same explicit-state rule. Event-level details counts are the analytical totals; person-level fatality rows are a reconciliation source and are never added to those totals. The quality summary reports both event-match rate and fatality-roster coverage because many zero-death events can produce a high match rate even when historical person-level coverage is incomplete. Duplicate or conflicting fatality IDs, ambiguous event IDs, count mismatches, and unmatched rows remain visible in diagnostics.
+
 ## Determinism and review
 
 Given the same retrieved records, retrieval timestamp, query metadata, and configuration, the JSON and Markdown files are byte-stable: keys, tables, checks, precision, and output filenames use fixed ordering and formatting. Different live runs should have different retrieval timestamps and may reflect legitimate upstream revisions.

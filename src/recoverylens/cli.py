@@ -29,6 +29,7 @@ from .obligations import analyze_obligation_metrics
 from .quality import build_pa_quality_report, write_quality_report
 from .reconciliation import ReconciliationTolerance, reconcile_pa_projects
 from .storm_damage import analyze_storm_event_damage, read_storm_event_details
+from .storm_impacts import analyze_storm_event_impacts, read_storm_event_fatalities
 
 PA_PROJECT_FIELDS = (
     "disasterNumber",
@@ -115,6 +116,44 @@ def noaa_damage_command(args: argparse.Namespace) -> int:
     print(
         f"NOAA damage status: {result.summary['publication_status']}; "
         f"parsed {result.summary['event_count']:,} events into {output_dir}"
+    )
+    return 0
+
+
+def noaa_impacts_command(args: argparse.Namespace) -> int:
+    details = verified_storm_events_files(
+        args.input_dir,
+        dataset="details",
+        start_year=args.start_year,
+        end_year=args.end_year,
+        schema_version=args.schema_version,
+    )
+    fatalities = verified_storm_events_files(
+        args.input_dir,
+        dataset="fatalities",
+        start_year=args.start_year,
+        end_year=args.end_year,
+        schema_version=args.schema_version,
+    )
+    result = analyze_storm_event_impacts(
+        read_storm_event_details(details),
+        read_storm_event_fatalities(fatalities),
+    )
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    result.events.to_csv(output_dir / "event_impacts.csv", index=False)
+    result.by_year.to_csv(output_dir / "impacts_by_year.csv", index=False)
+    result.unmatched_fatalities.to_csv(
+        output_dir / "unmatched_fatality_records.csv",
+        index=False,
+    )
+    (output_dir / "summary.json").write_text(
+        json.dumps(result.summary, allow_nan=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    print(
+        f"NOAA impact status: {result.summary['publication_status']}; "
+        f"aggregated {result.summary['included_event_count']:,} events into {output_dir}"
     )
     return 0
 
@@ -364,6 +403,26 @@ def build_parser() -> argparse.ArgumentParser:
         default="data/processed/noaa/damage",
     )
     noaa_damage.set_defaults(handler=noaa_damage_command)
+
+    noaa_impacts = subparsers.add_parser(
+        "noaa-impacts",
+        help="Aggregate NOAA injuries and reconcile fatality counts",
+    )
+    noaa_impacts.add_argument("--start-year", type=int, required=True)
+    noaa_impacts.add_argument("--end-year", type=int, required=True)
+    noaa_impacts.add_argument(
+        "--schema-version",
+        help="Optional NOAA CSV schema version such as 1.0",
+    )
+    noaa_impacts.add_argument(
+        "--input-dir",
+        default="data/raw/noaa/storm-events",
+    )
+    noaa_impacts.add_argument(
+        "--output-dir",
+        default="data/processed/noaa/impacts",
+    )
+    noaa_impacts.set_defaults(handler=noaa_impacts_command)
 
     pa_projects = subparsers.add_parser(
         "pa-projects", help="Fetch and aggregate FEMA Public Assistance funded projects"
