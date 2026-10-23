@@ -13,6 +13,7 @@ from .fema import (
     aggregate_county_declarations,
     aggregate_county_pa_projects,
     declaration_filter,
+    declaration_matching_filter,
     iter_records,
     pa_project_filter,
     prepare_county_declarations,
@@ -30,6 +31,11 @@ from .quality import build_pa_quality_report, write_quality_report
 from .reconciliation import ReconciliationTolerance, reconcile_pa_projects
 from .storm_damage import analyze_storm_event_damage, read_storm_event_details
 from .storm_impacts import analyze_storm_event_impacts, read_storm_event_fatalities
+from .storm_matching import (
+    FEMA_MATCH_COLUMNS,
+    assess_event_declaration_candidates,
+    read_storm_event_matching_details,
+)
 
 PA_PROJECT_FIELDS = (
     "disasterNumber",
@@ -154,6 +160,61 @@ def noaa_impacts_command(args: argparse.Namespace) -> int:
     print(
         f"NOAA impact status: {result.summary['publication_status']}; "
         f"aggregated {result.summary['included_event_count']:,} events into {output_dir}"
+    )
+    return 0
+
+
+def noaa_fema_match_command(args: argparse.Namespace) -> int:
+    details = verified_storm_events_files(
+        args.input_dir,
+        dataset="details",
+        start_year=args.start_year,
+        end_year=args.end_year,
+        schema_version=args.schema_version,
+    )
+    query = Query(
+        dataset="declarations",
+        filter_expression=declaration_matching_filter(
+            start_year=args.start_year,
+            end_year=args.end_year,
+            date_buffer_days=args.date_buffer_days,
+        ),
+        select=FEMA_MATCH_COLUMNS,
+        order_by="disasterNumber asc",
+        max_records=args.max_declaration_records,
+    )
+    records = list(iter_records(query))
+    record_limit_reached = (
+        args.max_declaration_records is not None
+        and len(records) >= args.max_declaration_records
+    )
+    result = assess_event_declaration_candidates(
+        read_storm_event_matching_details(details),
+        records,
+        date_buffer_days=args.date_buffer_days,
+        declaration_record_limit_reached=record_limit_reached,
+    )
+
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    result.events.to_csv(output_dir / "event_assessments.csv", index=False)
+    result.declarations.to_csv(output_dir / "declaration_windows.csv", index=False)
+    result.candidates.to_csv(output_dir / "candidate_links.csv", index=False)
+    result.review_queue.to_csv(output_dir / "review_queue.csv", index=False)
+    summary = {
+        **result.summary,
+        "requested_end_year": args.end_year,
+        "requested_start_year": args.start_year,
+        "fema_filter": query.filter_expression,
+    }
+    (output_dir / "summary.json").write_text(
+        json.dumps(summary, allow_nan=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    print(
+        f"FEMA–NOAA candidate assessment: {summary['publication_status']}; "
+        f"{summary['candidate_event_count']:,}/{summary['eligible_event_count']:,} "
+        f"eligible events have candidates in {output_dir}"
     )
     return 0
 
@@ -423,6 +484,38 @@ def build_parser() -> argparse.ArgumentParser:
         default="data/processed/noaa/impacts",
     )
     noaa_impacts.set_defaults(handler=noaa_impacts_command)
+
+    noaa_fema_match = subparsers.add_parser(
+        "noaa-fema-match",
+        help="Assess county/date candidate links between NOAA events and FEMA declarations",
+    )
+    noaa_fema_match.add_argument("--start-year", type=int, required=True)
+    noaa_fema_match.add_argument("--end-year", type=int, required=True)
+    noaa_fema_match.add_argument(
+        "--schema-version",
+        help="Optional NOAA CSV schema version such as 1.0",
+    )
+    noaa_fema_match.add_argument(
+        "--date-buffer-days",
+        type=int,
+        default=0,
+        help="Maximum gap in days allowed between event and incident windows (default: 0)",
+    )
+    noaa_fema_match.add_argument(
+        "--max-declaration-records",
+        type=int,
+        default=50_000,
+        help="Maximum FEMA declaration-area rows to retrieve (default: 50,000)",
+    )
+    noaa_fema_match.add_argument(
+        "--input-dir",
+        default="data/raw/noaa/storm-events",
+    )
+    noaa_fema_match.add_argument(
+        "--output-dir",
+        default="data/processed/noaa/fema_match",
+    )
+    noaa_fema_match.set_defaults(handler=noaa_fema_match_command)
 
     pa_projects = subparsers.add_parser(
         "pa-projects", help="Fetch and aggregate FEMA Public Assistance funded projects"

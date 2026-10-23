@@ -1,4 +1,4 @@
-# Public Assistance data-quality reports
+# Data quality and review rules
 
 Each `pa-quality-report` run writes the same evidence in two forms:
 
@@ -30,6 +30,8 @@ Obligation timing coverage counts only intervals supported by present, chronolog
 NOAA damage parsing uses four explicit states: `parsed`, `reported_zero`, `missing`, and `invalid`. A missing or invalid component never becomes zero. Event-level `known_total_damage_dollars` sums only valid observed components, while `is_damage_complete` identifies events for which both property and crop values are valid. Missing or invalid values, duplicate event IDs, and source-year inconsistencies trigger review flags rather than silent correction.
 
 NOAA injury and death counts use the same explicit-state rule. Event-level details counts are the analytical totals; person-level fatality rows are a reconciliation source and are never added to those totals. The quality summary reports both event-match rate and fatality-roster coverage because many zero-death events can produce a high match rate even when historical person-level coverage is incomplete. Duplicate or conflicting fatality IDs, ambiguous event IDs, count mismatches, and unmatched rows remain visible in diagnostics.
+
+FEMA–NOAA matching outputs are candidate assessments, not confirmed links. County equality and overlapping date windows are necessary evidence for a candidate but are not proof that the NOAA event caused, belongs to, or exhaustively represents the FEMA declaration. `unique_candidate` means exactly one declaration survived the configured rules; `ambiguous_candidates` means more than one survived; neither status authorizes automatic linkage. Forecast zones, marine areas, invalid county codes, invalid date windows, duplicate event IDs, duplicate declaration-area keys, and records that reach a configured FEMA retrieval limit remain explicit warnings or unmatchable states.
 
 ## Determinism and review
 

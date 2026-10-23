@@ -16,8 +16,8 @@ flowchart TD
 | Layer | Responsibility | Current implementation |
 |---|---|---|
 | Source acquisition | Bounded requests, pagination, retries, revision selection, and retrieval metadata | `fema.py`, `noaa.py` |
-| Normalization | Types, identifiers, dates, magnitude suffixes, and explicit parse states | `fema.py`, `storm_damage.py`, `storm_impacts.py` |
-| Reconciliation | Duplicate diagnostics, raw-to-curated totals, linkage, and mismatch evidence | `reconciliation.py`, `storm_impacts.py` |
+| Normalization | Types, identifiers, dates, magnitude suffixes, and explicit parse states | `fema.py`, `storm_damage.py`, `storm_impacts.py`, `storm_matching.py` |
+| Reconciliation | Duplicate diagnostics, raw-to-curated totals, candidate linkage, and mismatch evidence | `reconciliation.py`, `storm_impacts.py`, `storm_matching.py` |
 | Quality gates | Coverage thresholds, validation severity, and machine/human reports | `coverage.py`, `quality.py` |
 | Measures | Transparent scores, obligation categories, timing, damage, injuries, and deaths | `metrics.py`, `obligations.py`, `storm_damage.py`, `storm_impacts.py` |
 | Interface | Reproducible command-line entry points | `cli.py` |
@@ -41,12 +41,14 @@ flowchart TD
 4. Parse damage or casualty fields without turning missing values into zero.
 5. Exclude ambiguous event identifiers from aggregates while retaining diagnostics.
 6. Reconcile person-level fatality rows to event-level death counts without adding them together.
+7. Assess county/date overlaps against FEMA declarations while retaining zero, one, or multiple candidates.
 
 ## Trust boundaries
 
 - Upstream agency data may be revised after retrieval.
 - A checksum proves file identity, not substantive correctness.
 - Internal reconciliation validates the transformation, not equivalence to an agency's official financial system.
+- A county/date candidate is evidence for review, not proof of a causal or one-to-one event identity.
 - A `warning` output remains available for review; a `failed` output must not be published analytically.
 - Generated raw and processed data remain outside Git because they must be reproducible from official sources.
 

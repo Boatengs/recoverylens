@@ -21,3 +21,4 @@ All notable changes will be documented here. RecoveryLens follows semantic versi
 - Version-aware NOAA Storm Events discovery, atomic downloads, and checksum manifests.
 - Transparent NOAA property- and crop-damage parsing with missingness diagnostics.
 - NOAA injury/death aggregation with person-level fatality reconciliation.
+- County-and-date FEMA–NOAA candidate assessment with explicit ambiguity and nonmatch outputs.

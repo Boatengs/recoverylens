@@ -15,6 +15,7 @@ RecoveryLens is an open-source decision-intelligence project for examining wheth
 | NOAA Storm Events downloads | Implemented with revision-aware selection, atomic downloads, checksums, and manifest verification |
 | NOAA damage | Implemented with explicit parsed, reported-zero, missing, and invalid states |
 | NOAA injuries and fatalities | Implemented with event-level aggregation and person-record reconciliation |
+| FEMA–NOAA linkage | Implemented as a county/date candidate assessment with ambiguity and nonmatches preserved; no candidates are treated as confirmed links |
 | National county ranking | **Not released**; loss, population, vulnerability, and cross-source validation remain incomplete |
 | Public dashboard | Planned for Milestone 6 |
 

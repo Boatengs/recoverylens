@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from collections.abc import Iterator, Mapping, Sequence
 from dataclasses import dataclass
+from datetime import date, timedelta
+from numbers import Integral
 from typing import Any
 
 import pandas as pd
@@ -136,6 +138,43 @@ def declaration_filter(*, state: str | None = None, start_year: int | None = Non
         if not 1953 <= start_year <= 2100:
             raise ValueError("start_year must be between 1953 and 2100")
         clauses.append(f"declarationDate ge '{start_year}-01-01T00:00:00.000Z'")
+    return " and ".join(clauses)
+
+
+def declaration_matching_filter(
+    *,
+    start_year: int,
+    end_year: int,
+    state: str | None = None,
+    date_buffer_days: int = 0,
+) -> str:
+    """Create a bounded major-disaster filter for incident-window assessment."""
+
+    if not 1950 <= start_year <= 2100 or not 1950 <= end_year <= 2100:
+        raise ValueError("matching years must be between 1950 and 2100")
+    if start_year > end_year:
+        raise ValueError("start_year must be less than or equal to end_year")
+    if isinstance(date_buffer_days, bool) or not isinstance(date_buffer_days, Integral):
+        raise ValueError("date_buffer_days must be an integer between 0 and 30")
+    date_buffer_days = int(date_buffer_days)
+    if not 0 <= date_buffer_days <= 30:
+        raise ValueError("date_buffer_days must be between 0 and 30")
+
+    start_date = date(start_year, 1, 1) - timedelta(days=date_buffer_days)
+    end_date = date(end_year, 12, 31) + timedelta(days=date_buffer_days)
+    clauses = ["declarationType eq 'DR'"]
+    if state:
+        normalized = state.strip().upper()
+        if len(normalized) != 2 or not normalized.isalpha():
+            raise ValueError("state must be a two-letter postal abbreviation")
+        clauses.append(f"state eq '{normalized}'")
+    clauses.extend(
+        [
+            f"incidentBeginDate le '{end_date.isoformat()}T23:59:59.999Z'",
+            "(incidentEndDate ge "
+            f"'{start_date.isoformat()}T00:00:00.000Z' or incidentEndDate eq null)",
+        ]
+    )
     return " and ".join(clauses)
 
 
