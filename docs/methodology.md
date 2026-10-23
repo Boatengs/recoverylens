@@ -59,6 +59,12 @@ NOAA publishes separate annual GZIP-compressed CSV files for event details, fata
 
 Downloads use a caller-supplied inclusive year range. Each file is written to a temporary path, validated as a complete GZIP archive, and moved into place atomically. The raw-data manifest retains the exact source URL, NOAA creation date, retrieval timestamp, compressed byte size, and SHA-256 checksum. An existing file is reused only when its metadata, size, checksum, and GZIP integrity agree with that manifest.
 
+### Property and crop damage
+
+NOAA documents property and crop damage as estimated values with compact magnitude suffixes, such as `10.00K` and `10.00M`. RecoveryLens accepts nonnegative unsuffixed values and `K`, `M`, or `B` suffixes case-insensitively, converting them to dollars and rounding to cents. Every raw value is retained with one of four statuses: `parsed`, `reported_zero`, `missing`, or `invalid`. Negative values, unknown suffixes, comma-formatted strings, nonnumeric text, and nonfinite representations remain invalid.
+
+`known_total_damage_dollars` sums whichever components are valid, but `is_damage_complete` is true only when both property and crop components are valid. Annual and run-level summaries publish observed-value counts alongside dollars so a partial known total cannot be mistaken for comprehensive loss. Duplicate event IDs and disagreements between an event year and its annual source file are flagged, not automatically resolved. NOAA damage values are reported estimates and do not represent complete economic loss.
+
 ## Prototype recovery-equity score
 
 For county *i*, each observed component is converted to a national percentile rank:

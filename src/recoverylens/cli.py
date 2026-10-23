@@ -23,10 +23,12 @@ from .noaa import (
     download_storm_events_files,
     fetch_storm_events_catalog,
     select_storm_events_files,
+    verified_storm_events_files,
 )
 from .obligations import analyze_obligation_metrics
 from .quality import build_pa_quality_report, write_quality_report
 from .reconciliation import ReconciliationTolerance, reconcile_pa_projects
+from .storm_damage import analyze_storm_event_damage, read_storm_event_details
 
 PA_PROJECT_FIELDS = (
     "disasterNumber",
@@ -89,6 +91,30 @@ def noaa_download_command(args: argparse.Namespace) -> int:
     print(
         f"NOAA Storm Events: {result.downloaded_count:,} downloaded, "
         f"{result.reused_count:,} verified and reused; manifest at {result.manifest_path}"
+    )
+    return 0
+
+
+def noaa_damage_command(args: argparse.Namespace) -> int:
+    verified = verified_storm_events_files(
+        args.input_dir,
+        dataset="details",
+        start_year=args.start_year,
+        end_year=args.end_year,
+        schema_version=args.schema_version,
+    )
+    result = analyze_storm_event_damage(read_storm_event_details(verified))
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    result.events.to_csv(output_dir / "event_damage.csv", index=False)
+    result.by_year.to_csv(output_dir / "damage_by_year.csv", index=False)
+    (output_dir / "summary.json").write_text(
+        json.dumps(result.summary, allow_nan=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    print(
+        f"NOAA damage status: {result.summary['publication_status']}; "
+        f"parsed {result.summary['event_count']:,} events into {output_dir}"
     )
     return 0
 
@@ -318,6 +344,26 @@ def build_parser() -> argparse.ArgumentParser:
         default="data/raw/noaa/storm-events",
     )
     noaa_download.set_defaults(handler=noaa_download_command)
+
+    noaa_damage = subparsers.add_parser(
+        "noaa-damage",
+        help="Parse verified NOAA property and crop damage estimates",
+    )
+    noaa_damage.add_argument("--start-year", type=int, required=True)
+    noaa_damage.add_argument("--end-year", type=int, required=True)
+    noaa_damage.add_argument(
+        "--schema-version",
+        help="Optional NOAA CSV schema version such as 1.0",
+    )
+    noaa_damage.add_argument(
+        "--input-dir",
+        default="data/raw/noaa/storm-events",
+    )
+    noaa_damage.add_argument(
+        "--output-dir",
+        default="data/processed/noaa/damage",
+    )
+    noaa_damage.set_defaults(handler=noaa_damage_command)
 
     pa_projects = subparsers.add_parser(
         "pa-projects", help="Fetch and aggregate FEMA Public Assistance funded projects"

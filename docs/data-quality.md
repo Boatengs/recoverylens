@@ -27,6 +27,8 @@ Duplicate and reconciliation warnings show that curation changed the source repr
 
 Obligation timing coverage counts only intervals supported by present, chronological timestamps. Timing warnings do not imply avoidable delay: the declaration date is not the project-submission date, and later obligation adjustments may occur for legitimate reasons.
 
+NOAA damage parsing uses four explicit states: `parsed`, `reported_zero`, `missing`, and `invalid`. A missing or invalid component never becomes zero. Event-level `known_total_damage_dollars` sums only valid observed components, while `is_damage_complete` identifies events for which both property and crop values are valid. Missing or invalid values, duplicate event IDs, and source-year inconsistencies trigger review flags rather than silent correction.
+
 ## Determinism and review
 
 Given the same retrieved records, retrieval timestamp, query metadata, and configuration, the JSON and Markdown files are byte-stable: keys, tables, checks, precision, and output filenames use fixed ordering and formatting. Different live runs should have different retrieval timestamps and may reflect legitimate upstream revisions.
