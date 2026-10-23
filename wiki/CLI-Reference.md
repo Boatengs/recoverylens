@@ -25,6 +25,7 @@ pytest
 | `noaa-download` | Download and verify versioned annual Storm Events files | `data/raw/noaa/storm-events/` |
 | `noaa-damage` | Parse verified property and crop damage values | `data/processed/noaa/damage/` |
 | `noaa-impacts` | Aggregate injuries/deaths and reconcile fatality records | `data/processed/noaa/impacts/` |
+| `noaa-fema-match` | Assess county/date declaration candidates without asserting confirmed links | `data/processed/noaa/fema_match/` |
 
 ## FEMA examples
 
@@ -64,9 +65,20 @@ Then run the analytical stages:
 ```bash
 recoverylens noaa-damage --start-year 2020 --end-year 2021
 recoverylens noaa-impacts --start-year 2020 --end-year 2021
+recoverylens noaa-fema-match --start-year 2020 --end-year 2021
 ```
 
 Use `--schema-version 1.0` to pin an explicit NOAA CSV schema. Without a pin, the downloader selects the highest available numeric schema version and then its newest creation date for each year.
+
+`noaa-fema-match` queries FEMA major-disaster declaration areas whose incident windows intersect the requested NOAA years. Its default zero-day buffer requires actual date overlap. `--date-buffer-days` can admit gaps of up to 30 days, but doing so raises a warning and retains the actual gap. The command writes:
+
+- `event_assessments.csv` — every NOAA row and its candidate or unmatchable state;
+- `declaration_windows.csv` — prepared FEMA area windows, including ineligible rows;
+- `candidate_links.csv` — every county/date candidate;
+- `review_queue.csv` — unique and ambiguous candidates requiring human review; and
+- `summary.json` — scope, coverage, status counts, record-limit evidence, and warnings.
+
+A `unique_candidate` is not a confirmed event identity. Event type and FEMA incident type are retained for review but are not used through an undocumented synonym map.
 
 ## Output interpretation
 

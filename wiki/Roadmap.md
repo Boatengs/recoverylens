@@ -8,7 +8,7 @@ RecoveryLens is delivered in reviewable milestones. A milestone is complete only
 |---|---|---|
 | 1 | Foundation | **Complete** |
 | 2 | FEMA funding pipeline | **Complete** |
-| 3 | NOAA loss and impact pipeline | **In progress — 3 of 5 deliverables complete** |
+| 3 | NOAA loss and impact pipeline | **In progress — 4 of 5 deliverables complete** |
 | 4 | Population and vulnerability | Planned |
 | 5 | Analysis and modeling | Planned |
 | 6 | Public decision surface | Planned |
@@ -35,7 +35,7 @@ RecoveryLens is delivered in reviewable milestones. A milestone is complete only
 - [x] Version-aware annual bulk downloads — [PR #12](https://github.com/Boatengs/recoverylens/pull/12)
 - [x] Property and crop damage parsing — [PR #14](https://github.com/Boatengs/recoverylens/pull/14)
 - [x] Injury and fatality aggregation — [PR #16](https://github.com/Boatengs/recoverylens/pull/16)
-- [ ] Event-to-declaration matching assessment
+- [x] Event-to-declaration matching assessment — issue [#19](https://github.com/Boatengs/recoverylens/issues/19)
 - [ ] Inflation-adjusted loss measures
 
 **Milestone exit gate:** event matches must expose ambiguity and nonmatches; loss outputs must retain nominal dollars, adjusted dollars, price base, and missingness.

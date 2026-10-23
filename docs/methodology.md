@@ -73,6 +73,14 @@ NOAA's fatalities table is used only to audit the details-table death counts. Fa
 
 Two reconciliation measures are required. The event-match rate measures how many comparable event rows agree, while fatality-roster coverage divides linked unique roster rows by known details deaths. They answer different questions: a historical file can match many zero-death events while containing only a small share of the person-level records implied by details totals.
 
+### FEMA–NOAA candidate-link assessment
+
+RecoveryLens does not assume that a NOAA event and a FEMA declaration describe the same causal event merely because they share a place and time. It first limits NOAA rows to county-designated records (`CZ_TYPE = C`) with a valid five-character county FIPS, unique event ID, source-year-consistent begin date, and valid begin/end window. Forecast-zone and marine records remain visible but are not converted to counties. FEMA declaration areas likewise require a valid disaster number, nonzero county FIPS, and chronological incident begin/end dates; duplicated disaster–county keys with conflicting metadata are excluded rather than resolved arbitrarily.
+
+A candidate is generated when an eligible NOAA event and eligible FEMA major-disaster declaration share the exact county FIPS and their inclusive calendar-date windows overlap. NOAA documents event timestamps as usually local time, while FEMA supplies incident date fields; the assessment therefore does not claim time-of-day precision across the sources. The CLI accepts an optional zero-to-30-day buffer; buffered links retain both the actual overlap-day count and the nonoverlap gap, and the summary raises a `date_buffer_applied` warning. Event type and FEMA incident type are retained for review but are not used as an undocumented synonym map.
+
+Every NOAA row receives one state: `unique_candidate`, `ambiguous_candidates`, `no_candidate`, or a specific unmatchable condition such as `forecast_zone`, `marine`, `invalid_county_code`, `invalid_event_begin`, or `duplicate_event_id`. The outputs include the complete event assessment, prepared FEMA declaration windows, every candidate link, a candidate review queue, and a JSON summary. A unique candidate is not a confirmed match: the summary always reports zero confirmed matches and raises `candidate_links_require_review` whenever candidates exist. A reviewer must evaluate the source context before any analytical linkage is accepted.
+
 ## Prototype recovery-equity score
 
 For county *i*, each observed component is converted to a national percentile rank:

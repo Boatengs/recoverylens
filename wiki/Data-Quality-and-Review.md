@@ -49,11 +49,22 @@ RecoveryLens separates pipeline execution from publication readiness. A complete
 - Duplicate, conflicting, ambiguous, invalid, and unlinked records remain visible.
 - Event-match rate and fatality-roster coverage are reported separately because they answer different questions.
 
+### FEMA–NOAA candidate links
+
+- County equality and overlapping date windows create review candidates, not confirmed causal links.
+- Any generated candidate raises `candidate_links_require_review`; even a unique candidate is not publication-ready as a confirmed link.
+- Every NOAA row retains a unique, ambiguous, no-candidate, or specific unmatchable state.
+- Forecast zones and marine areas are not silently converted to counties.
+- Duplicate event IDs, duplicate declaration-area keys, invalid dates, and invalid county codes are excluded from candidate generation and retained for diagnosis.
+- A nonzero date buffer is recorded and raises a warning; actual overlap days and date gaps remain visible.
+- Reaching the configured FEMA record limit raises a truncation warning.
+
 ## Claims the project does not support yet
 
 - that one county was unfairly denied funding;
 - that a recorded interval proves avoidable administrative delay;
 - that reported storm damage captures total economic harm;
+- that a unique county/date candidate proves a NOAA event and FEMA declaration are the same causal event;
 - that a county-level pattern describes an individual's experience; or
 - that a national RecoveryLens ranking is ready for publication.
 
