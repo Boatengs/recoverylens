@@ -29,6 +29,7 @@ def project_record(
         "projectAmount": amount,
         "federalShareObligated": amount * 0.9,
         "totalObligated": amount * 0.9,
+        "declarationDate": "2020-03-13T00:00:00Z",
         "firstObligationDate": "2020-04-01T00:00:00Z",
         "lastObligationDate": "2020-04-02T00:00:00Z",
     }

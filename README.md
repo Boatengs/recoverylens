@@ -18,7 +18,7 @@ RecoveryLens will help analysts, public officials, journalists, researchers, and
 - whether highly vulnerable communities experience persistent funding gaps; and
 - which results are robust enough to support decisions—and which require caution.
 
-## Current milestone: FEMA funding pipeline
+## Completed milestone: FEMA funding pipeline
 
 The completed foundation and current funding-pipeline slice include:
 
@@ -30,6 +30,7 @@ The completed foundation and current funding-pipeline slice include:
 - county-level project and obligation aggregation;
 - disaster- and state-level funding reconciliation with duplicate diagnostics;
 - county-attribution coverage, warning thresholds, and unmatched-record extracts;
+- FEMA work-category summaries and declaration-to-obligation timing diagnostics;
 - deterministic machine- and human-readable data-quality reports;
 - a transparent, configurable recovery-equity score;
 - automated tests and continuous integration;
@@ -86,6 +87,12 @@ Generate a complete run-level quality report in JSON and Markdown:
 
 ```bash
 recoverylens pa-quality-report --state MA --start-year 2020 --max-records 500
+```
+
+Analyze FEMA work categories and recorded obligation timing:
+
+```bash
+recoverylens pa-obligations --state MA --start-year 2020 --max-records 500
 ```
 
 See [docs/data-quality.md](docs/data-quality.md) for validation levels and reviewer guidance.

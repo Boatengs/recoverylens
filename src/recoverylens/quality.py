@@ -12,9 +12,10 @@ import pandas as pd
 
 from .coverage import CountyCoverageResult
 from .fema import DATASETS, OPEN_FEMA_BASE, Query
+from .obligations import ObligationMetricsResult
 from .reconciliation import MONEY_COLUMNS, PAReconciliationResult
 
-REPORT_VERSION = "1.0"
+REPORT_VERSION = "1.1"
 LEVEL_DEFINITIONS = {
     "none": "The check passed and needs no quality warning.",
     "warning": "Review before publication; outputs remain available with caveats.",
@@ -103,6 +104,7 @@ def _validation_checks(
     reconciliation: PAReconciliationResult,
     coverage: CountyCoverageResult,
     financial_coverage: Mapping[str, Mapping[str, Mapping[str, object]]],
+    obligations: ObligationMetricsResult | None,
 ) -> list[dict[str, str]]:
     summary = reconciliation.summary
     source_count = int(summary["source_record_count"])
@@ -209,6 +211,54 @@ def _validation_checks(
             ),
         )
     )
+    if obligations is not None:
+        obligation_summary = obligations.summary
+        obligation_project_count = int(obligation_summary["project_count"])
+        category_exceptions = int(obligation_summary["missing_category_count"]) + int(
+            obligation_summary["unmapped_category_count"]
+        )
+        if not obligation_project_count:
+            category_severity = "error"
+            category_message = "Damage-category coverage is undefined because no projects exist."
+        elif category_exceptions:
+            category_severity = "warning"
+            category_message = (
+                f"Found {category_exceptions:,} projects with missing or unmapped categories."
+            )
+        else:
+            category_severity = "none"
+            category_message = "All project damage categories map to documented FEMA categories."
+        checks.append(
+            _check(
+                "damage_category_coverage",
+                severity=category_severity,
+                message=category_message,
+            )
+        )
+        category_flags = {"missing_damage_categories", "unmapped_damage_categories"}
+        timing_flags = [
+            str(flag)
+            for flag in obligation_summary["warning_flags"]
+            if str(flag) not in category_flags
+        ]
+        blocking_timing_flags = {"no_curated_projects", "no_valid_first_obligation_timing"}
+        if blocking_timing_flags.intersection(timing_flags):
+            timing_severity = "error"
+        elif timing_flags:
+            timing_severity = "warning"
+        else:
+            timing_severity = "none"
+        checks.append(
+            _check(
+                "obligation_timing_coverage",
+                severity=timing_severity,
+                message=(
+                    "Obligation timing fields are complete and chronologically valid."
+                    if not timing_flags
+                    else "Obligation timing flags: " + ", ".join(timing_flags) + "."
+                ),
+            )
+        )
     return checks
 
 
@@ -233,6 +283,7 @@ def build_pa_quality_report(
     query: Query,
     retrieved_at: str,
     filters: Mapping[str, object],
+    obligations: ObligationMetricsResult | None = None,
 ) -> PAQualityReport:
     """Build one complete PA quality report from an executed pipeline run."""
 
@@ -247,7 +298,12 @@ def build_pa_quality_report(
         "source": _financial_coverage(source),
         "curated": _financial_coverage(curated),
     }
-    checks = _validation_checks(reconciliation, coverage, financial_coverage)
+    checks = _validation_checks(
+        reconciliation,
+        coverage,
+        financial_coverage,
+        obligations,
+    )
     if any(check["severity"] == "error" for check in checks):
         validation_status = "failed"
         highest_severity = "error"
@@ -366,6 +422,8 @@ def build_pa_quality_report(
             "checks": checks,
         },
     }
+    if obligations is not None:
+        report["obligation_metrics"] = dict(obligations.summary)
     return PAQualityReport(data=report, markdown=render_quality_markdown(report))
 
 
@@ -385,6 +443,12 @@ def _dollars(value: object) -> str:
     if value is None:
         return "Not available"
     return f"${float(value):,.2f}"
+
+
+def _days(value: object) -> str:
+    if value is None:
+        return "Not available"
+    return f"{float(value):,.1f} days"
 
 
 def render_quality_markdown(report: Mapping[str, object]) -> str:
@@ -492,6 +556,28 @@ def render_quality_markdown(report: Mapping[str, object]) -> str:
         )
         for row in county["status_breakdown"]
     )
+    if "obligation_metrics" in report:
+        obligations = report["obligation_metrics"]
+        flags = obligations["warning_flags"]
+        lines.extend(
+            [
+                "",
+                "## Obligation categories and timing",
+                "",
+                f"- Category coverage: **{_percent(obligations['category_coverage_rate'])}**",
+                "- Complete timing coverage: "
+                f"**{_percent(obligations['complete_timing_rate'])}**",
+                "- Median days to first obligation: "
+                f"**{_days(obligations['first_obligation_days_median'])}**",
+                "- Median days to last obligation: "
+                f"**{_days(obligations['last_obligation_days_median'])}**",
+                "- Median obligation window: "
+                f"**{_days(obligations['obligation_window_days_median'])}**",
+                "- Timing status: "
+                f"**{str(obligations['publication_status']).upper()}**",
+                "- Flags: " + (", ".join(str(flag) for flag in flags) if flags else "None"),
+            ]
+        )
     lines.extend(
         [
             "",
