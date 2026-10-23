@@ -29,8 +29,11 @@ RecoveryLens gives priority to reproducible, machine-readable government sources
 
 - Search: https://www.ncei.noaa.gov/access/storm-events-database/
 - Bulk files: https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/
+- Bulk-file README: https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/README
+- Bulk CSV schema: https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/Storm-Data-Bulk-csv-Format.pdf
 - Grain: recorded storm event or episode
 - Intended use: event type, property damage, crop damage, injuries, fatalities, and geographic exposure
+- Revision rule: filenames retain the table, CSV schema version, data year, and NOAA creation date. RecoveryLens resolves the newest revision within the requested schema—or the newest available schema when no version is pinned—and records the exact filename and checksum.
 - Important limitation: reporting practices and event coverage vary over time. Dollar strings require documented parsing, and loss values are not comprehensive estimates of total economic impact.
 
 ## U.S. Census Bureau

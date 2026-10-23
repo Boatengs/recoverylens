@@ -53,6 +53,12 @@ For each curated project, three intervals are calculated from the source timesta
 
 The declaration date is not an application or project-submission date. These intervals describe recorded administrative milestones and revisions; they are not direct measures of processing time, agency performance, applicant performance, or community recovery speed. Negative obligations and late adjustments can legitimately change the last-obligation date.
 
+## NOAA Storm Events source revisions
+
+NOAA publishes separate annual GZIP-compressed CSV files for event details, fatalities, and locations. Each filename exposes the CSV schema version, data year, and file creation date. Because NOAA states that current and historical years can receive updates or corrections, RecoveryLens discovers the live directory rather than constructing an assumed filename. For each requested year, it selects the newest creation date within an explicitly pinned schema version; without a pin, it selects the highest available numeric schema version and then its newest revision.
+
+Downloads use a caller-supplied inclusive year range. Each file is written to a temporary path, validated as a complete GZIP archive, and moved into place atomically. The raw-data manifest retains the exact source URL, NOAA creation date, retrieval timestamp, compressed byte size, and SHA-256 checksum. An existing file is reused only when its metadata, size, checksum, and GZIP integrity agree with that manifest.
+
 ## Prototype recovery-equity score
 
 For county *i*, each observed component is converted to a national percentile rank:

@@ -38,6 +38,10 @@ The completed foundation and current funding-pipeline slice include:
 
 The repository intentionally does **not** publish a national ranking yet. A ranking will only be released after funding, loss, population, and vulnerability inputs have been validated together.
 
+## Current milestone: NOAA loss and impact pipeline
+
+Milestone 3 begins with a version-aware NOAA/NCEI Storm Events downloader. It discovers annual details, fatalities, and locations files from the official directory; selects revisions using the schema version and NOAA creation date encoded in each filename; downloads files atomically; and records byte sizes and SHA-256 checksums in a manifest. Damage parsing and impact aggregation will follow as separately reviewed changes.
+
 ## Planned data sources
 
 | Source | Dataset | Intended use |
@@ -93,6 +97,12 @@ Analyze FEMA work categories and recorded obligation timing:
 
 ```bash
 recoverylens pa-obligations --state MA --start-year 2020 --max-records 500
+```
+
+Download a bounded range of versioned NOAA Storm Events files:
+
+```bash
+recoverylens noaa-download --dataset details --start-year 2020 --end-year 2021
 ```
 
 See [docs/data-quality.md](docs/data-quality.md) for validation levels and reviewer guidance.
