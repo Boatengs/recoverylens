@@ -4,6 +4,7 @@ import json
 
 from recoverylens.coverage import assess_county_coverage
 from recoverylens.fema import Query, prepare_pa_projects
+from recoverylens.obligations import analyze_obligation_metrics
 from recoverylens.quality import build_pa_quality_report, write_quality_report
 from recoverylens.reconciliation import reconcile_pa_projects
 
@@ -14,6 +15,7 @@ def project_record(
     county: str = "Suffolk County",
     county_code: str = "025",
     project_amount: float | None = 100.0,
+    category: str | None = "B",
 ) -> dict[str, object]:
     return {
         "disasterNumber": 4496,
@@ -21,12 +23,13 @@ def project_record(
         "county": county,
         "stateNumberCode": "25",
         "countyCode": county_code,
-        "damageCategoryCode": "B",
+        "damageCategoryCode": category,
         "projectStatus": "Eligible",
         "gmProjectId": project_id,
         "projectAmount": project_amount,
         "federalShareObligated": 90.0,
         "totalObligated": 90.0,
+        "declarationDate": "2020-03-13T00:00:00Z",
         "firstObligationDate": "2020-04-01T00:00:00Z",
         "lastObligationDate": "2020-04-02T00:00:00Z",
     }
@@ -50,6 +53,7 @@ def build_report(records: list[dict[str, object]]):
             "projectAmount",
             "federalShareObligated",
             "totalObligated",
+            "declarationDate",
             "firstObligationDate",
             "lastObligationDate",
         ),
@@ -59,6 +63,7 @@ def build_report(records: list[dict[str, object]]):
     prepared = prepare_pa_projects(records)
     reconciliation = reconcile_pa_projects(prepared)
     coverage = assess_county_coverage(reconciliation.curated_projects)
+    obligations = analyze_obligation_metrics(reconciliation.curated_projects)
     return build_pa_quality_report(
         records,
         reconciliation,
@@ -66,6 +71,7 @@ def build_report(records: list[dict[str, object]]):
         query=query,
         retrieved_at="2026-10-23T00:00:00Z",
         filters={"state": "MA", "start_year": 2020, "disaster_number": None},
+        obligations=obligations,
     )
 
 
@@ -79,7 +85,7 @@ def test_quality_report_has_stable_structure_and_metrics(tmp_path):
 
     report = build_report(records)
 
-    assert report.data["report_version"] == "1.0"
+    assert report.data["report_version"] == "1.1"
     assert report.data["source"]["retrieved_at"] == "2026-10-23T00:00:00Z"
     assert report.data["source"]["request"]["record_limit"] == 500
     assert report.data["row_counts"]["source"] == 3
@@ -96,6 +102,9 @@ def test_quality_report_has_stable_structure_and_metrics(tmp_path):
         "coverage_rate": 0.5,
     }
     assert report.data["validation"]["status"] == "warning"
+    assert report.data["obligation_metrics"]["category_coverage_rate"] == 1.0
+    assert report.data["obligation_metrics"]["complete_timing_rate"] == 1.0
+    assert "## Obligation categories and timing" in report.markdown
     assert "## Null rates" in report.markdown
 
     json_path, markdown_path = write_quality_report(report, tmp_path)
@@ -114,6 +123,14 @@ def test_quality_report_fails_when_source_is_empty():
     assert checks["source_records_present"]["status"] == "failed"
     assert checks["county_attribution_coverage"]["severity"] == "error"
     assert report.data["null_rates"]["source"]["totalObligated"]["null_rate"] is None
+
+
+def test_category_warning_does_not_create_a_timing_warning():
+    report = build_report([project_record(1, category=None)])
+    checks = {check["check_id"]: check for check in report.data["validation"]["checks"]}
+
+    assert checks["damage_category_coverage"]["status"] == "warning"
+    assert checks["obligation_timing_coverage"]["status"] == "passed"
 
 
 def test_quality_report_passes_for_complete_attributed_records():

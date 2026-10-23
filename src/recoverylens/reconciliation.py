@@ -19,6 +19,7 @@ DUPLICATE_COMPARISON_COLUMNS = (
     "damageCategoryCode",
     "projectStatus",
     *MONEY_COLUMNS,
+    "declarationDate",
     "firstObligationDate",
     "lastObligationDate",
 )
