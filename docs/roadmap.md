@@ -10,6 +10,8 @@
 
 ## Milestone 2 — FEMA funding pipeline
 
+**Status: Complete.**
+
 - Public Assistance project extraction
 - Disaster- and state-level reconciliation
 - County attribution coverage analysis

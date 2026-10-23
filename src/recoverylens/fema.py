@@ -251,6 +251,7 @@ def prepare_pa_projects(records: Sequence[Mapping[str, Any]]) -> pd.DataFrame:
         "projectAmount",
         "federalShareObligated",
         "totalObligated",
+        "declarationDate",
         "firstObligationDate",
         "lastObligationDate",
     ]
@@ -305,7 +306,7 @@ def prepare_pa_projects(records: Sequence[Mapping[str, Any]]) -> pd.DataFrame:
     )
     for column in ("projectAmount", "federalShareObligated", "totalObligated"):
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
-    for column in ("firstObligationDate", "lastObligationDate"):
+    for column in ("declarationDate", "firstObligationDate", "lastObligationDate"):
         frame[column] = pd.to_datetime(frame[column], errors="coerce", utc=True)
 
     return frame[

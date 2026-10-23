@@ -18,6 +18,7 @@ from .fema import (
     prepare_county_declarations,
     prepare_pa_projects,
 )
+from .obligations import analyze_obligation_metrics
 from .quality import build_pa_quality_report, write_quality_report
 from .reconciliation import ReconciliationTolerance, reconcile_pa_projects
 
@@ -33,6 +34,7 @@ PA_PROJECT_FIELDS = (
     "projectAmount",
     "federalShareObligated",
     "totalObligated",
+    "declarationDate",
     "firstObligationDate",
     "lastObligationDate",
 )
@@ -203,6 +205,7 @@ def pa_quality_report_command(args: argparse.Namespace) -> int:
             minimum_obligation_coverage=args.minimum_obligation_coverage,
         ),
     )
+    obligations = analyze_obligation_metrics(reconciliation.curated_projects)
     report = build_pa_quality_report(
         records,
         reconciliation,
@@ -210,12 +213,45 @@ def pa_quality_report_command(args: argparse.Namespace) -> int:
         query=query,
         retrieved_at=retrieved_at,
         filters=filters,
+        obligations=obligations,
     )
     output_dir = Path(args.output_dir)
     write_quality_report(report, output_dir)
     print(
         f"Quality report status: {report.data['validation']['status']}; "
         f"wrote JSON and Markdown to {output_dir}"
+    )
+    return 0
+
+
+def pa_obligations_command(args: argparse.Namespace) -> int:
+    query = Query(
+        dataset="pa_projects",
+        filter_expression=pa_project_filter(
+            state=args.state,
+            start_year=args.start_year,
+            disaster_number=args.disaster_number,
+        ),
+        select=PA_PROJECT_FIELDS,
+        order_by="disasterNumber asc",
+        max_records=args.max_records,
+    )
+    records = list(iter_records(query))
+    prepared = prepare_pa_projects(records)
+    reconciliation = reconcile_pa_projects(prepared)
+    result = analyze_obligation_metrics(reconciliation.curated_projects)
+
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    result.projects.to_csv(output_dir / "project_obligation_timing.csv", index=False)
+    result.category_summary.to_csv(output_dir / "category_summary.csv", index=False)
+    (output_dir / "summary.json").write_text(
+        json.dumps(result.summary, allow_nan=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    print(
+        f"Obligation metrics status: {result.summary['publication_status']}; "
+        f"analyzed {result.summary['project_count']:,} curated projects"
     )
     return 0
 
@@ -293,6 +329,19 @@ def build_parser() -> argparse.ArgumentParser:
     pa_quality.add_argument("--minimum-obligation-coverage", type=float, default=0.95)
     pa_quality.add_argument("--output-dir", default="data/processed/pa_quality")
     pa_quality.set_defaults(handler=pa_quality_report_command)
+
+    pa_obligations = subparsers.add_parser(
+        "pa-obligations",
+        help="Analyze Public Assistance work categories and obligation timing",
+    )
+    pa_obligations.add_argument("--state", help="Optional two-letter state abbreviation")
+    pa_obligations.add_argument("--start-year", type=int, default=2000)
+    pa_obligations.add_argument("--disaster-number", type=int)
+    pa_obligations.add_argument("--max-records", type=int, default=10_000)
+    pa_obligations.add_argument(
+        "--output-dir", default="data/processed/pa_obligations"
+    )
+    pa_obligations.set_defaults(handler=pa_obligations_command)
     return parser
 
 

@@ -18,6 +18,8 @@ RecoveryLens gives priority to reproducible, machine-readable government sources
 - Canonical documentation: https://www.fema.gov/openfema-data-page/public-assistance-funded-projects-details-v2
 - API endpoint: `https://www.fema.gov/api/open/v2/PublicAssistanceFundedProjectsDetails`
 - Grain: funded Public Assistance project worksheet
+- Timing fields: disaster declaration date, first obligation date, and last obligation date
+- Category field: FEMA damage category code, mapped to Categories A–G and management-cost Category Z
 - Intended use: obligated federal share, project categories, recipients, and disaster-level funding
 - Important limitation: unobligated projects are excluded. FEMA states that these values can differ from official federal financial reporting and should not be used as official federal reports.
 

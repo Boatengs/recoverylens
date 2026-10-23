@@ -45,6 +45,14 @@ The default publication thresholds are 95% for both record and obligation attrib
 
 Every Public Assistance quality-report run records its source request and retrieval timestamp alongside source and curated schemas, row counts, duplicate diagnostics, null rates, financial-field coverage, and county-attribution metrics. Validation checks use three explicit severities: `none`, `warning`, and `error`; these roll up to `passed`, `warning`, or `failed` report states. See [data-quality.md](data-quality.md) for interpretation and review guidance.
 
+## Obligation categories and timing
+
+RecoveryLens maps FEMA Public Assistance work categories A–G to the official emergency- and permanent-work definitions and maps Category Z to management costs. Codes are normalized to uppercase; blank and undocumented codes remain visible as `missing` or `unmapped` rather than being inferred. The category reference follows FEMA's [Public Assistance Program and Policy Guide](https://www.fema.gov/sites/default/files/documents/fema_pa_pappg-5.0-amended.pdf) and [management-cost guidance](https://www.fema.gov/sites/default/files/2020-07/fema_DRRA-1215-management-costs-public-assistance-fact-sheet.pdf).
+
+For each curated project, three intervals are calculated from the source timestamps: declaration to first obligation, declaration to last obligation, and first to last obligation. An interval is reported only when its required dates exist and are chronological. Separate flags preserve first or last obligations before the declaration and last obligations before the first obligation. Category tables report project counts, net and absolute obligated dollars, valid timing counts, and the 25th, 50th, and 75th percentiles where applicable.
+
+The declaration date is not an application or project-submission date. These intervals describe recorded administrative milestones and revisions; they are not direct measures of processing time, agency performance, applicant performance, or community recovery speed. Negative obligations and late adjustments can legitimately change the last-obligation date.
+
 ## Prototype recovery-equity score
 
 For county *i*, each observed component is converted to a national percentile rank:
