@@ -65,6 +65,14 @@ NOAA documents property and crop damage as estimated values with compact magnitu
 
 `known_total_damage_dollars` sums whichever components are valid, but `is_damage_complete` is true only when both property and crop components are valid. Annual and run-level summaries publish observed-value counts alongside dollars so a partial known total cannot be mistaken for comprehensive loss. Duplicate event IDs and disagreements between an event year and its annual source file are flagged, not automatically resolved. NOAA damage values are reported estimates and do not represent complete economic loss.
 
+### Injuries and fatalities
+
+Direct and indirect injury/death fields are parsed as nonnegative integer counts with `parsed`, `reported_zero`, `missing`, or `invalid` states. Known totals sum valid components, while completeness requires both direct and indirect components. Event rows with missing IDs, duplicate IDs, or source-year inconsistencies remain in diagnostics but are excluded from annual totals rather than resolved through an unsupported choice.
+
+NOAA's fatalities table is used only to audit the details-table death counts. Fatality IDs, event IDs, and direct/indirect type are normalized; duplicate or conflicting fatality IDs and rows that cannot link to one eligible event are excluded from roster counts and written to an unmatched extract. For eligible events, direct and indirect roster counts are compared separately with details counts. The published death total continues to come from the details table, so roster rows are never double-counted.
+
+Two reconciliation measures are required. The event-match rate measures how many comparable event rows agree, while fatality-roster coverage divides linked unique roster rows by known details deaths. They answer different questions: a historical file can match many zero-death events while containing only a small share of the person-level records implied by details totals.
+
 ## Prototype recovery-equity score
 
 For county *i*, each observed component is converted to a national percentile rank:

@@ -20,7 +20,7 @@ DAMAGE_MULTIPLIERS = {
 DAMAGE_STATUSES = ("parsed", "reported_zero", "missing", "invalid")
 _DAMAGE_PATTERN = re.compile(r"^(?P<amount>(?:\d+(?:\.\d*)?|\.\d+))(?P<suffix>[KMB])?$")
 
-DETAIL_COLUMNS = (
+DETAIL_IDENTITY_COLUMNS = (
     "EPISODE_ID",
     "EVENT_ID",
     "STATE",
@@ -30,9 +30,19 @@ DETAIL_COLUMNS = (
     "CZ_TYPE",
     "CZ_FIPS",
     "CZ_NAME",
+)
+DAMAGE_DETAIL_COLUMNS = (
     "DAMAGE_PROPERTY",
     "DAMAGE_CROPS",
 )
+IMPACT_DETAIL_COLUMNS = (
+    "INJURIES_DIRECT",
+    "INJURIES_INDIRECT",
+    "DEATHS_DIRECT",
+    "DEATHS_INDIRECT",
+)
+DETAIL_COLUMNS = (*DETAIL_IDENTITY_COLUMNS, *DAMAGE_DETAIL_COLUMNS, *IMPACT_DETAIL_COLUMNS)
+DAMAGE_REQUIRED_COLUMNS = (*DETAIL_IDENTITY_COLUMNS, *DAMAGE_DETAIL_COLUMNS)
 SOURCE_COLUMNS = (
     "source_filename",
     "source_data_year",
@@ -284,7 +294,7 @@ def _annual_summary(events: pd.DataFrame) -> pd.DataFrame:
 def analyze_storm_event_damage(frame: pd.DataFrame) -> StormDamageResult:
     """Parse event damage fields and retain complete missingness diagnostics."""
 
-    missing_columns = sorted(set(DETAIL_COLUMNS) - set(frame.columns))
+    missing_columns = sorted(set(DAMAGE_REQUIRED_COLUMNS) - set(frame.columns))
     if missing_columns:
         raise ValueError(f"NOAA details data are missing fields: {missing_columns}")
     source = frame.copy()

@@ -40,7 +40,7 @@ The repository intentionally does **not** publish a national ranking yet. A rank
 
 ## Current milestone: NOAA loss and impact pipeline
 
-Milestone 3 includes a version-aware NOAA/NCEI Storm Events downloader and a transparent property- and crop-damage parser. The downloader discovers annual details, fatalities, and locations files from the official directory; selects revisions using the schema version and NOAA creation date encoded in each filename; downloads files atomically; and records byte sizes and SHA-256 checksums in a manifest. The damage pipeline preserves source strings and distinguishes positive estimates, reported zero, missing values, and invalid values before calculating known totals.
+Milestone 3 includes a version-aware NOAA/NCEI Storm Events downloader, a transparent property- and crop-damage parser, and auditable injury/fatality aggregation. The downloader discovers annual details, fatalities, and locations files from the official directory; selects revisions using the schema version and NOAA creation date encoded in each filename; downloads files atomically; and records byte sizes and SHA-256 checksums in a manifest. Impact pipelines preserve missingness, calculate only known totals, and reconcile event death counts to unique fatality records without double-counting them.
 
 ## Planned data sources
 
@@ -109,6 +109,12 @@ Parse verified NOAA property and crop damage estimates:
 
 ```bash
 recoverylens noaa-damage --start-year 2020 --end-year 2021
+```
+
+Aggregate NOAA injuries and deaths and reconcile fatality records:
+
+```bash
+recoverylens noaa-impacts --start-year 2020 --end-year 2021
 ```
 
 See [docs/data-quality.md](docs/data-quality.md) for validation levels and reviewer guidance.
