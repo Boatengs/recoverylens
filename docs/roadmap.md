@@ -20,11 +20,13 @@
 
 ## Milestone 3 — NOAA loss and impact pipeline
 
-- Version-aware annual bulk downloads
-- Property and crop damage parsing
-- Injury and fatality aggregation
-- Event-to-declaration matching assessment
-- Inflation-adjusted loss measures
+**Status: In progress.**
+
+- [x] Version-aware annual bulk downloads
+- [ ] Property and crop damage parsing
+- [ ] Injury and fatality aggregation
+- [ ] Event-to-declaration matching assessment
+- [ ] Inflation-adjusted loss measures
 
 ## Milestone 4 — Population and vulnerability
 
