@@ -18,6 +18,12 @@ from .fema import (
     prepare_county_declarations,
     prepare_pa_projects,
 )
+from .noaa import (
+    SUPPORTED_STORM_DATASETS,
+    download_storm_events_files,
+    fetch_storm_events_catalog,
+    select_storm_events_files,
+)
 from .obligations import analyze_obligation_metrics
 from .quality import build_pa_quality_report, write_quality_report
 from .reconciliation import ReconciliationTolerance, reconcile_pa_projects
@@ -62,6 +68,28 @@ def declaration_command(args: argparse.Namespace) -> int:
     output.parent.mkdir(parents=True, exist_ok=True)
     counties.to_csv(output, index=False)
     print(f"Wrote {len(counties):,} county records to {output}")
+    return 0
+
+
+def noaa_download_command(args: argparse.Namespace) -> int:
+    catalog = fetch_storm_events_catalog()
+    selected = select_storm_events_files(
+        catalog,
+        dataset=args.dataset,
+        start_year=args.start_year,
+        end_year=args.end_year,
+        schema_version=args.schema_version,
+    )
+    retrieved_at = datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    result = download_storm_events_files(
+        selected,
+        args.output_dir,
+        retrieved_at=retrieved_at,
+    )
+    print(
+        f"NOAA Storm Events: {result.downloaded_count:,} downloaded, "
+        f"{result.reused_count:,} verified and reused; manifest at {result.manifest_path}"
+    )
     return 0
 
 
@@ -269,6 +297,27 @@ def build_parser() -> argparse.ArgumentParser:
         "--output", default="data/processed/county_declarations.csv"
     )
     declarations.set_defaults(handler=declaration_command)
+
+    noaa_download = subparsers.add_parser(
+        "noaa-download",
+        help="Download versioned NOAA Storm Events annual files",
+    )
+    noaa_download.add_argument(
+        "--dataset",
+        choices=SUPPORTED_STORM_DATASETS,
+        default="details",
+    )
+    noaa_download.add_argument("--start-year", type=int, required=True)
+    noaa_download.add_argument("--end-year", type=int, required=True)
+    noaa_download.add_argument(
+        "--schema-version",
+        help="Optional NOAA CSV schema version such as 1.0",
+    )
+    noaa_download.add_argument(
+        "--output-dir",
+        default="data/raw/noaa/storm-events",
+    )
+    noaa_download.set_defaults(handler=noaa_download_command)
 
     pa_projects = subparsers.add_parser(
         "pa-projects", help="Fetch and aggregate FEMA Public Assistance funded projects"

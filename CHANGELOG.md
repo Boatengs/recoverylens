@@ -18,3 +18,4 @@ All notable changes will be documented here. RecoveryLens follows semantic versi
 - County-attribution taxonomy, coverage thresholds, and auditable unmatched extracts.
 - Deterministic JSON and Markdown Public Assistance data-quality reports.
 - FEMA work-category summaries and auditable obligation-timing diagnostics.
+- Version-aware NOAA Storm Events discovery, atomic downloads, and checksum manifests.
