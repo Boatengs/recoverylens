@@ -64,6 +64,15 @@ class StormEventsDownloadResult:
     manifest_path: Path
 
 
+@dataclass(frozen=True)
+class VerifiedStormEventsFile:
+    """A local NOAA file whose metadata, size, checksum, and archive are valid."""
+
+    source: StormEventsFile
+    path: Path
+    manifest_record: dict[str, object]
+
+
 class _LinkParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__()
@@ -451,3 +460,60 @@ def download_storm_events_files(
         reused_count=reused_count,
         manifest_path=manifest_path,
     )
+
+
+def verified_storm_events_files(
+    input_dir: Path | str,
+    *,
+    dataset: str,
+    start_year: int,
+    end_year: int,
+    schema_version: str | None = None,
+) -> tuple[VerifiedStormEventsFile, ...]:
+    """Select and verify local annual files recorded in a NOAA manifest."""
+
+    directory = Path(input_dir)
+    manifest_path = directory / "manifest.json"
+    if not manifest_path.is_file():
+        raise NOAAStormEventsError(f"NOAA manifest does not exist: {manifest_path}")
+    manifest = _load_manifest(manifest_path)
+    catalog: list[StormEventsFile] = []
+    records_by_filename: dict[str, dict[str, object]] = {}
+    for record in manifest["files"]:
+        if not isinstance(record, dict) or not isinstance(record.get("filename"), str):
+            raise NOAAStormEventsError(
+                f"NOAA manifest contains an invalid file record: {manifest_path}"
+            )
+        filename = str(record["filename"])
+        if filename in records_by_filename:
+            raise NOAAStormEventsError(f"NOAA manifest repeats a filename: {filename}")
+        try:
+            source = parse_storm_events_filename(filename)
+        except ValueError as exc:
+            raise NOAAStormEventsError(
+                f"NOAA manifest contains an invalid filename: {filename}"
+            ) from exc
+        catalog.append(source)
+        records_by_filename[filename] = record
+
+    selected = select_storm_events_files(
+        catalog,
+        dataset=dataset,
+        start_year=start_year,
+        end_year=end_year,
+        schema_version=schema_version,
+    )
+    verified: list[VerifiedStormEventsFile] = []
+    for source in selected:
+        path = directory / source.filename
+        if not path.is_file():
+            raise NOAAStormEventsError(f"Manifest-listed NOAA file does not exist: {path}")
+        record = _validate_existing_file(source, path, records_by_filename[source.filename])
+        verified.append(
+            VerifiedStormEventsFile(
+                source=source,
+                path=path,
+                manifest_record=record,
+            )
+        )
+    return tuple(verified)

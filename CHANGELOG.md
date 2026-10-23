@@ -19,3 +19,4 @@ All notable changes will be documented here. RecoveryLens follows semantic versi
 - Deterministic JSON and Markdown Public Assistance data-quality reports.
 - FEMA work-category summaries and auditable obligation-timing diagnostics.
 - Version-aware NOAA Storm Events discovery, atomic downloads, and checksum manifests.
+- Transparent NOAA property- and crop-damage parsing with missingness diagnostics.
