@@ -1,0 +1,64 @@
+name: Publish Wiki
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "wiki/**"
+      - ".github/workflows/publish-wiki.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: recoverylens-wiki
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: source
+
+      - name: Publish reviewable Wiki sources
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          work_root="$(mktemp -d)"
+          wiki_checkout="${work_root}/wiki"
+          remote_url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git"
+
+          if git clone "${remote_url}" "${wiki_checkout}"; then
+            echo "Updating the existing Wiki history."
+          else
+            mkdir -p "${wiki_checkout}"
+            if [[ ! -d "${wiki_checkout}/.git" ]]; then
+              git -C "${wiki_checkout}" init --initial-branch=master
+            fi
+            if git -C "${wiki_checkout}" remote get-url origin >/dev/null 2>&1; then
+              git -C "${wiki_checkout}" remote set-url origin "${remote_url}"
+            else
+              git -C "${wiki_checkout}" remote add origin "${remote_url}"
+            fi
+            echo "Initializing the Wiki history."
+          fi
+
+          cp -R source/wiki/. "${wiki_checkout}/"
+          git -C "${wiki_checkout}" config user.name "github-actions[bot]"
+          git -C "${wiki_checkout}" config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C "${wiki_checkout}" add --all
+
+          if git -C "${wiki_checkout}" diff --cached --quiet; then
+            echo "Wiki already matches the reviewed source."
+            exit 0
+          fi
+
+          git -C "${wiki_checkout}" commit -m "Sync Wiki from ${GITHUB_SHA::7}"
+          git -C "${wiki_checkout}" push origin HEAD:master

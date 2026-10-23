@@ -138,6 +138,7 @@ The commands write their analytical outputs to `data/processed/`. Raw and proces
 src/recoverylens/   Reusable data-access and metric code
 tests/              Unit tests for transformations and scoring
 docs/               Methodology, source registry, and project roadmap
+wiki/               Reviewable source for the published GitHub Wiki
 data/               Local-only raw and processed data directories
 .github/workflows/  Automated quality checks
 ```
