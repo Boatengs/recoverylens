@@ -34,6 +34,7 @@ RecoveryLens gives priority to reproducible, machine-readable government sources
 - Grain: recorded storm event or episode
 - Intended use: event type, property damage, crop damage, injuries, fatalities, and geographic exposure
 - Revision rule: filenames retain the table, CSV schema version, data year, and NOAA creation date. RecoveryLens resolves the newest revision within the requested schema—or the newest available schema when no version is pinned—and records the exact filename and checksum.
+- Damage rule: compact property and crop estimates are parsed with their magnitude suffix while the raw string and parse status remain visible. Blank or malformed values are not converted to zero.
 - Important limitation: reporting practices and event coverage vary over time. Dollar strings require documented parsing, and loss values are not comprehensive estimates of total economic impact.
 
 ## U.S. Census Bureau

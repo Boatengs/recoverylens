@@ -23,7 +23,7 @@
 **Status: In progress.**
 
 - [x] Version-aware annual bulk downloads
-- [ ] Property and crop damage parsing
+- [x] Property and crop damage parsing
 - [ ] Injury and fatality aggregation
 - [ ] Event-to-declaration matching assessment
 - [ ] Inflation-adjusted loss measures
