@@ -54,6 +54,17 @@ Milestone 3 includes a version-aware NOAA/NCEI Storm Events downloader, a transp
 
 See [docs/data-sources.md](docs/data-sources.md) for canonical URLs, update notes, and known limitations.
 
+## Documentation
+
+The [RecoveryLens Wiki](https://github.com/Boatengs/recoverylens/wiki) is the project guide for reviewers, analysts, and contributors:
+
+- [current status](https://github.com/Boatengs/recoverylens/wiki/Current-Status) — readiness, validation evidence, and release gates;
+- [roadmap](https://github.com/Boatengs/recoverylens/wiki/Roadmap) — milestone progress and exit criteria;
+- [architecture](https://github.com/Boatengs/recoverylens/wiki/Architecture) — pipeline layers, data flow, and trust boundaries; and
+- [CLI reference](https://github.com/Boatengs/recoverylens/wiki/CLI-Reference) — runnable, bounded FEMA and NOAA workflows.
+
+Code-coupled analytical definitions remain version controlled in [`docs/`](docs/), and the Wiki links to those canonical records rather than replacing them.
+
 ## Quick start
 
 ```bash
@@ -127,6 +138,7 @@ The commands write their analytical outputs to `data/processed/`. Raw and proces
 src/recoverylens/   Reusable data-access and metric code
 tests/              Unit tests for transformations and scoring
 docs/               Methodology, source registry, and project roadmap
+wiki/               Reviewable source for the published GitHub Wiki
 data/               Local-only raw and processed data directories
 .github/workflows/  Automated quality checks
 ```
