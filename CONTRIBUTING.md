@@ -26,6 +26,12 @@ pytest
 
 New transformations should include tests for expected records, missing fields, malformed values, and geographic edge cases.
 
+## Wiki changes
+
+The reviewable source for the GitHub Wiki lives in [`wiki/`](wiki/). Propose Wiki changes through the same issue, branch, and pull-request workflow as code changes. After a change reaches `main`, the `Publish Wiki` workflow copies the reviewed pages into the Wiki's separate Git history.
+
+Avoid editing a managed Wiki page directly on GitHub except for urgent recovery. A later source-controlled update will replace changes to the same file.
+
 ## Commit and pull-request standards
 
 - Write imperative commit subjects: `Add NOAA damage parser`.
