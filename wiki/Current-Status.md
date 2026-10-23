@@ -4,13 +4,13 @@ _Status date: 23 October 2026_
 
 ## Executive status
 
-RecoveryLens has a tested FEMA funding pipeline and three of five NOAA loss-and-impact deliverables. Milestones 1 and 2 are complete; Milestone 3 is in progress.
+RecoveryLens has a tested FEMA funding pipeline and four of five NOAA loss-and-impact deliverables. Milestones 1 and 2 are complete; Milestone 3 is in progress.
 
 | Signal | Current value |
 |---|---|
 | Default branch | `main` |
-| Latest validated commit | [`a68146c`](https://github.com/Boatengs/recoverylens/commit/a68146c1fa3ab3edd916432bde2e3c142f0b2145) |
-| Automated tests | 83 passing |
+| Latest delivery evidence | [PR #20](https://github.com/Boatengs/recoverylens/pull/20) |
+| Automated tests | 92 passing |
 | Total test coverage | 88% |
 | Lint | Passing |
 | Current milestone | Milestone 3 — NOAA loss and impact pipeline |
@@ -27,11 +27,13 @@ RecoveryLens has a tested FEMA funding pipeline and three of five NOAA loss-and-
 | NOAA source acquisition | Ready for bounded year ranges | Exact revisions, retrieval timestamps, byte sizes, and SHA-256 checksums are retained in a manifest. |
 | NOAA damage | Review-gated | Known totals never convert missing or invalid values to zero; reported loss is not total economic impact. |
 | NOAA casualties | Review-gated | Details-table totals remain canonical; person-level fatalities are reconciliation evidence only. |
-| Cross-source FEMA–NOAA matching | Planned | Required before funding-to-loss analysis. |
+| Cross-source FEMA–NOAA matching | Review-gated | County/date candidates expose unique, ambiguous, absent, and unmatchable states; no candidate is treated as a confirmed link. |
 | Inflation adjustment | Planned | Required before comparing nominal losses across long time periods. |
 | National equity indicators | Blocked | ACS population, uncertainty, SVI, and joint validation are not yet integrated. |
 
-## Latest bounded live-data evidence
+## Bounded live-data evidence
+
+### NOAA casualty reconciliation (1950)
 
 The 1950 NOAA validation is a pipeline check, not a national estimate:
 
@@ -47,18 +49,32 @@ The high event-match rate and low roster coverage are not contradictory. Many ze
 
 Implementation and validation evidence: [PR #16](https://github.com/Boatengs/recoverylens/pull/16) and [Issue #15](https://github.com/Boatengs/recoverylens/issues/15).
 
+### FEMA–NOAA candidate assessment (2005)
+
+The 2005 run assessed official source records with a strict zero-day buffer:
+
+- 53,976 NOAA event rows, of which 32,648 had eligible county geography and date windows;
+- 1,553 FEMA declaration-area rows, of which 1,537 were eligible;
+- 1,189 candidate links across 1,169 NOAA events;
+- 1,149 unique-candidate events and 20 ambiguous-candidate events;
+- 31,479 eligible events with no candidate;
+- 21,328 NOAA rows retained as unmatchable, primarily forecast-zone and marine records; and
+- zero confirmed matches by design.
+
+The run status was `warning`. County/date overlap creates a review candidate, not proof that a NOAA event and FEMA declaration are the same causal event. Implementation and validation evidence: [PR #20](https://github.com/Boatengs/recoverylens/pull/20) and [Issue #19](https://github.com/Boatengs/recoverylens/issues/19).
+
 ## Recently completed
 
 - [PR #12](https://github.com/Boatengs/recoverylens/pull/12) — version-aware NOAA Storm Events downloads
 - [PR #14](https://github.com/Boatengs/recoverylens/pull/14) — property and crop damage parsing
 - [PR #16](https://github.com/Boatengs/recoverylens/pull/16) — injury and fatality aggregation
+- [PR #20](https://github.com/Boatengs/recoverylens/pull/20) — FEMA–NOAA candidate-link assessment
 
 ## Next release gates
 
-1. Assess event-to-declaration matching without silently forcing ambiguous links.
-2. Add inflation-adjusted loss measures while retaining nominal values and price-base metadata.
-3. Integrate ACS population and socioeconomic estimates with margins of error.
-4. Integrate the CDC/ATSDR Social Vulnerability Index with explicit vintage labels.
-5. Validate all components together before publishing national comparisons or rankings.
+1. Add inflation-adjusted loss measures while retaining nominal values and price-base metadata.
+2. Integrate ACS population and socioeconomic estimates with margins of error.
+3. Integrate the CDC/ATSDR Social Vulnerability Index with explicit vintage labels.
+4. Validate all components together before publishing national comparisons or rankings.
 
 For the full delivery sequence, see the [[Roadmap]].

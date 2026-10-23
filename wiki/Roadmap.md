@@ -35,7 +35,7 @@ RecoveryLens is delivered in reviewable milestones. A milestone is complete only
 - [x] Version-aware annual bulk downloads — [PR #12](https://github.com/Boatengs/recoverylens/pull/12)
 - [x] Property and crop damage parsing — [PR #14](https://github.com/Boatengs/recoverylens/pull/14)
 - [x] Injury and fatality aggregation — [PR #16](https://github.com/Boatengs/recoverylens/pull/16)
-- [x] Event-to-declaration matching assessment — issue [#19](https://github.com/Boatengs/recoverylens/issues/19)
+- [x] Event-to-declaration matching assessment — [PR #20](https://github.com/Boatengs/recoverylens/pull/20)
 - [ ] Inflation-adjusted loss measures
 
 **Milestone exit gate:** event matches must expose ambiguity and nonmatches; loss outputs must retain nominal dollars, adjusted dollars, price base, and missingness.
