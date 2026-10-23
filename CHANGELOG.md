@@ -16,3 +16,4 @@ All notable changes will be documented here. RecoveryLens follows semantic versi
 - Bounded Public Assistance funded-project extraction, normalization, and county aggregation.
 - Disaster- and state-level funding reconciliation with duplicate and conflict diagnostics.
 - County-attribution taxonomy, coverage thresholds, and auditable unmatched extracts.
+- Deterministic JSON and Markdown Public Assistance data-quality reports.
