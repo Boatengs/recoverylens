@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from datetime import UTC, datetime
 from pathlib import Path
 
 from .coverage import CoverageThresholds, assess_county_coverage
@@ -17,6 +18,7 @@ from .fema import (
     prepare_county_declarations,
     prepare_pa_projects,
 )
+from .quality import build_pa_quality_report, write_quality_report
 from .reconciliation import ReconciliationTolerance, reconcile_pa_projects
 
 PA_PROJECT_FIELDS = (
@@ -167,6 +169,57 @@ def pa_coverage_command(args: argparse.Namespace) -> int:
     return 0
 
 
+def pa_quality_report_command(args: argparse.Namespace) -> int:
+    filters = {
+        "disaster_number": args.disaster_number,
+        "start_year": args.start_year,
+        "state": args.state.upper() if args.state else None,
+    }
+    query = Query(
+        dataset="pa_projects",
+        filter_expression=pa_project_filter(
+            state=args.state,
+            start_year=args.start_year,
+            disaster_number=args.disaster_number,
+        ),
+        select=PA_PROJECT_FIELDS,
+        order_by="disasterNumber asc",
+        max_records=args.max_records,
+    )
+    records = list(iter_records(query))
+    retrieved_at = datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    prepared = prepare_pa_projects(records)
+    reconciliation = reconcile_pa_projects(
+        prepared,
+        tolerance=ReconciliationTolerance(
+            absolute_dollars=args.absolute_tolerance,
+            relative=args.relative_tolerance,
+        ),
+    )
+    coverage = assess_county_coverage(
+        reconciliation.curated_projects,
+        thresholds=CoverageThresholds(
+            minimum_record_coverage=args.minimum_record_coverage,
+            minimum_obligation_coverage=args.minimum_obligation_coverage,
+        ),
+    )
+    report = build_pa_quality_report(
+        records,
+        reconciliation,
+        coverage,
+        query=query,
+        retrieved_at=retrieved_at,
+        filters=filters,
+    )
+    output_dir = Path(args.output_dir)
+    write_quality_report(report, output_dir)
+    print(
+        f"Quality report status: {report.data['validation']['status']}; "
+        f"wrote JSON and Markdown to {output_dir}"
+    )
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="recoverylens")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -225,6 +278,21 @@ def build_parser() -> argparse.ArgumentParser:
     pa_coverage.add_argument("--minimum-obligation-coverage", type=float, default=0.95)
     pa_coverage.add_argument("--output-dir", default="data/processed/pa_coverage")
     pa_coverage.set_defaults(handler=pa_coverage_command)
+
+    pa_quality = subparsers.add_parser(
+        "pa-quality-report",
+        help="Generate machine- and human-readable Public Assistance quality reports",
+    )
+    pa_quality.add_argument("--state", help="Optional two-letter state abbreviation")
+    pa_quality.add_argument("--start-year", type=int, default=2000)
+    pa_quality.add_argument("--disaster-number", type=int)
+    pa_quality.add_argument("--max-records", type=int, default=10_000)
+    pa_quality.add_argument("--absolute-tolerance", type=float, default=0.01)
+    pa_quality.add_argument("--relative-tolerance", type=float, default=1e-9)
+    pa_quality.add_argument("--minimum-record-coverage", type=float, default=0.95)
+    pa_quality.add_argument("--minimum-obligation-coverage", type=float, default=0.95)
+    pa_quality.add_argument("--output-dir", default="data/processed/pa_quality")
+    pa_quality.set_defaults(handler=pa_quality_report_command)
     return parser
 
 
