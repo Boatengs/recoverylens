@@ -80,6 +80,15 @@ Use `--schema-version 1.0` to pin an explicit NOAA CSV schema. Without a pin, th
 
 A `unique_candidate` is not a confirmed event identity. Event type and FEMA incident type are retained for review but are not used through an undocumented synonym map.
 
+## County context and exploratory modeling
+
+```bash
+python -m recoverylens.context
+python -m recoverylens.modeling --panel reviewed_county_year.csv --holdout-year 2023
+```
+
+The context module downloads official 2022 ACS bulk tables and national SVI without an API key. It writes county context, a geography review queue, and source hashes. The modeling command requires an analyst-prepared, reviewed panel; the filename above is a placeholder, not a bundled dataset. See the [panel contract and model card](https://github.com/Boatengs/recoverylens/blob/main/docs/model-card.md) for required columns and historical availability gates. Outputs include county diagnostics, sensitivity comparisons, and a model report with the input hash. Synthetic test results do not establish national model validity.
+
 ## Output interpretation
 
 - CSV files contain reviewable event-, project-, county-, disaster-, state-, or year-level tables.
