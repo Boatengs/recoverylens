@@ -36,6 +36,7 @@ RecoveryLens gives priority to reproducible, machine-readable government sources
 - Revision rule: filenames retain the table, CSV schema version, data year, and NOAA creation date. RecoveryLens resolves the newest revision within the requested schema—or the newest available schema when no version is pinned—and records the exact filename and checksum.
 - Damage rule: compact property and crop estimates are parsed with their magnitude suffix while the raw string and parse status remain visible. Blank or malformed values are not converted to zero.
 - Casualty rule: direct and indirect injury/death counts come from the details table. Person-level fatality rows are linked by event ID for reconciliation and are not added to the event totals.
+- Matching rule: county-designated NOAA records can be assessed against FEMA major-disaster areas by exact county FIPS and overlapping incident windows. This produces candidates for review, not confirmed event identities; event and incident type labels remain visible but are not silently mapped.
 - Important limitation: reporting practices and event coverage vary over time. Dollar strings require documented parsing, and loss values are not comprehensive estimates of total economic impact.
 
 ## U.S. Census Bureau

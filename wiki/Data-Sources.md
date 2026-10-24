@@ -27,7 +27,7 @@ For every acquired file or API run, retain as applicable:
 
 The canonical county key is the five-character Census county FIPS code: two-character state FIPS plus three-character county FIPS.
 
-Records without a valid county key are not assigned by name. They remain in documented unmatched outputs. Cross-source event matching is a separate Milestone 3 deliverable and will require explicit ambiguity and nonmatch reporting.
+Records without a valid county key are not assigned by name. They remain in documented unmatched outputs. Cross-source event assessment requires exact county FIPS and intersecting date windows by default. It reports unique, ambiguous, and absent candidates separately and never promotes a candidate to a confirmed match automatically.
 
 ## NOAA revision handling
 

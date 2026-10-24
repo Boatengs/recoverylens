@@ -8,6 +8,7 @@ from recoverylens.fema import (
     aggregate_county_declarations,
     aggregate_county_pa_projects,
     declaration_filter,
+    declaration_matching_filter,
     iter_records,
     pa_project_filter,
     prepare_county_declarations,
@@ -57,6 +58,23 @@ def test_declaration_filter_validates_inputs():
     )
     with pytest.raises(ValueError):
         declaration_filter(state="Massachusetts")
+
+
+def test_declaration_matching_filter_bounds_incident_windows():
+    assert declaration_matching_filter(
+        state="ma",
+        start_year=2020,
+        end_year=2021,
+        date_buffer_days=2,
+    ) == (
+        "declarationType eq 'DR' and state eq 'MA' and "
+        "incidentBeginDate le '2022-01-02T23:59:59.999Z' and "
+        "(incidentEndDate ge '2019-12-30T00:00:00.000Z' or incidentEndDate eq null)"
+    )
+    with pytest.raises(ValueError):
+        declaration_matching_filter(start_year=2021, end_year=2020)
+    with pytest.raises(ValueError):
+        declaration_matching_filter(start_year=2020, end_year=2020, date_buffer_days=-1)
 
 
 def test_prepare_and_aggregate_county_declarations():

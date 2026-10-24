@@ -25,7 +25,7 @@
 - [x] Version-aware annual bulk downloads
 - [x] Property and crop damage parsing
 - [x] Injury and fatality aggregation
-- [ ] Event-to-declaration matching assessment
+- [x] Event-to-declaration matching assessment — [PR #20](https://github.com/Boatengs/recoverylens/pull/20)
 - [ ] Inflation-adjusted loss measures
 
 ## Milestone 4 — Population and vulnerability
