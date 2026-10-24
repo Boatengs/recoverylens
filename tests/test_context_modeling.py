@@ -52,6 +52,20 @@ def test_context_preserves_unmatched_and_missing_rank():
         integrate(acs, svi, year=2020)
 
 
+def test_blank_and_nonnumeric_acs_values_remain_unavailable(tmp_path):
+    source = tmp_path / "population.dat"
+    source.write_text("GEO_ID|B01003_E001|B01003_M001\n"
+                      "0500000US01001||invalid\n"
+                      "0500000US01003|invalid|\n", encoding="utf-8")
+    result = read_acs(source, "b01003", 2022)
+    assert result.population_estimate.isna().all()
+    assert result.population_moe.isna().all()
+    assert result.population_estimate_status.eq("unavailable").all()
+    assert result.population_moe_status.eq("unavailable").all()
+    assert result.population_estimate_raw.tolist() == ["", "invalid"]
+    assert result.population_moe_raw.tolist() == ["invalid", ""]
+
+
 def test_duplicate_geography_is_rejected():
     with pytest.raises(ValueError, match="duplicate"):
         require_keys(pd.DataFrame({"county_fips": ["01001", "01001"]}), "county_fips")
