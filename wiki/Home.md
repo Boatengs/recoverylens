@@ -16,7 +16,9 @@ RecoveryLens is an open-source decision-intelligence project for examining wheth
 | NOAA damage | Implemented with explicit parsed, reported-zero, missing, and invalid states |
 | NOAA injuries and fatalities | Implemented with event-level aggregation and person-record reconciliation |
 | FEMA–NOAA linkage | Implemented as a county/date candidate assessment with ambiguity and nonmatches preserved; no candidates are treated as confirmed links |
-| National county ranking | **Not released**; loss, population, vulnerability, and cross-source validation remain incomplete |
+| ACS and SVI context | 2022 same-vintage join live-validated across 3,144 national SVI counties |
+| Analysis and modeling | Review-gated indicators and temporal evaluation implemented; national empirical validation pending |
+| National county ranking | **Not released**; reviewed historical panel, inflation integration, and joint validation remain incomplete |
 | Public dashboard | Planned for Milestone 6 |
 
 RecoveryLens is currently suitable for **method review and bounded data pulls**. It is not an operational emergency-management system or an official federal reporting product.

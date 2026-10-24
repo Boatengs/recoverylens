@@ -44,6 +44,12 @@ Milestone 3 includes a version-aware NOAA/NCEI Storm Events downloader, a transp
 
 ## Planned data sources
 
+County context is available via `python -m recoverylens.context`, using official
+ACS bulk downloads and national SVI 2022 without an API key. See the
+[context guide](docs/county-context.md) for live validation and geography limits.
+Exploratory modeling is implemented for a separately reviewed county-year panel;
+see the [model card](docs/model-card.md) for requirements and outstanding release gates.
+
 | Source | Dataset | Intended use |
 |---|---|---|
 | FEMA OpenFEMA | Disaster Declarations Summaries v2 | County disaster exposure and program eligibility |
