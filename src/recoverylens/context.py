@@ -76,7 +76,7 @@ def read_acs(path: Path, table: str, year: int) -> pd.DataFrame:
         for kind, suffix in (("E", "estimate"), ("M", "moe")):
             values = raw[f"{table.upper()}_{kind}{cell}"]
             number = pd.to_numeric(values, errors="coerce")
-            valid = number.ge(0) & np.isfinite(number)
+            valid = (number.ge(0) & np.isfinite(number)).fillna(False)
             out[f"{name}_{suffix}_raw"] = values
             out[f"{name}_{suffix}"] = number.where(valid)
             out[f"{name}_{suffix}_status"] = np.where(valid, "observed", "unavailable")
