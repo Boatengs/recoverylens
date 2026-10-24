@@ -53,6 +53,8 @@ Cross-vintage geography allocation is outside this release.
 
 ## Milestone 5 — Analysis and modeling
 
+Latest evidence: [three-cohort funding and loss audit](https://github.com/Boatengs/recoverylens/blob/main/docs/milestone-5-audit.md). Funding reconciliation passed; loss identity and historical panel validation remain unresolved. The milestone is not complete.
+
 - [x] Review-gated funding-per-resident and funding-to-loss indicators
 - [x] County-year typology through deterministic clustering
 - [x] Descriptive residual/outlier diagnostics, without causal funding-gap claims

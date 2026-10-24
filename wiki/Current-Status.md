@@ -73,6 +73,8 @@ The run status was `warning`. County/date overlap creates a review candidate, no
 
 ## Next release gates
 
+The [24 October Milestone 5 audit](https://github.com/Boatengs/recoverylens/blob/main/docs/milestone-5-audit.md) reconciles 4,417 award activities to all 3,257 projects across three North Carolina cohorts. This is current funding evidence, not a validated historical model. The 2020 storm candidates overlap the COVID-19 declaration, demonstrating why county/date links require substantive review. Milestone 5 remains open.
+
 1. Define a comparable funding/loss scope, funding valuation period, and observation cutoff.
 2. Assemble a reviewed county-year panel with complete funding/loss coverage.
 3. Supply historically available context and document geography and source review.
