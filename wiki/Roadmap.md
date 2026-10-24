@@ -9,8 +9,8 @@ RecoveryLens is delivered in reviewable milestones. A milestone is complete only
 | 1 | Foundation | **Complete** |
 | 2 | FEMA funding pipeline | **Complete** |
 | 3 | NOAA loss and impact pipeline | **In progress — 4 of 5 deliverables complete** |
-| 4 | Population and vulnerability | Planned |
-| 5 | Analysis and modeling | Planned |
+| 4 | Population and vulnerability | Implemented and live-validated for 2022 same-vintage counties |
+| 5 | Analysis and modeling | Code implemented; national empirical validation pending |
 | 6 | Public decision surface | Planned |
 | 7 | Portfolio release | Planned |
 
@@ -42,20 +42,23 @@ RecoveryLens is delivered in reviewable milestones. A milestone is complete only
 
 ## Milestone 4 — Population and vulnerability
 
-- [ ] Census ACS population and socioeconomic variables
-- [ ] Margins-of-error retention
-- [ ] CDC/ATSDR SVI integration
-- [ ] County universe and geography crosswalk validation
+- [x] Census ACS population and socioeconomic variables
+- [x] Margins-of-error and controlled-estimate status retention
+- [x] CDC/ATSDR national SVI 2022 integration
+- [x] Same-vintage county universe validation; unmatched keys withheld
+
+Cross-vintage geography allocation is outside this release.
 
 **Milestone exit gate:** every published estimate carries source vintage and uncertainty metadata where available.
 
 ## Milestone 5 — Analysis and modeling
 
-- [ ] Funding-per-resident and funding-to-loss indicators
-- [ ] County typology through clustering
-- [ ] Outlier and potential funding-gap detection
-- [ ] Time-based validation and sensitivity analysis
-- [ ] Model card and limitations report
+- [x] Review-gated funding-per-resident and funding-to-loss indicators
+- [x] County-year typology through deterministic clustering
+- [x] Descriptive residual/outlier diagnostics, without causal funding-gap claims
+- [x] Chronological holdout and sensitivity evaluation code
+- [x] Model card and limitations report
+- [ ] Reviewed historical panel, integrated inflation adjustment, and empirical national validation
 
 **Milestone exit gate:** component coverage, stability, and sensitivity are published before any composite ranking.
 

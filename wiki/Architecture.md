@@ -45,6 +45,8 @@ flowchart TD
 
 ## Trust boundaries
 
+`context.py` acquires ACS/SVI source files, preserves uncertainty codes, and audits exact same-vintage county joins. `modeling.py` validates an analyst-prepared county-year panel, withholds unreviewed rows, fits scaling and models on training years only, and reports chronological holdout diagnostics. These modules expose `python -m` entry points. No automatic link acceptance or national ranking is performed.
+
 - Upstream agency data may be revised after retrieval.
 - A checksum proves file identity, not substantive correctness.
 - Internal reconciliation validates the transformation, not equivalence to an agency's official financial system.

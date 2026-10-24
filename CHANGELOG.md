@@ -6,6 +6,10 @@ All notable changes will be documented here. RecoveryLens follows semantic versi
 
 ### Added
 
+- Official 2022 ACS bulk acquisition, uncertainty retention, and audited national SVI county joins.
+- Review-gated county indicators, chronological ridge evaluation, deterministic typologies, residual diagnostics, sensitivity reports, and model card.
+- CPI conversion helper with nominal-value retention; live CPI integration and national empirical model validation remain pending.
+
 - Project charter, analytical principles, and seven-milestone roadmap.
 - Official FEMA, NOAA, Census, and CDC/ATSDR source registry.
 - Paginated OpenFEMA client with bounded queries and retry handling.

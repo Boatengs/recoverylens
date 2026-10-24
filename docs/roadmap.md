@@ -30,18 +30,27 @@
 
 ## Milestone 4 — Population and vulnerability
 
-- Census ACS population and socioeconomic variables
-- Margins-of-error retention
-- CDC/ATSDR SVI integration
-- County universe and geography crosswalk validation
+**Status: Implemented and live-validated for the 2022 same-vintage county universe.**
+
+- [x] Census ACS population and socioeconomic variables
+- [x] Margins-of-error and controlled-estimate status retention
+- [x] CDC/ATSDR national SVI 2022 integration
+- [x] County universe validation; unmatched and cross-vintage keys withheld
+
+See [county context](county-context.md). Cross-vintage allocation is not implemented.
 
 ## Milestone 5 — Analysis and modeling
 
-- Funding-per-resident and funding-to-loss indicators
-- County typology through clustering
-- Outlier and potential funding-gap detection
-- Time-based validation and sensitivity analysis
-- Model card and limitations report
+**Status: Implementation available; empirical national validation remains blocked.**
+
+- [x] Review-gated funding-per-resident and funding-to-loss indicators
+- [x] Deterministic county-year typology clustering
+- [x] Descriptive residual/outlier diagnostics (no causal funding-gap claim)
+- [x] Chronological holdout and parameter sensitivity evaluation code
+- [x] Model card and limitations report
+- [ ] Review linked funding/loss panels, complete price adjustment, and run empirical validation
+
+See [model card](model-card.md). No national ranking or validated funding-gap model is released.
 
 ## Milestone 6 — Public decision surface
 
