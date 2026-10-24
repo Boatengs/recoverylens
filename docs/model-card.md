@@ -85,11 +85,13 @@ and applies nominal dollars × CPI(base)/CPI(source). It retains nominal values,
 base year, factor, and missingness. Missing years are not interpolated. Source
 rows must be unique, finite, positive, and traceable. CPI is a general consumer
 price adjustment, not a reconstruction-cost index. An official CPI acquisition
-pipeline and live validation still remain in Milestone 3.
+pipeline and bounded NOAA live validation are now implemented in
+[`recoverylens.inflation`](inflation.md). Funding still needs an explicit valuation
+period and consistent price adjustment during panel construction.
 
 ## Exit gates before national findings
 
-1. Complete and validate CPI acquisition and inflation adjustments.
+1. Apply the validated CPI workflow to the chosen loss scope and price funding consistently.
 2. Review event/declaration links and prevent duplicate loss allocation.
 3. Construct traceable historical panels with geography and availability checks.
 4. Report real holdout and baseline results, residual diagnostics, cluster stability,

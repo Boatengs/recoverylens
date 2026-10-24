@@ -58,6 +58,15 @@ RecoveryLens gives priority to reproducible, machine-readable government sources
 - Intended use: published overall and theme-level vulnerability ranks
 - Important limitation: SVI is contextual, not a measure of individual vulnerability or proof of inequity. Version year must remain visible because it does not represent real-time conditions.
 
+## U.S. Bureau of Labor Statistics
+
+- [CPI bulk file](https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems)
+- Series: `CUUR0000SA0`, CPI-U U.S. city average all items, not seasonally adjusted.
+- Period: published annual average `M13`; monthly/partial-year observations excluded.
+- Use: constant-dollar NOAA loss comparisons with explicit price base.
+- Limit: consumer prices are not a reconstruction-cost index. Raw values, footnotes,
+  source hash, and retrieval metadata remain available. See [inflation](inflation.md).
+
 ## Join standard
 
 County data will use the five-character Census county FIPS code (`state FIPS + county FIPS`) as the canonical geographic key. Records without a valid county FIPS will remain in a documented unmatched table and will not be silently assigned by name.

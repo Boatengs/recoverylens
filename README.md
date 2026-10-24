@@ -1,5 +1,10 @@
 # RecoveryLens
 
+Annual CPI-adjusted NOAA losses are available through
+`python -m recoverylens.inflation --start-year 2005 --end-year 2005 --base-year 2022`.
+See the [inflation guide](docs/inflation.md) and
+[historical panel readiness assessment](docs/historical-panel-readiness.md).
+
 **U.S. Disaster Recovery Funding & Equity Observatory**
 
 RecoveryLens is an open-source decision-intelligence project for examining whether federal disaster-recovery resources align with disaster exposure, documented losses, population, and social vulnerability across U.S. counties.
