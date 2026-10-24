@@ -14,6 +14,8 @@ RecoveryLens gives priority to official, machine-readable public data. Every der
 
 ## Provenance policy
 
+The implemented county-context release uses [2022 ACS table-based summary files](https://www.census.gov/programs-surveys/acs/data/summary-file.2022.html) (B01003, B19013, B17001) and the [CDC national SVI 2022 county CSV](https://svi.cdc.gov/Documents/Data/2022/csv/states_counties/SVI_2022_US_county.csv). ACS bulk files need no API key. Same-vintage FIPS joins retain 78 Puerto Rico municipalities as unmatched because national SVI excludes Puerto Rico. See the [context guide](https://github.com/Boatengs/recoverylens/blob/main/docs/county-context.md).
+
 For every acquired file or API run, retain as applicable:
 
 - canonical source URL or endpoint;
