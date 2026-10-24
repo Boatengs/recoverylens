@@ -6,6 +6,8 @@ All notable changes will be documented here. RecoveryLens follows semantic versi
 
 ### Added
 
+- Exact-cent award-activity reconciliation, hashed source-page evidence, and a three-cohort Milestone 5 audit that preserves unresolved historical-model gates.
+
 - Official BLS annual CPI acquisition and verified NOAA loss adjustment, retaining nominal values, source hashes, missingness, and publication gates.
 
 - Official 2022 ACS bulk acquisition, uncertainty retention, and audited national SVI county joins.

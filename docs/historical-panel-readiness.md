@@ -2,6 +2,12 @@
 
 Assessment date: 24 October 2026. No national training panel is certified.
 
+The [three-cohort evidence audit](milestone-5-audit.md) now verifies dated award
+activities against current project balances for declarations 4393, 4465 and 4543.
+All 3,257 projects reconcile exactly. Loss links remain candidates; the 2020
+cohort exposes overlap with the COVID-19 declaration. Historical publication
+availability, contextual vintages, valuation, and model validation remain open.
+
 | Component | Verified evidence | Remaining requirement |
 |---|---|---|
 | NOAA loss prices | 2005 events converted using published annual CPI to 2022 dollars | Retain source missingness; establish the analysis scope |
