@@ -1,0 +1,236 @@
+{
+  "assessment_date": "2026-10-24",
+  "milestone_5_complete": false,
+  "funding": [
+    {
+      "publication_status": "review_required",
+      "activity_rows": 3566,
+      "project_rows": 2669,
+      "reconciled_projects": 2669,
+      "unreconciled_projects": 0,
+      "dated_funding_candidate_projects": 2669,
+      "negative_activity_count": 521,
+      "invalid_date_count": 0,
+      "unsupported_status_count": 0,
+      "activity_net_dollars": "791308284.04",
+      "project_net_dollars": "791308284.04",
+      "historical_availability_verified": false,
+      "national_model_ready": false,
+      "limitations": [
+        "Current revised extracts are not historical publication snapshots",
+        "Project totals are obligations, not payments or unmet need",
+        "County attribution, price conversion and loss linkage require review"
+      ],
+      "disaster_number": 4393,
+      "sources": [
+        {
+          "url": "https://www.fema.gov/api/open/v2/PublicAssistanceGrantAwardActivities?%24filter=disasterNumber+eq+4393&%24top=1000&%24skip=0&%24orderby=disasterNumber%2CapplicantId%2CpwNumber",
+          "filename": "PublicAssistanceGrantAwardActivities-0.json",
+          "sha256": "3f050358b4e146df6204f3469638cd5fa1760fb58f0ae6717b63b0681c810f40",
+          "bytes": 689245,
+          "retrieved_at": "2026-10-24T21:03:18.278775+00:00",
+          "rows": 1000
+        },
+        {
+          "url": "https://www.fema.gov/api/open/v2/PublicAssistanceGrantAwardActivities?%24filter=disasterNumber+eq+4393&%24top=1000&%24skip=1000&%24orderby=disasterNumber%2CapplicantId%2CpwNumber",
+          "filename": "PublicAssistanceGrantAwardActivities-1000.json",
+          "sha256": "2cdf2232c69e87f54ebb99253cdb563cf80efa57f777d96616d2e324c9dee930",
+          "bytes": 677144,
+          "retrieved_at": "2026-10-24T21:03:18.766142+00:00",
+          "rows": 1000
+        },
+        {
+          "url": "https://www.fema.gov/api/open/v2/PublicAssistanceGrantAwardActivities?%24filter=disasterNumber+eq+4393&%24top=1000&%24skip=2000&%24orderby=disasterNumber%2CapplicantId%2CpwNumber",
+          "filename": "PublicAssistanceGrantAwardActivities-2000.json",
+          "sha256": "59a8502e72ba3e73f7ef641cdf8320b5b09864f858bb10136b92c6fa246316cc",
+          "bytes": 676192,
+          "retrieved_at": "2026-10-24T21:03:19.348888+00:00",
+          "rows": 1000
+        },
+        {
+          "url": "https://www.fema.gov/api/open/v2/PublicAssistanceGrantAwardActivities?%24filter=disasterNumber+eq+4393&%24top=1000&%24skip=3000&%24orderby=disasterNumber%2CapplicantId%2CpwNumber",
+          "filename": "PublicAssistanceGrantAwardActivities-3000.json",
+          "sha256": "6eeee0307044ce1c85dc0ac011c7778cee5acad17f2ea3ff1b7053167a93ff47",
+          "bytes": 381605,
+          "retrieved_at": "2026-10-24T21:03:19.897402+00:00",
+          "rows": 566
+        },
+        {
+          "url": "https://www.fema.gov/api/open/v2/PublicAssistanceFundedProjectsDetails?%24filter=disasterNumber+eq+4393&%24top=1000&%24skip=0&%24orderby=disasterNumber%2CapplicantId%2CpwNumber",
+          "filename": "PublicAssistanceFundedProjectsDetails-0.json",
+          "sha256": "db8e4b159765c1f7d46a08ffa0ab25fc5cc04452712cc001c3baa4e16ba3bced",
+          "bytes": 791376,
+          "retrieved_at": "2026-10-24T21:03:23.070122+00:00",
+          "rows": 1000
+        },
+        {
+          "url": "https://www.fema.gov/api/open/v2/PublicAssistanceFundedProjectsDetails?%24filter=disasterNumber+eq+4393&%24top=1000&%24skip=1000&%24orderby=disasterNumber%2CapplicantId%2CpwNumber",
+          "filename": "PublicAssistanceFundedProjectsDetails-1000.json",
+          "sha256": "7892d2ea2cd16fa30b4f7ad88d93f1d75ee8b85aa55a53641e7eb3eb7acde5d7",
+          "bytes": 786998,
+          "retrieved_at": "2026-10-24T21:03:23.503999+00:00",
+          "rows": 1000
+        },
+        {
+          "url": "https://www.fema.gov/api/open/v2/PublicAssistanceFundedProjectsDetails?%24filter=disasterNumber+eq+4393&%24top=1000&%24skip=2000&%24orderby=disasterNumber%2CapplicantId%2CpwNumber",
+          "filename": "PublicAssistanceFundedProjectsDetails-2000.json",
+          "sha256": "3f76936fa05bbfc72864f0e4842cdf909788b5d452546dc41e1a957de218f628",
+          "bytes": 527008,
+          "retrieved_at": "2026-10-24T21:03:24.187748+00:00",
+          "rows": 669
+        }
+      ]
+    },
+    {
+      "publication_status": "review_required",
+      "activity_rows": 639,
+      "project_rows": 491,
+      "reconciled_projects": 491,
+      "unreconciled_projects": 0,
+      "dated_funding_candidate_projects": 491,
+      "negative_activity_count": 117,
+      "invalid_date_count": 0,
+      "unsupported_status_count": 0,
+      "activity_net_dollars": "63442135.08",
+      "project_net_dollars": "63442135.08",
+      "historical_availability_verified": false,
+      "national_model_ready": false,
+      "limitations": [
+        "Current revised extracts are not historical publication snapshots",
+        "Project totals are obligations, not payments or unmet need",
+        "County attribution, price conversion and loss linkage require review"
+      ],
+      "disaster_number": 4465,
+      "sources": [
+        {
+          "url": "https://www.fema.gov/api/open/v2/PublicAssistanceGrantAwardActivities?%24filter=disasterNumber+eq+4465&%24top=1000&%24skip=0&%24orderby=disasterNumber%2CapplicantId%2CpwNumber",
+          "filename": "PublicAssistanceGrantAwardActivities-0.json",
+          "sha256": "05368589f3332e2c7d2433976f9c9f8ad57a0967687fdd3921b24f6eaae1e0d5",
+          "bytes": 429768,
+          "retrieved_at": "2026-10-24T21:03:58.823345+00:00",
+          "rows": 639
+        },
+        {
+          "url": "https://www.fema.gov/api/open/v2/PublicAssistanceFundedProjectsDetails?%24filter=disasterNumber+eq+4465&%24top=1000&%24skip=0&%24orderby=disasterNumber%2CapplicantId%2CpwNumber",
+          "filename": "PublicAssistanceFundedProjectsDetails-0.json",
+          "sha256": "5bfb8a43ad6483d2213d132033162eb0405de1bb1fe7a142dec91034bb1689f0",
+          "bytes": 387931,
+          "retrieved_at": "2026-10-24T21:04:01.730226+00:00",
+          "rows": 491
+        }
+      ]
+    },
+    {
+      "publication_status": "review_required",
+      "activity_rows": 212,
+      "project_rows": 97,
+      "reconciled_projects": 97,
+      "unreconciled_projects": 0,
+      "dated_funding_candidate_projects": 97,
+      "negative_activity_count": 22,
+      "invalid_date_count": 0,
+      "unsupported_status_count": 0,
+      "activity_net_dollars": "13644804.50",
+      "project_net_dollars": "13644804.50",
+      "historical_availability_verified": false,
+      "national_model_ready": false,
+      "limitations": [
+        "Current revised extracts are not historical publication snapshots",
+        "Project totals are obligations, not payments or unmet need",
+        "County attribution, price conversion and loss linkage require review"
+      ],
+      "disaster_number": 4543,
+      "sources": [
+        {
+          "url": "https://www.fema.gov/api/open/v2/PublicAssistanceGrantAwardActivities?%24filter=disasterNumber+eq+4543&%24top=1000&%24skip=0&%24orderby=disasterNumber%2CapplicantId%2CpwNumber",
+          "filename": "PublicAssistanceGrantAwardActivities-0.json",
+          "sha256": "a3f388837dc96d11758c5b1e9936fe1c4ea9f40f125aaa8f3a86524db367153d",
+          "bytes": 149038,
+          "retrieved_at": "2026-10-24T21:04:04.795428+00:00",
+          "rows": 212
+        },
+        {
+          "url": "https://www.fema.gov/api/open/v2/PublicAssistanceFundedProjectsDetails?%24filter=disasterNumber+eq+4543&%24top=1000&%24skip=0&%24orderby=disasterNumber%2CapplicantId%2CpwNumber",
+          "filename": "PublicAssistanceFundedProjectsDetails-0.json",
+          "sha256": "9bd2120e32a89b5bd2c6cc48a38fc9d4d91a4d2ddcabeab7409424d8ae405383",
+          "bytes": 77865,
+          "retrieved_at": "2026-10-24T21:04:07.883130+00:00",
+          "rows": 97
+        }
+      ]
+    }
+  ],
+  "loss_candidates": {
+    "status": "review_required",
+    "pilot": [
+      {
+        "disaster_number": 4393,
+        "candidate_rows": 160,
+        "candidate_counties": 47,
+        "complete_damage_candidates": 142,
+        "ambiguous_candidates": 0,
+        "confirmed_links": 0
+      },
+      {
+        "disaster_number": 4465,
+        "candidate_rows": 60,
+        "candidate_counties": 17,
+        "complete_damage_candidates": 53,
+        "ambiguous_candidates": 0,
+        "confirmed_links": 0
+      },
+      {
+        "disaster_number": 4543,
+        "candidate_rows": 35,
+        "candidate_counties": 11,
+        "complete_damage_candidates": 35,
+        "ambiguous_candidates": 35,
+        "confirmed_links": 0
+      }
+    ],
+    "declaration_rows": 263,
+    "sources": {
+      "declarations_url": "https://www.fema.gov/api/open/v2/DisasterDeclarationsSummaries?%24filter=state+eq+%27NC%27+and+declarationType+eq+%27DR%27+and+incidentBeginDate+le+%272020-12-31T23%3A59%3A59.999Z%27+and+%28incidentEndDate+ge+%272018-01-01T00%3A00%3A00.000Z%27+or+incidentEndDate+eq+null%29&%24top=1000&%24orderby=disasterNumber",
+      "retrieved_at": "2026-10-24T21:05:45.906013+00:00",
+      "declarations_sha256": "0a4206e38ebd8d5dccf8710d8759dfb35ed2741e3ea13ed35145ae3f747cb629",
+      "noaa": [
+        {
+          "byte_size": 9585982,
+          "data_year": 2018,
+          "dataset": "details",
+          "filename": "StormEvents_details-ftp_v1.0_d2018_c20260323.csv.gz",
+          "noaa_created_on": "2026-03-23",
+          "retrieved_at": "2026-10-24T21:04:38Z",
+          "schema_version": "1.0",
+          "sha256": "19702480f50cd2a8dacce5e57891feba156afb87b1ea5cbb4eaeda69d2b964a4",
+          "source_url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2018_c20260323.csv.gz"
+        },
+        {
+          "byte_size": 11602648,
+          "data_year": 2019,
+          "dataset": "details",
+          "filename": "StormEvents_details-ftp_v1.0_d2019_c20260323.csv.gz",
+          "noaa_created_on": "2026-03-23",
+          "retrieved_at": "2026-10-24T21:04:38Z",
+          "schema_version": "1.0",
+          "sha256": "f5043ecc776818b0feffdf1e0fcbaf63329db0635eab1057c7b8ba00ef332e3b",
+          "source_url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2019_c20260323.csv.gz"
+        },
+        {
+          "byte_size": 10444606,
+          "data_year": 2020,
+          "dataset": "details",
+          "filename": "StormEvents_details-ftp_v1.0_d2020_c20260323.csv.gz",
+          "noaa_created_on": "2026-03-23",
+          "retrieved_at": "2026-10-23T18:53:22Z",
+          "schema_version": "1.0",
+          "sha256": "895c56fd46991c4d9a135d67558dc4b447a02a2314efac0ace645135b98f9c9d",
+          "source_url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2020_c20260323.csv.gz"
+        }
+      ]
+    },
+    "limitation": "County/date candidates are not reviewed causal links"
+  },
+  "fema_metadata_sha256": "b1193bde32f715b7b09e38062bc0b4de7d582202c2ea3767cfda8e889afa1ce1",
+  "decision": "withhold model fit: no confirmed loss links, historical context not assembled, valuation and coverage not certified"
+}
