@@ -4,16 +4,16 @@ _Status date: 23 October 2026_
 
 ## Executive status
 
-RecoveryLens has a tested FEMA funding pipeline and four of five NOAA loss-and-impact deliverables. Milestones 1 and 2 are complete; Milestone 3 is in progress.
+RecoveryLens has a tested FEMA funding pipeline and four of five NOAA deliverables. Milestone 4 is implemented and live-validated for 2022 same-vintage counties. Milestone 5 code is implemented; national empirical validation remains blocked on a reviewed, price-adjusted historical panel.
 
 | Signal | Current value |
 |---|---|
 | Default branch | `main` |
-| Latest delivery evidence | [PR #20](https://github.com/Boatengs/recoverylens/pull/20) |
-| Automated tests | 94 passing |
-| Total test coverage | 89% |
+| Latest delivery evidence | [County context issue #21](https://github.com/Boatengs/recoverylens/issues/21) and [modeling issue #22](https://github.com/Boatengs/recoverylens/issues/22) |
+| Automated tests | See the latest linked pull-request Quality checks run |
+| Total test coverage | Reported by pytest in Quality checks |
 | Lint | Passing |
-| Current milestone | Milestone 3 — NOAA loss and impact pipeline |
+| Remaining analytical gates | Milestone 3 inflation pipeline and Milestone 5 empirical validation |
 | Release posture | Pre-release; bounded analysis only |
 
 ## Capability readiness
@@ -28,8 +28,9 @@ RecoveryLens has a tested FEMA funding pipeline and four of five NOAA loss-and-i
 | NOAA damage | Review-gated | Known totals never convert missing or invalid values to zero; reported loss is not total economic impact. |
 | NOAA casualties | Review-gated | Details-table totals remain canonical; person-level fatalities are reconciliation evidence only. |
 | Cross-source FEMA–NOAA matching | Review-gated | County/date candidates expose unique, ambiguous, absent, and unmatchable states; no candidate is treated as a confirmed link. |
-| Inflation adjustment | Planned | Required before comparing nominal losses across long time periods. |
-| National equity indicators | Blocked | ACS population, uncertainty, SVI, and joint validation are not yet integrated. |
+| Inflation adjustment | Helper implemented | Supplied annual CPI conversion retains nominal values; live CPI acquisition and pipeline integration remain outstanding. |
+| ACS and national SVI | Live-validated for 2022 | 3,144 matched counties; 78 Puerto Rico municipalities withheld from the national SVI join. |
+| Analysis and modeling | Code implemented; national validation blocked | Indicators, typologies, residual diagnostics, chronological holdout, and sensitivity require reviewed links and historically available context. |
 
 ## Bounded live-data evidence
 
@@ -73,8 +74,12 @@ The run status was `warning`. County/date overlap creates a review candidate, no
 ## Next release gates
 
 1. Add inflation-adjusted loss measures while retaining nominal values and price-base metadata.
-2. Integrate ACS population and socioeconomic estimates with margins of error.
-3. Integrate the CDC/ATSDR Social Vulnerability Index with explicit vintage labels.
+2. Assemble a reviewed county-year panel with complete funding/loss coverage.
+3. Supply historically available context and document geography and source review.
 4. Validate all components together before publishing national comparisons or rankings.
 
 For the full delivery sequence, see the [[Roadmap]].
+
+## County context validation
+
+The four official source downloads were checksum-verified: 3,222 ACS rows and 3,144 national SVI rows, with all SVI keys matched. All 78 unmatched ACS keys are Puerto Rico municipalities. Population MOEs comprise 3,095 controlled estimates and 127 observed margins; controlled values never become zero uncertainty. One matched county lacks a numeric income estimate. See the [county context guide](https://github.com/Boatengs/recoverylens/blob/main/docs/county-context.md) and [model card](https://github.com/Boatengs/recoverylens/blob/main/docs/model-card.md).
