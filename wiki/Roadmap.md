@@ -8,7 +8,7 @@ RecoveryLens is delivered in reviewable milestones. A milestone is complete only
 |---|---|---|
 | 1 | Foundation | **Complete** |
 | 2 | FEMA funding pipeline | **Complete** |
-| 3 | NOAA loss and impact pipeline | **In progress — 4 of 5 deliverables complete** |
+| 3 | NOAA loss and impact pipeline | **Complete — bounded live validation; source warnings retained** |
 | 4 | Population and vulnerability | Implemented and live-validated for 2022 same-vintage counties |
 | 5 | Analysis and modeling | Code implemented; national empirical validation pending |
 | 6 | Public decision surface | Planned |
@@ -36,7 +36,7 @@ RecoveryLens is delivered in reviewable milestones. A milestone is complete only
 - [x] Property and crop damage parsing — [PR #14](https://github.com/Boatengs/recoverylens/pull/14)
 - [x] Injury and fatality aggregation — [PR #16](https://github.com/Boatengs/recoverylens/pull/16)
 - [x] Event-to-declaration matching assessment — [PR #20](https://github.com/Boatengs/recoverylens/pull/20)
-- [ ] Inflation-adjusted loss measures
+- [x] Inflation-adjusted loss measures — [method and validation](https://github.com/Boatengs/recoverylens/blob/main/docs/inflation.md)
 
 **Milestone exit gate:** event matches must expose ambiguity and nonmatches; loss outputs must retain nominal dollars, adjusted dollars, price base, and missingness.
 
@@ -58,7 +58,7 @@ Cross-vintage geography allocation is outside this release.
 - [x] Descriptive residual/outlier diagnostics, without causal funding-gap claims
 - [x] Chronological holdout and sensitivity evaluation code
 - [x] Model card and limitations report
-- [ ] Reviewed historical panel, integrated inflation adjustment, and empirical national validation
+- [ ] Reviewed historical panel, consistent funding/loss valuation, and empirical national validation
 
 **Milestone exit gate:** component coverage, stability, and sensitivity are published before any composite ranking.
 

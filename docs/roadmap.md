@@ -20,13 +20,13 @@
 
 ## Milestone 3 — NOAA loss and impact pipeline
 
-**Status: In progress.**
+**Status: Implemented and bounded live-validated; source warnings remain visible.**
 
 - [x] Version-aware annual bulk downloads
 - [x] Property and crop damage parsing
 - [x] Injury and fatality aggregation
 - [x] Event-to-declaration matching assessment — [PR #20](https://github.com/Boatengs/recoverylens/pull/20)
-- [ ] Inflation-adjusted loss measures
+- [x] Inflation-adjusted loss measures — [method and validation](inflation.md)
 
 ## Milestone 4 — Population and vulnerability
 

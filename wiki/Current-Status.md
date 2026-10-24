@@ -1,19 +1,19 @@
 # Current Status
 
-_Status date: 23 October 2026_
+_Status date: 24 October 2026_
 
 ## Executive status
 
-RecoveryLens has a tested FEMA funding pipeline and four of five NOAA deliverables. Milestone 4 is implemented and live-validated for 2022 same-vintage counties. Milestone 5 code is implemented; national empirical validation remains blocked on a reviewed, price-adjusted historical panel.
+RecoveryLens has tested FEMA and NOAA pipelines, including annual CPI-adjusted losses. Milestone 4 is implemented and live-validated for 2022 same-vintage counties. Milestone 5 code is implemented; national empirical validation remains blocked on a reviewed, consistently valued historical panel.
 
 | Signal | Current value |
 |---|---|
 | Default branch | `main` |
-| Latest delivery evidence | [County context issue #21](https://github.com/Boatengs/recoverylens/issues/21) and [modeling issue #22](https://github.com/Boatengs/recoverylens/issues/22) |
+| Latest delivery evidence | [Inflation issue #24](https://github.com/Boatengs/recoverylens/issues/24); national model validation tracked in [issue #22](https://github.com/Boatengs/recoverylens/issues/22) |
 | Automated tests | See the latest linked pull-request Quality checks run |
 | Total test coverage | Reported by pytest in Quality checks |
 | Lint | Passing |
-| Remaining analytical gates | Milestone 3 inflation pipeline and Milestone 5 empirical validation |
+| Remaining analytical gates | Milestone 5 reviewed historical panel and empirical validation |
 | Release posture | Pre-release; bounded analysis only |
 
 ## Capability readiness
@@ -28,7 +28,7 @@ RecoveryLens has a tested FEMA funding pipeline and four of five NOAA deliverabl
 | NOAA damage | Review-gated | Known totals never convert missing or invalid values to zero; reported loss is not total economic impact. |
 | NOAA casualties | Review-gated | Details-table totals remain canonical; person-level fatalities are reconciliation evidence only. |
 | Cross-source FEMA–NOAA matching | Review-gated | County/date candidates expose unique, ambiguous, absent, and unmatchable states; no candidate is treated as a confirmed link. |
-| Inflation adjustment | Helper implemented | Supplied annual CPI conversion retains nominal values; live CPI acquisition and pipeline integration remain outstanding. |
+| Inflation adjustment | Implemented and live-validated | Published annual BLS CPI adjusts verified NOAA losses; nominal values, missingness, source hashes, and exclusions retained. |
 | ACS and national SVI | Live-validated for 2022 | 3,144 matched counties; 78 Puerto Rico municipalities withheld from the national SVI join. |
 | Analysis and modeling | Code implemented; national validation blocked | Indicators, typologies, residual diagnostics, chronological holdout, and sensitivity require reviewed links and historically available context. |
 
@@ -73,12 +73,16 @@ The run status was `warning`. County/date overlap creates a review candidate, no
 
 ## Next release gates
 
-1. Add inflation-adjusted loss measures while retaining nominal values and price-base metadata.
+1. Define a comparable funding/loss scope, funding valuation period, and observation cutoff.
 2. Assemble a reviewed county-year panel with complete funding/loss coverage.
 3. Supply historically available context and document geography and source review.
 4. Validate all components together before publishing national comparisons or rankings.
 
 For the full delivery sequence, see the [[Roadmap]].
+
+## Inflation validation
+
+The 2005 live run processed 53,976 NOAA events using published CPI values of 195.300 (2005) and 292.655 (2022). Only 3,953 events have both damage components; the output remains `warning`. No national funding-gap claim follows from this conversion. See the [inflation guide](https://github.com/Boatengs/recoverylens/blob/main/docs/inflation.md) and [historical panel readiness](https://github.com/Boatengs/recoverylens/blob/main/docs/historical-panel-readiness.md).
 
 ## County context validation
 
