@@ -35,11 +35,12 @@ def fetch(disaster: int, dataset: str, root: Path, *, limit: int = 20000) -> tup
     root.mkdir(parents=True, exist_ok=True)
     records, pages = [], []
     session = build_session()
+    order = [*KEYS, "id"] if dataset == ACTIVITIES else KEYS
     for offset in range(0, limit + 1, 1000):
         url = f"https://www.fema.gov/api/open/v2/{dataset}"
         response = session.get(url, params={"$filter": f"disasterNumber eq {disaster}",
                                             "$top": 1000, "$skip": offset,
-                                            "$orderby": ",".join(KEYS)}, timeout=60)
+                                            "$orderby": ",".join(order)}, timeout=60)
         response.raise_for_status()
         payload = response.json()
         page = payload.get(dataset)

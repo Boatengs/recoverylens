@@ -81,6 +81,8 @@ def test_fetch_requires_evidence_beyond_full_page(tmp_path, monkeypatch):
     with pytest.raises(ValueError, match="cap"):
         fetch(4393, ACTIVITIES, tmp_path, limit=1000)
     assert session.get.call_count == 2
+    assert session.get.call_args.kwargs["params"]["$orderby"] == (
+        "disasterNumber,applicantId,pwNumber,id")
 
 
 def test_fetch_records_exact_response_hash(tmp_path, monkeypatch):
