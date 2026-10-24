@@ -6,9 +6,11 @@ All notable changes will be documented here. RecoveryLens follows semantic versi
 
 ### Added
 
+- Official BLS annual CPI acquisition and verified NOAA loss adjustment, retaining nominal values, source hashes, missingness, and publication gates.
+
 - Official 2022 ACS bulk acquisition, uncertainty retention, and audited national SVI county joins.
 - Review-gated county indicators, chronological ridge evaluation, deterministic typologies, residual diagnostics, sensitivity reports, and model card.
-- CPI conversion helper with nominal-value retention; live CPI integration and national empirical model validation remain pending.
+- CPI conversion helper with nominal-value retention; national empirical model validation remains pending.
 
 - Project charter, analytical principles, and seven-milestone roadmap.
 - Official FEMA, NOAA, Census, and CDC/ATSDR source registry.

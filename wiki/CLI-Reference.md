@@ -80,6 +80,14 @@ Use `--schema-version 1.0` to pin an explicit NOAA CSV schema. Without a pin, th
 
 A `unique_candidate` is not a confirmed event identity. Event type and FEMA incident type are retained for review but are not used through an undocumented synonym map.
 
+## CPI-adjusted NOAA losses
+
+```bash
+python -m recoverylens.inflation --start-year 2005 --end-year 2005 --base-year 2022
+```
+
+Requires previously downloaded, manifest-verified NOAA details. Downloads published annual BLS CPI without an API key. Retains nominal values and writes adjusted event rows, annual summaries, CPI values, and provenance under `data/processed/noaa/inflation/`. Missing indexes or inconsistent event records are not silently imputed. See the [inflation guide](https://github.com/Boatengs/recoverylens/blob/main/docs/inflation.md).
+
 ## County context and exploratory modeling
 
 ```bash
