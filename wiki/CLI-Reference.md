@@ -70,7 +70,7 @@ recoverylens noaa-fema-match --start-year 2020 --end-year 2021
 
 Use `--schema-version 1.0` to pin an explicit NOAA CSV schema. Without a pin, the downloader selects the highest available numeric schema version and then its newest creation date for each year.
 
-`noaa-fema-match` queries FEMA major-disaster declaration areas whose incident windows intersect the requested NOAA years. Its default zero-day buffer requires actual date overlap. `--date-buffer-days` can admit gaps of up to 30 days, but doing so raises a warning and retains the actual gap. The command writes:
+`noaa-fema-match` queries FEMA major-disaster declaration areas using the earliest begin date and latest end date of eligible NOAA events, including events extending into the following year. If no events are eligible, the requested years provide fallback query bounds. Its default zero-day buffer requires actual date overlap. `--date-buffer-days` expands both query bounds and can admit gaps of up to 30 days, raising a warning and retaining the actual gap. The command writes:
 
 - `event_assessments.csv` — every NOAA row and its candidate or unmatchable state;
 - `declaration_windows.csv` — prepared FEMA area windows, including ineligible rows;

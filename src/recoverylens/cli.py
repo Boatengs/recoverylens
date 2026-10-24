@@ -34,6 +34,7 @@ from .storm_impacts import analyze_storm_event_impacts, read_storm_event_fatalit
 from .storm_matching import (
     FEMA_MATCH_COLUMNS,
     assess_event_declaration_candidates,
+    prepare_storm_events,
     read_storm_event_matching_details,
 )
 
@@ -172,12 +173,19 @@ def noaa_fema_match_command(args: argparse.Namespace) -> int:
         end_year=args.end_year,
         schema_version=args.schema_version,
     )
+    raw_events = read_storm_event_matching_details(details)
+    prepared_events = prepare_storm_events(raw_events)
+    eligible = prepared_events.loc[prepared_events["match_status"].eq("eligible")]
+    event_start = None if eligible.empty else eligible["event_begin_date"].min().date()
+    event_end = None if eligible.empty else eligible["event_end_date"].max().date()
     query = Query(
         dataset="declarations",
         filter_expression=declaration_matching_filter(
             start_year=args.start_year,
             end_year=args.end_year,
             date_buffer_days=args.date_buffer_days,
+            event_start_date=event_start,
+            event_end_date=event_end,
         ),
         select=FEMA_MATCH_COLUMNS,
         order_by="disasterNumber asc",
@@ -189,7 +197,7 @@ def noaa_fema_match_command(args: argparse.Namespace) -> int:
         and len(records) >= args.max_declaration_records
     )
     result = assess_event_declaration_candidates(
-        read_storm_event_matching_details(details),
+        raw_events,
         records,
         date_buffer_days=args.date_buffer_days,
         declaration_record_limit_reached=record_limit_reached,
