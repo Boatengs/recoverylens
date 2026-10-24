@@ -40,7 +40,7 @@ The repository intentionally does **not** publish a national ranking yet. A rank
 
 ## Current milestone: NOAA loss and impact pipeline
 
-Milestone 3 includes a version-aware NOAA/NCEI Storm Events downloader, a transparent property- and crop-damage parser, and auditable injury/fatality aggregation. The downloader discovers annual details, fatalities, and locations files from the official directory; selects revisions using the schema version and NOAA creation date encoded in each filename; downloads files atomically; and records byte sizes and SHA-256 checksums in a manifest. Impact pipelines preserve missingness, calculate only known totals, and reconcile event death counts to unique fatality records without double-counting them.
+Milestone 3 includes a version-aware NOAA/NCEI Storm Events downloader, a transparent property- and crop-damage parser, auditable injury/fatality aggregation, and a FEMA–NOAA candidate-link assessment. The downloader discovers annual details, fatalities, and locations files from the official directory; selects revisions using the schema version and NOAA creation date encoded in each filename; downloads files atomically; and records byte sizes and SHA-256 checksums in a manifest. Impact pipelines preserve missingness, calculate only known totals, and reconcile event death counts to unique fatality records without double-counting them. The matching assessment uses county identity and overlapping incident windows to expose zero, one, or multiple possible declarations; it never labels those candidates as confirmed causal matches.
 
 ## Planned data sources
 
@@ -126,6 +126,12 @@ Aggregate NOAA injuries and deaths and reconcile fatality records:
 
 ```bash
 recoverylens noaa-impacts --start-year 2020 --end-year 2021
+```
+
+Assess reviewable FEMA declaration candidates for verified NOAA event files:
+
+```bash
+recoverylens noaa-fema-match --start-year 2020 --end-year 2021
 ```
 
 See [docs/data-quality.md](docs/data-quality.md) for validation levels and reviewer guidance.
