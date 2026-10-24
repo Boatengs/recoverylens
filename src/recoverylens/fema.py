@@ -147,6 +147,8 @@ def declaration_matching_filter(
     end_year: int,
     state: str | None = None,
     date_buffer_days: int = 0,
+    event_start_date: date | None = None,
+    event_end_date: date | None = None,
 ) -> str:
     """Create a bounded major-disaster filter for incident-window assessment."""
 
@@ -160,8 +162,12 @@ def declaration_matching_filter(
     if not 0 <= date_buffer_days <= 30:
         raise ValueError("date_buffer_days must be between 0 and 30")
 
-    start_date = date(start_year, 1, 1) - timedelta(days=date_buffer_days)
-    end_date = date(end_year, 12, 31) + timedelta(days=date_buffer_days)
+    if (event_start_date is None) != (event_end_date is None):
+        raise ValueError("Both event date bounds must be provided together")
+    if event_start_date is not None and event_end_date < event_start_date:
+        raise ValueError("Event date bounds must be chronological")
+    start_date = (event_start_date or date(start_year, 1, 1)) - timedelta(days=date_buffer_days)
+    end_date = (event_end_date or date(end_year, 12, 31)) + timedelta(days=date_buffer_days)
     clauses = ["declarationType eq 'DR'"]
     if state:
         normalized = state.strip().upper()

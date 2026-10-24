@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import gzip
 import io
+import json
 
 import pandas as pd
 import pytest
@@ -357,3 +358,32 @@ def test_noaa_fema_match_cli_is_bounded_and_review_oriented():
     assert args.date_buffer_days == 2
     assert args.max_declaration_records == 500
     assert args.handler.__name__ == "noaa_fema_match_command"
+
+
+@pytest.mark.parametrize("buffer_days", [0, 2])
+def test_cli_queries_cross_year_event_window(monkeypatch, tmp_path, buffer_days):
+    from recoverylens import cli
+
+    events = pd.DataFrame([event_record(
+        1, begin="12/31/2020 10:00:00", end="01/02/2021 11:00:00"
+    )])
+    monkeypatch.setattr(cli, "verified_storm_events_files", lambda *a, **kw: ())
+    monkeypatch.setattr(cli, "read_storm_event_matching_details", lambda files: events)
+
+    def fetch(query):
+        expected_end = "2021-01-02" if buffer_days == 0 else "2021-01-04"
+        expected_start = "2020-12-31" if buffer_days == 0 else "2020-12-29"
+        assert f"incidentBeginDate le '{expected_end}T23:59:59.999Z'" in query.filter_expression
+        assert f"incidentEndDate ge '{expected_start}T00:00:00.000Z'" in query.filter_expression
+        return iter([declaration_record(
+            100, begin="2021-01-01T00:00:00Z", end="2021-01-02T00:00:00Z"
+        )])
+
+    monkeypatch.setattr(cli, "iter_records", fetch)
+    args = build_parser().parse_args([
+        "noaa-fema-match", "--start-year", "2020", "--end-year", "2020",
+        "--date-buffer-days", str(buffer_days), "--output-dir", str(tmp_path),
+    ])
+    assert args.handler(args) == 0
+    summary = json.loads((tmp_path / "summary.json").read_text())
+    assert summary["unique_candidate_event_count"] == 1

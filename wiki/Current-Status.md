@@ -10,8 +10,8 @@ RecoveryLens has a tested FEMA funding pipeline and four of five NOAA loss-and-i
 |---|---|
 | Default branch | `main` |
 | Latest delivery evidence | [PR #20](https://github.com/Boatengs/recoverylens/pull/20) |
-| Automated tests | 92 passing |
-| Total test coverage | 88% |
+| Automated tests | 94 passing |
+| Total test coverage | 89% |
 | Lint | Passing |
 | Current milestone | Milestone 3 — NOAA loss and impact pipeline |
 | Release posture | Pre-release; bounded analysis only |
