@@ -64,7 +64,8 @@ def test_adjustment_keeps_nominal_missingness_and_excludes_bad_events(tmp_path):
         adjust_events(original, cpi, 2026)
 
 
-def test_cli_preserves_blocked_status_and_provenance(tmp_path, monkeypatch):
+@pytest.mark.parametrize("empty", [False, True])
+def test_cli_preserves_blocked_status_and_provenance(tmp_path, monkeypatch, empty):
     monkeypatch.setattr("sys.argv", ["inflation", "--start-year", "2005", "--end-year",
                                     "2005", "--base-year", "2022", "--cpi-dir", str(tmp_path),
                                     "--output-dir", str(tmp_path / "output")])
@@ -72,7 +73,8 @@ def test_cli_preserves_blocked_status_and_provenance(tmp_path, monkeypatch):
                         lambda *a, **k: [SimpleNamespace(manifest_record={"sha256": "noaa"})])
     monkeypatch.setattr("recoverylens.inflation.read_storm_event_details", lambda x: None)
     monkeypatch.setattr("recoverylens.inflation.analyze_storm_event_damage",
-                        lambda x: SimpleNamespace(events=events(), summary={
+                        lambda x: SimpleNamespace(events=events().iloc[:0] if empty else events(),
+                                                  summary={
                             "publication_status": "blocked"}))
 
     def acquire(url, path):
@@ -85,5 +87,6 @@ def test_cli_preserves_blocked_status_and_provenance(tmp_path, monkeypatch):
     report = json.loads((output / "summary.json").read_text())
     assert report["publication_status"] == "blocked"
     assert report["noaa_sources"] == [{"sha256": "noaa"}]
-    assert report["withheld_event_count"] == 4
-    assert len(pd.read_csv(output / "event_damage_adjusted.csv")) == 7
+    assert report["withheld_event_count"] == (0 if empty else 4)
+    assert len(pd.read_csv(output / "event_damage_adjusted.csv")) == (0 if empty else 7)
+    assert "event_year" in pd.read_csv(output / "damage_adjusted_by_year.csv")

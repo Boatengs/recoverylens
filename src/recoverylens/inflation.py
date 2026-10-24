@@ -49,8 +49,9 @@ def adjust_events(events: pd.DataFrame, cpi: pd.DataFrame, base_year: int) -> tu
         "source_year_inconsistent": ~out.is_source_year_consistent.fillna(False),
         "cpi_year_unavailable": conversion.cpi_factor.isna(),
     })
-    out["inflation_exclusion_reasons"] = flags.apply(
-        lambda row: ";".join(row.index[row]), axis=1)
+    out["inflation_exclusion_reasons"] = pd.Series(
+        [";".join(flags.columns[row]) for row in flags.to_numpy(dtype=bool)],
+        index=out.index, dtype="string")
     eligible = ~flags.any(axis=1)
     out["inflation_eligible"] = eligible
     out["price_base_year"] = base_year
@@ -68,7 +69,9 @@ def adjust_events(events: pd.DataFrame, cpi: pd.DataFrame, base_year: int) -> tu
         for amount in AMOUNTS:
             row[amount + "_adjusted"] = group[amount + "_adjusted"].sum(min_count=1)
         rows.append(row)
-    return out, pd.DataFrame(rows)
+    columns = ["event_year", "price_base_year", "event_count", "eligible_event_count",
+               "complete_adjusted_event_count", *[amount + "_adjusted" for amount in AMOUNTS]]
+    return out, pd.DataFrame(rows, columns=columns)
 
 
 def main() -> None:
