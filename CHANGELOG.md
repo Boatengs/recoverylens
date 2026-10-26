@@ -6,6 +6,8 @@ All notable changes will be documented here. RecoveryLens follows semantic versi
 
 ### Added
 
+- Pinned documentary event-link review with explicit episode decisions, competing-declaration rejection, stale-evidence checks, and duplicate-allocation protection.
+
 - Exact-cent award-activity reconciliation, hashed source-page evidence, and a three-cohort Milestone 5 audit that preserves unresolved historical-model gates.
 
 - Official BLS annual CPI acquisition and verified NOAA loss adjustment, retaining nominal values, source hashes, missingness, and publication gates.
