@@ -2,6 +2,10 @@
 
 Assessment date: 24 October 2026. No national training panel is certified.
 
+Update, 26 October: the [documentary link review](pilot-link-review.md) records
+205 source-supported named-hurricane links, 50 unresolved target links, and 35
+rejected COVID-19 competitors. No model linkage approval is implied.
+
 The [three-cohort evidence audit](milestone-5-audit.md) now verifies dated award
 activities against current project balances for declarations 4393, 4465 and 4543.
 All 3,257 projects reconcile exactly. Loss links remain candidates; the 2020
