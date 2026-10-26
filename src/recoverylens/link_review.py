@@ -13,6 +13,11 @@ def apply_review(candidates: pd.DataFrame, decisions: pd.DataFrame) -> pd.DataFr
     """Fail on stale evidence, unknown links, duplicate decisions or double allocation."""
     if not {*KEYS, *EVIDENCE}.issubset(candidates):
         raise ValueError("Candidates require link identity and evidence hashes")
+    reserved = {"decision", "reason", "reviewer", "review_date", "_merge",
+                "independent_review_complete", "model_linkage_approved",
+                *[c + "_review" for c in EVIDENCE]}
+    if reserved.intersection(candidates):
+        raise ValueError("Supply raw candidates, not previously reviewed output")
     if not {*KEYS, *EVIDENCE, "decision", "reason", "reviewer", "review_date"}.issubset(decisions):
         raise ValueError("Review ledger is missing required fields")
     for frame in (candidates, decisions):
