@@ -1,6 +1,6 @@
 # Current Status
 
-_Status date: 24 October 2026_
+_Status date: 26 October 2026_
 
 ## Executive status
 
@@ -72,6 +72,8 @@ The run status was `warning`. County/date overlap creates a review candidate, no
 - [PR #20](https://github.com/Boatengs/recoverylens/pull/20) — FEMA–NOAA candidate-link assessment
 
 ## Next release gates
+
+The [26 October documentary link review](https://github.com/Boatengs/recoverylens/blob/main/docs/pilot-link-review.md) records 205 named-hurricane source-supported links, 50 unresolved target links, and 35 rejected COVID-19 competitor links. These decisions are tied to exact source and narrative hashes. They are not independent approval, complete loss coverage, or empirical model validation.
 
 The [24 October Milestone 5 audit](https://github.com/Boatengs/recoverylens/blob/main/docs/milestone-5-audit.md) reconciles 4,417 award activities to all 3,257 projects across three North Carolina cohorts. This is current funding evidence, not a validated historical model. The 2020 storm candidates overlap the COVID-19 declaration, demonstrating why county/date links require substantive review. Milestone 5 remains open.
 
