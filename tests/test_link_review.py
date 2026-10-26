@@ -47,6 +47,14 @@ def test_nonexistent_review_candidate_fails():
         apply_review(candidates, decisions)
 
 
+def test_old_decisions_cannot_override_new_ledger():
+    candidates, decisions = inputs()
+    previous = apply_review(candidates, decisions)
+    decisions.loc[0, "decision"] = "rejected"
+    with pytest.raises(ValueError, match="raw candidates"):
+        apply_review(previous, decisions)
+
+
 @pytest.mark.parametrize("problem", ["duplicate", "blank_reason", "bad_date", "bad_hash"])
 def test_invalid_review_evidence_fails(problem):
     candidates, decisions = inputs()
