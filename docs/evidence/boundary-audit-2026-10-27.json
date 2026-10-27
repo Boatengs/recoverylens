@@ -1,0 +1,32 @@
+{
+  "requested_counties": 61,
+  "source_note_rows": 95,
+  "county_note_rows_2016_2020": 26,
+  "pilot_county_note_rows": 17,
+  "pilot_counties_with_notes": 13,
+  "flagged_county_fips": [
+    "37009",
+    "37019",
+    "37037",
+    "37045",
+    "37047",
+    "37057",
+    "37071",
+    "37085",
+    "37149",
+    "37153",
+    "37155",
+    "37165",
+    "37179"
+  ],
+  "geography_reviewed": false,
+  "policy": "Notes are a screen, not a complete boundary crosswalk. Effective and submission dates do not establish the first affected Census product.",
+  "source": {
+    "url": "https://www2.census.gov/geo/docs/reference/bndrychange/st37_nc_gcn_2014_2020.txt",
+    "filename": "nc_notes_2014_2020.txt",
+    "sha256": "efe8e4cbd6842e04b549a3ef0beddb81f428c356e46d67ec4baba1f97aff9918",
+    "bytes": 18142,
+    "retrieved_at": "2026-10-27T15:02:14.964602+00:00"
+  },
+  "requested_input_sha256": "3b32c5f1bcc51a52976a5d721ba2a1998256772f49b019ec73dd35d7dfc82ef4"
+}
