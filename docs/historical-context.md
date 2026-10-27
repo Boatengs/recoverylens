@@ -52,6 +52,11 @@ review and model-context approval remain false. The pilot still needs release
 provenance, uncertainty interpretation, boundary review, unresolved event decisions,
 comparable monetary scope, and empirical model validation before Milestone 5 closes.
 
+The subsequent [boundary verification](boundary-verification.md) found county-level
+change/correction notes for 13 of the 61 pilot counties. It also verified the
+upstream ACS release date, while leaving the imported SVI file's release provenance
+unresolved. No approval flag was upgraded.
+
 ## Official sources
 
 - [2016 national county CSV](https://svi.cdc.gov/Documents/Data/2016/csv/states_counties/SVI_2016_US_county.csv)
