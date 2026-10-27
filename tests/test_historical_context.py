@@ -58,6 +58,9 @@ def test_county_audit_keeps_unmatched_and_does_not_approve_boundaries():
     assert report["missing_counties"] == 1
     assert report["requested_zero_population_moe_count"] == 1
     assert report["model_context_approved"] is False
+    assert not result.model_context_approved.any()
+    assert not result.model_context_approved.isna().any()
+    assert not result.baseline_values_present.iloc[1]
 
 
 def test_cli_hashes_input_and_preserves_distinct_counties(tmp_path, monkeypatch):
