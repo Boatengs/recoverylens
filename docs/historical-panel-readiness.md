@@ -2,6 +2,11 @@
 
 Assessment date: 24 October 2026. No national training panel is certified.
 
+Update, 27 October: the [2016 baseline import](historical-context.md) matched all
+61 pilot counties to the national SVI/ACS file. Exact historical availability,
+zero-MOE interpretation, and cross-vintage boundary continuity remain unverified;
+no model-context approval is issued.
+
 Update, 26 October: the [documentary link review](pilot-link-review.md) records
 205 source-supported named-hurricane links, 50 unresolved target links, and 35
 rejected COVID-19 competitors. No model linkage approval is implied.
