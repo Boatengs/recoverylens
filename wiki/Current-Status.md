@@ -73,6 +73,14 @@ The run status was `warning`. County/date overlap creates a review candidate, no
 
 ## Next release gates
 
+The [boundary screen](https://github.com/Boatengs/recoverylens/blob/main/docs/boundary-verification.md)
+found 17 Census county-level notes affecting 13 of 61 pilot counties during
+2016–2020. The other 48 are not certified unchanged. Product-vintage comparison
+is still required. The ACS 2012–2016 release date is verified as 7 December 2017;
+the imported CDC SVI file's historical release identity remains unverified.
+Dashboard development is paused until the evidence review is complete; the
+intended later presentation is Tableau-style.
+
 The [2016 historical baseline](https://github.com/Boatengs/recoverylens/blob/main/docs/historical-context.md) now matches all 61 pilot counties with population and national SVI values. Raw uncertainty values and source hashes are retained. Historical availability, zero-MOE interpretation, and boundary continuity are not yet certified; model-context approval remains withheld.
 
 The [26 October documentary link review](https://github.com/Boatengs/recoverylens/blob/main/docs/pilot-link-review.md) records 205 named-hurricane source-supported links, 50 unresolved target links, and 35 rejected COVID-19 competitor links. These decisions are tied to exact source and narrative hashes. They are not independent approval, complete loss coverage, or empirical model validation.
