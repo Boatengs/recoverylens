@@ -90,6 +90,16 @@ Requires previously downloaded, manifest-verified NOAA details. Downloads publis
 
 ## County context and exploratory modeling
 
+For the separately reviewed 2016 baseline:
+
+```bash
+python -m recoverylens.historical_context --county-keys data/processed/pilot_losses/candidate_review.csv
+```
+
+This audits distinct pilot keys against the official national 2016 SVI county
+file, preserving published values and unknown historical availability. See the
+[historical context guide](https://github.com/Boatengs/recoverylens/blob/main/docs/historical-context.md).
+
 ```bash
 python -m recoverylens.context
 python -m recoverylens.modeling --panel reviewed_county_year.csv --holdout-year 2023

@@ -1,0 +1,35 @@
+{
+  "source_counties": 3142,
+  "requested_counties": 61,
+  "matched_counties": 61,
+  "missing_counties": 0,
+  "matched_with_baseline_values": 61,
+  "published_zero_population_moe_count": 3029,
+  "requested_zero_population_moe_count": 61,
+  "publication_status": "review_required",
+  "historical_availability_verified": false,
+  "model_context_approved": false,
+  "geography_policy": "exact keys only; boundary continuity not certified",
+  "sources": [
+    {
+      "url": "https://svi.cdc.gov/Documents/Data/2016/csv/states_counties/SVI_2016_US_county.csv",
+      "filename": "svi2016.csv",
+      "sha256": "3c31e3f4715b483aaff41a68840f937cc29734484c5f3c0d441fca9f9a3fd2e3",
+      "bytes": 2258877,
+      "retrieved_at": "2026-10-27T14:30:24.848931+00:00"
+    },
+    {
+      "url": "https://svi.cdc.gov/map25/data/docs/SVI2016Documentation_01192022.pdf",
+      "filename": "svi2016-documentation.pdf",
+      "sha256": "853f0aef57aec771a7de280180653839dd5a34ca43f3346c84961cd8047ed9c7",
+      "bytes": 613502,
+      "retrieved_at": "2026-10-27T14:30:28.129695+00:00"
+    }
+  ],
+  "acs_period": [
+    2012,
+    2016
+  ],
+  "svi_vintage": 2016,
+  "requested_input_sha256": "3b32c5f1bcc51a52976a5d721ba2a1998256772f49b019ec73dd35d7dfc82ef4"
+}

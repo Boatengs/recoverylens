@@ -6,6 +6,8 @@ All notable changes will be documented here. RecoveryLens follows semantic versi
 
 ### Added
 
+- Official 2016 SVI/ACS baseline import and pilot county audit, preserving raw uncertainty and unverified historical-availability gates.
+
 - Pinned documentary event-link review with explicit episode decisions, competing-declaration rejection, stale-evidence checks, and duplicate-allocation protection.
 
 - Exact-cent award-activity reconciliation, hashed source-page evidence, and a three-cohort Milestone 5 audit that preserves unresolved historical-model gates.

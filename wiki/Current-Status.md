@@ -1,6 +1,6 @@
 # Current Status
 
-_Status date: 26 October 2026_
+_Status date: 27 October 2026_
 
 ## Executive status
 
@@ -72,6 +72,8 @@ The run status was `warning`. County/date overlap creates a review candidate, no
 - [PR #20](https://github.com/Boatengs/recoverylens/pull/20) — FEMA–NOAA candidate-link assessment
 
 ## Next release gates
+
+The [2016 historical baseline](https://github.com/Boatengs/recoverylens/blob/main/docs/historical-context.md) now matches all 61 pilot counties with population and national SVI values. Raw uncertainty values and source hashes are retained. Historical availability, zero-MOE interpretation, and boundary continuity are not yet certified; model-context approval remains withheld.
 
 The [26 October documentary link review](https://github.com/Boatengs/recoverylens/blob/main/docs/pilot-link-review.md) records 205 named-hurricane source-supported links, 50 unresolved target links, and 35 rejected COVID-19 competitor links. These decisions are tied to exact source and narrative hashes. They are not independent approval, complete loss coverage, or empirical model validation.
 
