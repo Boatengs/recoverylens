@@ -62,3 +62,7 @@ unresolved. No approval flag was upgraded.
 - [2016 national county CSV](https://svi.cdc.gov/Documents/Data/2016/csv/states_counties/SVI_2016_US_county.csv)
 - [2016 documentation, revised 19 January 2022](https://svi.cdc.gov/map25/data/docs/SVI2016Documentation_01192022.pdf)
 - [CDC/ATSDR download and vintage cautions](https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html)
+
+The [population uncertainty verification](population-uncertainty.md) now establishes
+the Census rule for controlled estimates. Verification of the exact upstream
+S0601 values and annotations remains open; imported zero statuses are unchanged.
