@@ -61,6 +61,9 @@ def audit_counties(context: pd.DataFrame, requested: pd.DataFrame) -> tuple:
                                             validate="one_to_one", indicator="key_status")
     audit["key_status"] = audit.key_status.astype("string").replace(
         {"both": "matched", "left_only": "missing_in_2016"})
+    for column in ("historical_availability_verified", "geography_reviewed",
+                   "model_context_approved", "baseline_values_present"):
+        audit[column] = audit[column].astype("boolean").fillna(False)
     summary = {"source_counties": len(context), "requested_counties": len(requested),
                "matched_counties": int(audit.key_status.eq("matched").sum()),
                "missing_counties": int(audit.key_status.eq("missing_in_2016").sum()),
