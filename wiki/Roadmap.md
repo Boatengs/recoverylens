@@ -53,6 +53,8 @@ Cross-vintage geography allocation is outside this release.
 
 ## Milestone 5 — Analysis and modeling
 
+The [2016 baseline import](https://github.com/Boatengs/recoverylens/blob/main/docs/historical-context.md) covers all 61 pilot counties. This advances historical context acquisition without certifying release timing, uncertainty interpretation, or boundary equivalence.
+
 Documentary review now distinguishes 205 source-supported pilot links, 50 unresolved links, and 35 rejected biological-incident competitors. See the [review and limitations](https://github.com/Boatengs/recoverylens/blob/main/docs/pilot-link-review.md). Model approval remains withheld.
 
 Latest evidence: [three-cohort funding and loss audit](https://github.com/Boatengs/recoverylens/blob/main/docs/milestone-5-audit.md). Funding reconciliation passed; loss identity and historical panel validation remain unresolved. The milestone is not complete.
