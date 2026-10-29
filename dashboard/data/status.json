@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-10-29T13:26:40+00:00",
+  "built_at": "2026-10-29T13:33:21+00:00",
   "release_posture": "Pilot release v1.0: retrospective description of three North Carolina declarations. No rankings, causal claims or funding-gap estimates. Independent review outstanding.",
   "milestone_5_status": "Pilot scope complete; independent review outstanding",
   "review": {
@@ -17,8 +17,8 @@
     }
   },
   "review_ledger": {
-    "reviewer": "Codex documentary review; not independent expert approval",
-    "review_date": "2026-10-26",
+    "reviewer": "Codex 26 Oct and Claude 29 Oct 2026; documentary review, not independent expert approval",
+    "review_date": "2026-10-29",
     "sha256": "4122995a9a91de9314540633898fb01ef1d945ac7d093070968a56e7ec4627a7"
   },
   "funding_status": [
@@ -56,7 +56,7 @@
     {
       "gate": "Storm-to-declaration link review (pilot)",
       "status": "documentary review complete",
-      "evidence": "290 links decided from NOAA narratives; 1 left unresolved. Codex 26 Oct, Claude 29 Oct. Replayed by content against current NOAA and FEMA files."
+      "evidence": "290 candidate links reviewed from NOAA narratives; 1 left unresolved. Codex 26 Oct, Claude 29 Oct. Replayed by content against current NOAA and FEMA files."
     },
     {
       "gate": "Independent interpretation review",
@@ -183,7 +183,7 @@
         "filename": "nc_notes_2014_2020.txt",
         "sha256": "efe8e4cbd6842e04b549a3ef0beddb81f428c356e46d67ec4baba1f97aff9918",
         "bytes": 18142,
-        "retrieved_at": "2026-10-29T13:26:15.977271+00:00"
+        "retrieved_at": "2026-10-29T13:32:57.481793+00:00"
       },
       "requested_input_sha256": "edb300a872f1306d1ae9f9dc7036df4859699e08c4353a9ded962fdbd79357f7"
     },
