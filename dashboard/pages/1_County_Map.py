@@ -63,7 +63,7 @@ fig = px.scatter_geo(
 fig.update_geos(scope="usa", center=dict(lat=35.25, lon=-79.6), projection_scale=5.2,
                 showsubunits=True, subunitcolor="#9ca3af", showland=True, landcolor="#f9fafb")
 fig.update_layout(height=520, margin=dict(l=0, r=0, t=10, b=0))
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 footnote(f"Circles sit at 2016 Census county centroids and are sized by the selected measure. "
          f"{len(frame)} counties are designated for this declaration; {len(shown)} have a value "
          "above zero for this measure. Counties without a value are not shown as zero.")
@@ -78,7 +78,8 @@ if column == "known_damage_2022":
 st.subheader("County values")
 table = frame[["designated_area", column]].rename(
     columns={"designated_area": "County", column: label}).sort_values("County")
-st.dataframe(table, hide_index=True, use_container_width=True)
+st.dataframe(table, hide_index=True, width="stretch",
+             column_config={label: st.column_config.NumberColumn(format="localized")})
 footnote("Sorted alphabetically on purpose. Values describe one measure at a time and are not "
          "combined, adjusted per resident or compared across measures. Funding covers projects "
          "with a single county code; statewide and multi-county projects appear on the Funding "
