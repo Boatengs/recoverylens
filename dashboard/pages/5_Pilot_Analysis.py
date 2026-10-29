@@ -119,7 +119,10 @@ table = view.sort_values(["county", "year"])[[
         "status": "Status"})
 for column in ("Population (ACS 2012-16)", "Funding, 2022 $", "Known loss, 2022 $"):
     table[column] = table[column].round(0)
-st.dataframe(table, hide_index=True, use_container_width=True, column_config={
+st.dataframe(table, hide_index=True, width="stretch", column_config={
+    "Population (ACS 2012-16)": st.column_config.NumberColumn(format="localized"),
+    "Funding, 2022 $": st.column_config.NumberColumn(format="dollar"),
+    "Known loss, 2022 $": st.column_config.NumberColumn(format="dollar"),
     "Funding per resident": st.column_config.NumberColumn(format="$%.2f"),
     "Funding per $ of loss": st.column_config.NumberColumn(format="%.2f"),
     "SVI 2016": st.column_config.NumberColumn(format="%.2f"),
@@ -141,7 +144,7 @@ if len(eligible):
                              "declaration": ""})
     fig.update_layout(height=420, margin=dict(l=10, r=10, t=10, b=10),
                       legend=dict(orientation="h", y=-0.2))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     footnote("Each point is one county in one declaration. Reported storm loss and Public "
              "Assistance cover different things: PA pays eligible public costs, NOAA reports "
              "property and crop damage. The chart shows association, not cause.")

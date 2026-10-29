@@ -5,7 +5,7 @@
 > **Pilot release v1.0 (29 October 2026).** A retrospective description of FEMA Public
 > Assistance across three North Carolina declarations (Florence 2018, Dorian 2019,
 > February 2020 storms), with reviewed storm links, a fixed funding window, 2022 dollar
-> prices and an honest model check. Open the [live explorer](https://recoverylens-bjaakzckctemxkk5eyy7zz.streamlit.app), read the
+> prices and an honest model check. Open the [live explorer](https://recoverylens.streamlit.app), read the
 > [pilot release](docs/pilot-release.md), or [run it locally](#pilot-evidence-explorer).
 > Independent review is outstanding.
 
@@ -168,7 +168,7 @@ The commands write their analytical outputs to `data/processed/`. Raw and proces
 
 ## Pilot evidence explorer
 
-**Live:** [recoverylens-bjaakzckctemxkk5eyy7zz.streamlit.app](https://recoverylens-bjaakzckctemxkk5eyy7zz.streamlit.app)
+**Live:** [recoverylens.streamlit.app](https://recoverylens.streamlit.app)
 
 `dashboard/` is a Streamlit explorer for pilot v1.0. Its pages cover the declarations and headline evidence, a county map, Public Assistance funding by category, attribution and timing, storm losses and link review decisions, release gates with their evidence, the pilot analysis (county indicators, model check, county profiles and CSV download) and methodology with sources. County tables are sorted alphabetically; nothing is ranked.
 

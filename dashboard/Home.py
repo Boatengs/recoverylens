@@ -34,7 +34,7 @@ st.subheader("Declarations in the pilot")
 table = disasters.assign(declaration=disasters.disaster_number.map(disaster_label))[
     ["declaration", "incident_type", "incident_begin", "incident_end", "declaration_date",
      "designated_counties", "role"]]
-st.dataframe(table, hide_index=True, use_container_width=True)
+st.dataframe(table, hide_index=True, width="stretch")
 footnote("COVID-19 (4487) overlaps the 2020 storm window. It is shown because county and date "
          "overlap alone made it a competing candidate for weather events.")
 

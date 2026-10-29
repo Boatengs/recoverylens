@@ -33,7 +33,8 @@ if "population_moe_status" in shown:
     # County ACS totals are controlled; CDC publishes their margin as zero.
     shown["population_moe_status"] = shown.population_moe_status.replace(
         {"published_zero_unreviewed": "controlled (published as zero)"})
-st.dataframe(shown, hide_index=True, use_container_width=True)
+st.dataframe(shown, hide_index=True, width="stretch", column_config={
+    "population_baseline": st.column_config.NumberColumn(format="localized")})
 flagged = int((counties.get("county_note_count", pd.Series(dtype=int)) > 0).sum())
 footnote(f"{flagged} screened counties have a Census county-level change note for 2016 to 2020. "
          "Every note describes territory moving across a county border and none gives a population "
