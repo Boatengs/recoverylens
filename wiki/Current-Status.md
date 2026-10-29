@@ -1,10 +1,10 @@
 # Current Status
 
-_Status date: 27 October 2026_
+_Status date: 29 October 2026_
 
 ## Executive status
 
-RecoveryLens has tested FEMA and NOAA pipelines, including annual CPI-adjusted losses. Milestone 4 is implemented and live-validated for 2022 same-vintage counties. Milestone 5 code is implemented; national empirical validation remains blocked on a reviewed, consistently valued historical panel.
+**Pilot release v1.0 is out** ([report](https://github.com/Boatengs/recoverylens/blob/main/docs/pilot-release.md)): a retrospective description of Public Assistance across three North Carolina declarations, 2018 to 2020, with reviewed storm links, a fixed 730 day funding window, 2022 dollar prices, a Streamlit explorer and an empirical 2020 holdout. The model did not beat a median baseline. Independent interpretation review and any national panel remain open.
 
 | Signal | Current value |
 |---|---|
@@ -13,8 +13,8 @@ RecoveryLens has tested FEMA and NOAA pipelines, including annual CPI-adjusted l
 | Automated tests | See the latest linked pull-request Quality checks run |
 | Total test coverage | Reported by pytest in Quality checks |
 | Lint | Passing |
-| Remaining analytical gates | Milestone 5 reviewed historical panel and empirical validation |
-| Release posture | Pre-release; bounded analysis only |
+| Remaining analytical gates | Independent interpretation review; national panel |
+| Release posture | Pilot release v1.0 (North Carolina only); no rankings or causal claims |
 
 ## Capability readiness
 
@@ -71,15 +71,21 @@ The run status was `warning`. County/date overlap creates a review candidate, no
 - [PR #16](https://github.com/Boatengs/recoverylens/pull/16) — injury and fatality aggregation
 - [PR #20](https://github.com/Boatengs/recoverylens/pull/20) — FEMA–NOAA candidate-link assessment
 
-## Next release gates
+## Pilot v1.0 decisions (29 October 2026)
+
+- Link review replayed by content: current NOAA and FEMA files reproduce every reviewed narrative and decision count. Eight undecided episodes were reviewed; five rejected, three supported, one tornado left unresolved.
+- Boundary notes: all 13 flagged counties' notes describe territory moving across county borders with no population stated; the model is rerun without them.
+- Zero population margins treated as controlled county totals, citing the Census controlled estimates FAQ.
+- SVI 2016 release date unverified, so context is used retrospectively only.
+
+## Earlier gate record (superseded for the pilot by v1.0)
 
 The [boundary screen](https://github.com/Boatengs/recoverylens/blob/main/docs/boundary-verification.md)
 found 17 Census county-level notes affecting 13 of 61 pilot counties during
 2016–2020. The other 48 are not certified unchanged. Product-vintage comparison
 is still required. The ACS 2012–2016 release date is verified as 7 December 2017;
 the imported CDC SVI file's historical release identity remains unverified.
-Dashboard development is paused until the evidence review is complete; the
-intended later presentation is Tableau-style.
+The Streamlit explorer now carries the pilot results.
 
 The [2016 historical baseline](https://github.com/Boatengs/recoverylens/blob/main/docs/historical-context.md) now matches all 61 pilot counties with population and national SVI values. Raw uncertainty values and source hashes are retained. Historical availability, zero-MOE interpretation, and boundary continuity are not yet certified; model-context approval remains withheld.
 

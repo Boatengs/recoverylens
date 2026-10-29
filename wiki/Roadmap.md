@@ -10,9 +10,9 @@ RecoveryLens is delivered in reviewable milestones. A milestone is complete only
 | 2 | FEMA funding pipeline | **Complete** |
 | 3 | NOAA loss and impact pipeline | **Complete — bounded live validation; source warnings retained** |
 | 4 | Population and vulnerability | Implemented and live-validated for 2022 same-vintage counties |
-| 5 | Analysis and modeling | Code implemented; national empirical validation pending |
-| 6 | Public decision surface | Planned |
-| 7 | Portfolio release | Planned |
+| 5 | Analysis and modeling | **Complete for the NC pilot (v1.0)**; independent review and national panel open |
+| 6 | Public decision surface | Pilot explorer released; national map not started |
+| 7 | Portfolio release | v1.0 tagged with report and case study; video outstanding |
 
 ## Milestone 1 — Foundation
 
@@ -57,32 +57,35 @@ The [2016 baseline import](https://github.com/Boatengs/recoverylens/blob/main/do
 
 Documentary review now distinguishes 205 source-supported pilot links, 50 unresolved links, and 35 rejected biological-incident competitors. See the [review and limitations](https://github.com/Boatengs/recoverylens/blob/main/docs/pilot-link-review.md). Model approval remains withheld.
 
-Latest evidence: [three-cohort funding and loss audit](https://github.com/Boatengs/recoverylens/blob/main/docs/milestone-5-audit.md). Funding reconciliation passed; loss identity and historical panel validation remain unresolved. The milestone is not complete.
+Latest evidence: [pilot release v1.0](https://github.com/Boatengs/recoverylens/blob/main/docs/pilot-release.md), which builds on the [three-cohort audit](https://github.com/Boatengs/recoverylens/blob/main/docs/milestone-5-audit.md). The pilot panel, valuation and empirical holdout are complete; the model did not beat its baseline. Independent review and a national panel remain open.
 
 - [x] Review-gated funding-per-resident and funding-to-loss indicators
 - [x] County-year typology through deterministic clustering
 - [x] Descriptive residual/outlier diagnostics, without causal funding-gap claims
 - [x] Chronological holdout and sensitivity evaluation code
 - [x] Model card and limitations report
-- [ ] Reviewed historical panel, consistent funding/loss valuation, and empirical national validation
+- [x] Reviewed pilot panel, consistent funding/loss valuation, and empirical holdout (NC pilot)
+- [ ] Independent interpretation review
+- [ ] National panel and validation
 
 **Milestone exit gate:** component coverage, stability, and sensitivity are published before any composite ranking.
 
 ## Milestone 6 — Public decision surface
 
-- [ ] National county map
-- [ ] State, disaster-type, and year filters
-- [ ] County profiles and component explanations
-- [ ] Downloadable filtered results
-- [ ] Accessible methodology and source panels
+- [x] County map (pilot counties)
+- [x] Declaration and funding-window filters (pilot)
+- [x] County profiles and component explanations
+- [x] Downloadable filtered results
+- [x] Methodology and source panels
+- [ ] National county map with state and disaster-type filters
 
 **Milestone exit gate:** accessibility, source traceability, and caution states work across desktop and mobile views.
 
 ## Milestone 7 — Portfolio release
 
-- [ ] Reproducible tagged release
-- [ ] Technical report and executive summary
-- [ ] Portfolio case study
+- [x] Reproducible tagged release (`v1.0.0`, pilot scope)
+- [x] Technical report and executive summary
+- [x] Portfolio case study
 - [ ] Demonstration video and social preview
 
 ## Delivery policy
