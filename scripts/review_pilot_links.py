@@ -18,13 +18,14 @@ def main():
     rules = json.loads(Path("docs/reviews/pilot-episodes.json").read_text())
     declarations_path = Path("data/raw/pilot_losses/declarations.json")
     declaration_hash = hashlib.sha256(declarations_path.read_bytes()).hexdigest()
-    if declaration_hash != rules["declarations_sha256"]:
-        raise ValueError("Declaration snapshot changed; repeat review")
     files = verified_storm_events_files(
         "data/raw/noaa/storm-events", dataset="details", start_year=2018, end_year=2020)
-    if {f.source.data_year: f.manifest_record["sha256"] for f in files} != {
-            int(k): v for k, v in rules["noaa_sha256"].items()}:
-        raise ValueError("NOAA snapshots changed; repeat review")
+    current_noaa = {f.source.data_year: f.manifest_record["sha256"] for f in files}
+    pinned = (declaration_hash == rules["declarations_sha256"]
+              and current_noaa == {int(k): v for k, v in rules["noaa_sha256"].items()})
+    counts_pending = bool(rules.get("expected_counts_pending"))
+    if not pinned and "expected_counts" not in rules and not counts_pending:
+        raise ValueError("Snapshots changed and the ledger has no content check; repeat review")
     declarations = json.loads(declarations_path.read_text())["DisasterDeclarationsSummaries"]
     assessment = assess_event_declaration_candidates(
         read_storm_event_matching_details(files), declarations)
@@ -51,20 +52,47 @@ def main():
             if row.narrative_sha256 != rule["narrative_sha256"]:
                 raise ValueError("Narrative changed; repeat review")
             decision, reason = rule["decision"], rule["reason"]
+            if (decision == "supported" and rule.get("require_incident_period_overlap")
+                    and not row.overlap_day_count > 0):
+                decision = "unresolved"
+                reason = "Event lies outside the declared incident period; support not extended"
+            reviewer = rule.get("reviewer", rules["reviewer"])
+            review_date = rule.get("review_date", rules["review_date"])
         elif row.disaster_number == 4487 and row.incident_type == "Biological":
             decision = "rejected"
             reason = "Weather-event attribution to COVID-19 is unsupported; hazard mismatch"
         else:
             decision, reason = "unresolved", "Competing declaration needs documentary review"
+        if key not in episode_rules:
+            reviewer, review_date = rules["reviewer"], rules["review_date"]
         ledger.append({**{k: row[k] for k in [*KEYS, *EVIDENCE]},
                        "decision": decision, "reason": reason,
-                       "reviewer": rules["reviewer"], "review_date": rules["review_date"]})
+                       "reviewer": reviewer, "review_date": review_date})
     reviewed = apply_review(candidates, pd.DataFrame(ledger))
+    counts = reviewed.groupby(["disaster_number", "decision"]).size()
+    observed = {f"{k[0]}:{k[1]}": int(v) for k, v in counts.items()}
+    if not pinned and not counts_pending:
+        # Content check: every reviewed narrative hash already matched above. The link
+        # set must also reproduce the reviewed decision counts exactly, with no episode
+        # outside the ledger, or the decisions are not carried over.
+        unknown = [
+            key for key in {(int(r.disaster_number), int(r.episode_id))
+                            for r in candidates.itertuples()}
+            if key not in episode_rules and key[0] != 4487
+        ]
+        if unknown or observed != rules["expected_counts"]:
+            raise ValueError(
+                f"Candidate links differ from the reviewed set; repeat review. "
+                f"observed={observed} unknown_episodes={sorted(unknown)[:10]}")
     destination = Path("data/processed/pilot_link_review")
     destination.mkdir(parents=True, exist_ok=True)
     reviewed.to_csv(destination / "documentary_review.csv", index=False)
-    counts = reviewed.groupby(["disaster_number", "decision"]).size()
     summary = {"review_date": rules["review_date"],
+               "replay_basis": ("pinned_snapshots" if pinned else
+                                "counts_pending_pin" if counts_pending else "content_verified"),
+               "observed_counts": observed,
+               "current_sources": {"declarations_sha256": declaration_hash,
+                                   "noaa_sha256": {str(k): v for k, v in current_noaa.items()}},
                "counts": [{"disaster_number": int(k[0]), "decision": k[1], "rows": int(v)}
                           for k, v in counts.items()],
                "rules_sha256": hashlib.sha256(

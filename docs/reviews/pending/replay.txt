@@ -1,0 +1,61 @@
+{
+  "review_date": "2026-10-26",
+  "replay_basis": "content_verified",
+  "observed_counts": {
+    "4393:rejected": 9,
+    "4393:supported": 150,
+    "4393:unresolved": 1,
+    "4465:rejected": 5,
+    "4465:supported": 55,
+    "4487:rejected": 35,
+    "4543:supported": 35
+  },
+  "current_sources": {
+    "declarations_sha256": "c2f3ae0c1d14e95c61080dbfc4199d8b8fb58b6d87e92e26dc78a7a116d4dcb4",
+    "noaa_sha256": {
+      "2018": "19702480f50cd2a8dacce5e57891feba156afb87b1ea5cbb4eaeda69d2b964a4",
+      "2019": "f5043ecc776818b0feffdf1e0fcbaf63329db0635eab1057c7b8ba00ef332e3b",
+      "2020": "895c56fd46991c4d9a135d67558dc4b447a02a2314efac0ace645135b98f9c9d"
+    }
+  },
+  "counts": [
+    {
+      "disaster_number": 4393,
+      "decision": "rejected",
+      "rows": 9
+    },
+    {
+      "disaster_number": 4393,
+      "decision": "supported",
+      "rows": 150
+    },
+    {
+      "disaster_number": 4393,
+      "decision": "unresolved",
+      "rows": 1
+    },
+    {
+      "disaster_number": 4465,
+      "decision": "rejected",
+      "rows": 5
+    },
+    {
+      "disaster_number": 4465,
+      "decision": "supported",
+      "rows": 55
+    },
+    {
+      "disaster_number": 4487,
+      "decision": "rejected",
+      "rows": 35
+    },
+    {
+      "disaster_number": 4543,
+      "decision": "supported",
+      "rows": 35
+    }
+  ],
+  "rules_sha256": "4122995a9a91de9314540633898fb01ef1d945ac7d093070968a56e7ec4627a7",
+  "model_linkage_approved": false,
+  "national_model_ready": false
+}

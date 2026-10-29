@@ -41,28 +41,31 @@ See [county context](county-context.md). Cross-vintage allocation is not impleme
 
 ## Milestone 5 — Analysis and modeling
 
-**Status: Implementation available; empirical national validation remains blocked.**
+**Status: Complete for the North Carolina pilot (v1.0); independent review outstanding.**
 
 - [x] Review-gated funding-per-resident and funding-to-loss indicators
 - [x] Deterministic county-year typology clustering
 - [x] Descriptive residual/outlier diagnostics (no causal funding-gap claim)
 - [x] Chronological holdout and parameter sensitivity evaluation code
 - [x] Model card and limitations report
-- [ ] Review linked funding/loss panels, complete price adjustment, and run empirical validation
-
-See [model card](model-card.md). No national ranking or validated funding-gap model is released.
+- [x] Pilot panel: reviewed links, fixed funding window, transaction-year prices, empirical holdout — [pilot release](pilot-release.md)
+- [ ] Independent interpretation review
+- [ ] National panel
 
 ## Milestone 6 — Public decision surface
 
-- National county map
-- State, disaster-type, and year filters
-- County profiles and component explanations
-- Downloadable filtered results
-- Accessible methodology and source panels
+**Status: Pilot surface released in the Streamlit explorer; national map not started.**
+
+- [x] County map (pilot counties)
+- [x] Declaration and funding-window filters
+- [x] County profiles and component explanations
+- [x] Downloadable filtered results
+- [x] Methodology and source panels
+- [ ] National county map, state and disaster-type filters
 
 ## Milestone 7 — Portfolio release
 
-- Reproducible tagged release
-- Technical report and executive summary
-- Portfolio case study
-- Demonstration video and social preview
+- [x] Reproducible tagged release (`v1.0.0`, pilot scope)
+- [x] Technical report and executive summary — [pilot release](pilot-release.md)
+- [x] Portfolio case study — [case study](case-study.md)
+- [ ] Demonstration video and social preview

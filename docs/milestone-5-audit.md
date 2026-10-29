@@ -1,6 +1,13 @@
 # Milestone 5 evidence audit — 24 October 2026
 
-**Decision: Milestone 5 is not complete. No empirical model fit is certified.**
+> **Update, 29 October 2026.** The exit requirements below were worked through for the
+> pilot scope in [pilot release v1.0](pilot-release.md): link decisions recorded, a
+> fixed 730 day funding window with obligation-year prices, retrospective use of 2016
+> context, a boundary sensitivity run, and an empirical 2020 holdout (the model did not
+> beat the median baseline). Independent interpretation review (requirement 5) remains
+> open, and nothing here extends beyond North Carolina.
+
+**Decision on 24 October: Milestone 5 is not complete. No empirical model fit is certified.**
 
 The implementation exists, but passing software tests does not establish valid
 observational data or national model performance. This audit advances a three-cohort

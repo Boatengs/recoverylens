@@ -5,7 +5,7 @@ name: Dashboard data
 on:
   workflow_dispatch:
   push:
-    branches: [main, "fix/**"]
+    branches: [main, "fix/**", "feature/pilot-v1"]
     paths:
       - ".github/workflows/dashboard-data.yml"
       - "scripts/build_dashboard_data.py"
@@ -13,6 +13,8 @@ on:
       - "scripts/review_pilot_links.py"
       - "docs/reviews/pilot-episodes.json"
       - "src/recoverylens/inflation.py"
+      - "src/recoverylens/pilot_panel.py"
+      - "src/recoverylens/modeling.py"
       - "data/reference/**"
 
 permissions:
@@ -41,6 +43,11 @@ jobs:
       - name: Assess pilot loss candidates
         run: python scripts/check_pilot_losses.py
 
+      - name: Pilot county keys
+        run: >-
+          python -m recoverylens.pilot_panel
+          --write-county-keys data/processed/pilot_panel/county_keys.csv
+
       - name: Replay documentary link review
         # The review only replays against the exact snapshots it was made on. A changed
         # source is recorded, not overridden; the dashboard then labels links unreviewed.
@@ -60,17 +67,47 @@ jobs:
         continue-on-error: true
         run: >-
           python -m recoverylens.historical_context
-          --county-keys data/processed/pilot_losses/candidate_review.csv
+          --county-keys data/processed/pilot_panel/county_keys.csv
 
       - name: Census boundary screen
         continue-on-error: true
         run: >-
           python -m recoverylens.boundary_audit
-          --county-keys data/processed/pilot_losses/candidate_review.csv
+          --county-keys data/processed/pilot_panel/county_keys.csv
 
       - name: CPI-adjusted losses
         continue-on-error: true
         run: python -m recoverylens.inflation --start-year 2018 --end-year 2020 --base-year 2022
+
+      - name: Pilot panel, 730 and 365 day funding horizons
+        run: |
+          mkdir -p dashboard/data/pilot/logs
+          for h in 730 365; do
+            python -m recoverylens.pilot_panel --horizon-days "$h" \
+              > "dashboard/data/pilot/logs/panel_h$h.txt" 2>&1 \
+              || echo "panel h$h failed" >> dashboard/data/pilot/logs/failures.txt
+          done
+
+      - name: Retrospective model runs
+        run: |
+          run() {
+            python -m recoverylens.modeling --mode retrospective --holdout-year 2020 \
+              --panel "data/processed/pilot_panel/panel_h$1.csv" --output-dir "data/processed/modeling/$2" $3 \
+              > "dashboard/data/pilot/logs/model_$2.txt" 2>&1 \
+              || echo "model $2 failed" >> dashboard/data/pilot/logs/failures.txt
+          }
+          run 730 h730 ""
+          run 365 h365 ""
+          run 730 h730_no_boundary_flags --exclude-boundary-flagged
+
+      - name: Copy pilot panel and model outputs
+        run: |
+          cp data/processed/pilot_panel/*.csv data/processed/pilot_panel/*.json dashboard/data/pilot/ 2>/dev/null || true
+          for d in data/processed/modeling/*/; do
+            name=$(basename "$d"); mkdir -p "dashboard/data/pilot/model_$name"
+            cp "$d"* "dashboard/data/pilot/model_$name/" 2>/dev/null || true
+          done
+          cp data/processed/pilot_link_review/documentary_review.csv dashboard/data/pilot/ 2>/dev/null || true
 
       - name: Build dashboard tables
         run: python scripts/build_dashboard_data.py
@@ -84,5 +121,6 @@ jobs:
             echo "No changes to dashboard data."
           else
             git commit -m "Refresh dashboard data from run ${GITHUB_RUN_ID}"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           fi
