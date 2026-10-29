@@ -1,0 +1,89 @@
+{
+  "publication_status": "exploratory_review_required",
+  "holdout_year": 2020,
+  "analysis_mode": "retrospective",
+  "training_rows": 25,
+  "holdout_rows": 7,
+  "excluded_rows": 48,
+  "features": [
+    "log_population",
+    "log_loss_per_resident",
+    "svi"
+  ],
+  "training_feature_mean": [
+    11.31558040998484,
+    3.5673507998543075,
+    0.7631399999999999
+  ],
+  "training_feature_scale": [
+    0.8751890562475368,
+    2.686994399379929,
+    0.1985663012698781
+  ],
+  "ridge_alpha": 1.0,
+  "ridge_coefficients": [
+    2.667955748390079,
+    -0.3570176358928361,
+    0.6205409441302812,
+    -0.09549534349436894
+  ],
+  "cluster_count": 3,
+  "cluster_centers_standardized": [
+    [
+      0.9751507210028804,
+      -0.0166121359506354,
+      -0.9802827059086638
+    ],
+    [
+      -0.6434643623190143,
+      -1.0561311222889664,
+      0.36214604159980185
+    ],
+    [
+      -0.45358019880922384,
+      1.0748197752334316,
+      0.7406720025474459
+    ]
+  ],
+  "clusters_converged": true,
+  "cluster_sensitivity": [
+    {
+      "k": 2,
+      "converged": true,
+      "holdout_mean_squared_distance": 1.5128367824507383,
+      "holdout_cluster_sizes": [
+        0,
+        7
+      ]
+    },
+    {
+      "k": 3,
+      "converged": true,
+      "holdout_mean_squared_distance": 1.3431281411958644,
+      "holdout_cluster_sizes": [
+        2,
+        5,
+        0
+      ]
+    },
+    {
+      "k": 4,
+      "converged": true,
+      "holdout_mean_squared_distance": 1.0478297695606853,
+      "holdout_cluster_sizes": [
+        1,
+        5,
+        0,
+        1
+      ]
+    }
+  ],
+  "baseline_holdout_mae": 8.404584542259173,
+  "baseline_training_median": 11.30924052569489,
+  "outlier_mad": 10.456394169618243,
+  "outlier_center": 3.183045416241378,
+  "interpretation": "Residuals describe this model, not unmet entitlement or causal gaps",
+  "validation_scope": "later years of observed counties; not unseen-county validation",
+  "boundary_flagged_excluded": true,
+  "input_sha256": "8c16451ae2d8ea9d7d997c1dc36dba66a07f423dfe535db0bfc3a9c5bf398416"
+}

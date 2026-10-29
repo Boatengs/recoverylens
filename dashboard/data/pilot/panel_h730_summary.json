@@ -1,0 +1,67 @@
+{
+  "estimand": "Retrospective description of county Public Assistance obligations relative to residents and reported storm losses for three NC declarations",
+  "horizon_days": 730,
+  "price_base_year": 2022,
+  "cpi_source": {
+    "url": "https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems",
+    "mode": "committed_snapshot",
+    "filename": "cpi_u_annual_m13.tsv",
+    "sha256": "53e67dd39c55da4d34249f84e77a6de3165ef2249083c9942fa9ced0fa6b2010",
+    "bytes": 3173,
+    "retrieved_at": "2026-10-29",
+    "live_download_error": "HTTPError: 403 Client Error: Forbidden for url: https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems"
+  },
+  "funding": [
+    {
+      "disaster_number": 4393,
+      "horizon_days": 730,
+      "declaration_date": "2018-09-14",
+      "projects_reconciled": 2669,
+      "projects_total": 2669,
+      "all_projects_dated_candidates": true,
+      "net_federal_share_all_dates_nominal": 791298022.22,
+      "net_in_window_nominal": 629402025.65,
+      "net_in_window_county_attributed_nominal": 446725190.62,
+      "net_in_window_not_county_attributed_nominal": 182676835.03,
+      "net_after_window_nominal": 161895996.57
+    },
+    {
+      "disaster_number": 4465,
+      "horizon_days": 730,
+      "declaration_date": "2019-10-04",
+      "projects_reconciled": 491,
+      "projects_total": 491,
+      "all_projects_dated_candidates": true,
+      "net_federal_share_all_dates_nominal": 63442135.08,
+      "net_in_window_nominal": 70536735.55,
+      "net_in_window_county_attributed_nominal": 60730805.61,
+      "net_in_window_not_county_attributed_nominal": 9805929.94,
+      "net_after_window_nominal": -7094600.47
+    },
+    {
+      "disaster_number": 4543,
+      "horizon_days": 730,
+      "declaration_date": "2020-05-08",
+      "projects_reconciled": 97,
+      "projects_total": 97,
+      "all_projects_dated_candidates": true,
+      "net_federal_share_all_dates_nominal": 13644804.5,
+      "net_in_window_nominal": 14408684.25,
+      "net_in_window_county_attributed_nominal": 1577720.37,
+      "net_in_window_not_county_attributed_nominal": 12830963.88,
+      "net_after_window_nominal": -763879.75
+    }
+  ],
+  "rows": 98,
+  "rows_by_year": {
+    "2018": 51,
+    "2019": 28,
+    "2020": 19
+  },
+  "linkage_reviewed_rows": 73,
+  "loss_complete_rows": 59,
+  "boundary_flagged_rows": 18,
+  "boundary_unscreened_rows": 0,
+  "reviewer": "Documentary review (Codex 26 Oct; Claude 29 Oct); independent review not complete",
+  "independent_review_complete": false
+}
