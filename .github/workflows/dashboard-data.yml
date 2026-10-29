@@ -1,0 +1,86 @@
+name: Dashboard data
+
+# Rebuilds the North Carolina 2018-2020 pilot evidence from official sources and commits the
+# compact tables in dashboard/data/ that the Streamlit evidence explorer reads.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, feature/streamlit-evidence-explorer]
+    paths:
+      - ".github/workflows/dashboard-data.yml"
+      - "scripts/build_dashboard_data.py"
+      - "scripts/check_pilot_losses.py"
+      - "scripts/review_pilot_links.py"
+      - "docs/reviews/pilot-episodes.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dashboard-data-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Download NOAA Storm Events details 2018-2020
+        run: recoverylens noaa-download --dataset details --start-year 2018 --end-year 2020
+
+      - name: Assess pilot loss candidates
+        run: python scripts/check_pilot_losses.py
+
+      - name: Replay documentary link review
+        # The review only replays against the exact snapshots it was made on. A changed
+        # source is recorded, not overridden; the dashboard then labels links unreviewed.
+        run: |
+          mkdir -p data/processed
+          python scripts/review_pilot_links.py > data/processed/pilot_link_review_replay.log 2>&1 \
+            || echo "Review not replayed; see log."
+          tail -5 data/processed/pilot_link_review_replay.log
+
+      - name: Reconcile pilot funding evidence
+        run: |
+          for disaster in 4393 4465 4543; do
+            python -m recoverylens.funding_evidence --disaster "$disaster"
+          done
+
+      - name: 2016 county context
+        continue-on-error: true
+        run: >-
+          python -m recoverylens.historical_context
+          --county-keys data/processed/pilot_losses/candidate_review.csv
+
+      - name: Census boundary screen
+        continue-on-error: true
+        run: >-
+          python -m recoverylens.boundary_audit
+          --county-keys data/processed/pilot_losses/candidate_review.csv
+
+      - name: CPI-adjusted losses
+        continue-on-error: true
+        run: python -m recoverylens.inflation --start-year 2018 --end-year 2020 --base-year 2022
+
+      - name: Build dashboard tables
+        run: python scripts/build_dashboard_data.py
+
+      - name: Commit dashboard data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dashboard/data
+          if git diff --cached --quiet; then
+            echo "No changes to dashboard data."
+          else
+            git commit -m "Refresh dashboard data from run ${GITHUB_RUN_ID}"
+            git push
+          fi
