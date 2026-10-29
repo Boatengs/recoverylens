@@ -117,10 +117,9 @@ table = view.sort_values(["county", "year"])[[
         "funding_per_resident": "Funding per resident", "funding_to_loss": "Funding per $ of loss",
         "svi": "SVI 2016", "typology": "Group", "residual_outlier": "Unusual for the model",
         "status": "Status"})
+for column in ("Population (ACS 2012-16)", "Funding, 2022 $", "Known loss, 2022 $"):
+    table[column] = table[column].round(0)
 st.dataframe(table, hide_index=True, use_container_width=True, column_config={
-    "Population (ACS 2012-16)": st.column_config.NumberColumn(format="%d"),
-    "Funding, 2022 $": st.column_config.NumberColumn(format="$%.0f"),
-    "Known loss, 2022 $": st.column_config.NumberColumn(format="$%.0f"),
     "Funding per resident": st.column_config.NumberColumn(format="$%.2f"),
     "Funding per $ of loss": st.column_config.NumberColumn(format="%.2f"),
     "SVI 2016": st.column_config.NumberColumn(format="%.2f"),

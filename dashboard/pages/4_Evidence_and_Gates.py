@@ -17,7 +17,7 @@ st.subheader("Release gates for pilot v1.0")
 st.markdown(f"**Milestone 5:** {info.get('milestone_5_status', 'not recorded')}")
 gates = pd.DataFrame(info["gates"]).rename(
     columns={"gate": "Gate", "status": "Status", "evidence": "Evidence"})
-st.dataframe(gates, hide_index=True, use_container_width=True)
+st.table(gates.set_index("Gate"))
 footnote("A gate marked outstanding or out of scope is a stated limit of this release, not a "
          "pending fix hidden from view.")
 
@@ -28,12 +28,18 @@ counties["county"] = counties.county_fips.map(names)
 cols = [c for c in ["county", "county_fips", "population_baseline", "population_moe_status",
                     "svi_2016_overall", "county_note_count", "boundary_screen_status"]
         if c in counties]
-st.dataframe(counties[cols].sort_values("county"), hide_index=True, use_container_width=True)
+shown = counties[cols].sort_values("county").copy()
+if "population_moe_status" in shown:
+    # County ACS totals are controlled; CDC publishes their margin as zero.
+    shown["population_moe_status"] = shown.population_moe_status.replace(
+        {"published_zero_unreviewed": "controlled (published as zero)"})
+st.dataframe(shown, hide_index=True, use_container_width=True)
 flagged = int((counties.get("county_note_count", pd.Series(dtype=int)) > 0).sum())
-footnote(f"{flagged} pilot counties have a Census county-level change note for 2016 to 2020 and "
-         "need geography review. A county without a note is screened, not certified unchanged. "
-         "2016 population and SVI are matched by exact county code; historical availability and "
-         "model use are not yet approved.")
+footnote(f"{flagged} screened counties have a Census county-level change note for 2016 to 2020. "
+         "Every note describes territory moving across a county border and none gives a population "
+         "figure, so the Pilot Analysis model is rerun without them. A county without a note is "
+         "screened, not certified unchanged. 2016 population and SVI are matched by exact county "
+         "code and used retrospectively.")
 
 st.subheader("Build provenance")
 st.markdown(f"Built {info['built_at']}. {info['release_posture']}")

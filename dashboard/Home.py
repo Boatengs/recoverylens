@@ -6,10 +6,10 @@ from common import (
     disaster_label,
     footnote,
     gate_banner,
+    md_usd,
     page_setup,
     require_data,
     status,
-    usd,
     usd_m,
 )
 
@@ -66,8 +66,9 @@ model = info.get("model_summary") or {}
 if model.get("model_holdout_mae") is not None:
     st.markdown(
         f"- On the 2020 declaration, a ridge model using population, known loss per resident and "
-        f"SVI missed county funding per resident by {usd(model['model_holdout_mae'])} on average, "
-        f"against {usd(model['baseline_holdout_mae'])} for simply guessing the 2018 to 2019 "
+        f"SVI missed county funding per resident by {md_usd(model['model_holdout_mae'])} on "
+        f"average, against {md_usd(model['baseline_holdout_mae'])} for simply guessing the 2018 "
+        "to 2019 "
         f"median. {'It beat' if model['model_beats_baseline'] else 'It did not beat'} that "
         "baseline.\n"
         "- Much of the money cannot be placed in a county: statewide and multi-county projects "
@@ -85,5 +86,4 @@ st.markdown(
     "- It does not forecast. Context data describe 2012 to 2016 and are used retrospectively.\n"
     "- It covers three North Carolina declarations, not the nation."
 )
-footnote(f"Data built {info['built_at']}. Review ledger {info['review_ledger']['review_date']} "
-         f"({info['review_ledger']['reviewer']}).")
+footnote(f"Data built {info['built_at']}. Review ledger: {info['review_ledger']['reviewer']}.")

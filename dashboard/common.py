@@ -46,6 +46,11 @@ def usd(value, digits: int = 2) -> str:
     return f"{'-' if value < 0 else ''}${abs(value):,.{digits}f}"
 
 
+def md_usd(value, digits: int = 2) -> str:
+    """Dollar amount safe inside st.markdown, where a pair of $ signs starts LaTeX."""
+    return usd(value, digits).replace("$", "\\$")
+
+
 @st.cache_data
 def status() -> dict:
     return json.loads((DATA / "status.json").read_text())
