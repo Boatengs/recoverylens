@@ -1,0 +1,17 @@
+name: Probe BLS access
+on:
+  push:
+    branches: [probe/bls-access]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Current user agent
+        continue-on-error: true
+        run: curl -sSf -o /dev/null -A "RecoveryLens/0.1 (public-data research)" https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems
+      - name: User agent with contact
+        continue-on-error: true
+        run: curl -sSf -o /dev/null -A "RecoveryLens/0.1 (https://github.com/Boatengs/recoverylens; noreply@github.com)" https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems
+      - name: Public API v1
+        continue-on-error: true
+        run: curl -sSf https://api.bls.gov/publicAPI/v1/timeseries/data/CUUR0000SA0 | grep -q REQUEST_SUCCEEDED
