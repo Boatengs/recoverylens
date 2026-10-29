@@ -1,0 +1,5 @@
+disaster_number,title,incident_type,incident_begin,incident_end,declaration_date,pa_declared,ia_declared,designated_counties,role
+4393,HURRICANE FLORENCE,Hurricane,2018-09-07,2018-09-29,2018-09-14,True,False,52,pilot
+4465,HURRICANE DORIAN,Hurricane,2019-09-01,2019-09-09,2019-10-04,True,False,28,pilot
+4487,COVID-19 PANDEMIC,Biological,2020-01-20,2023-05-11,2020-03-25,True,False,100,competing declaration
+4543,"SEVERE STORMS, TORNADOES, AND FLOODING",Severe Storm,2020-02-06,2020-02-19,2020-05-08,True,False,19,pilot
