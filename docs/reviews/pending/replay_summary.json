@@ -1,0 +1,47 @@
+{
+  "review_date": "2026-10-26",
+  "replay_basis": "content_verified",
+  "current_sources": {
+    "declarations_sha256": "644e2e031a6d06b58ccad81cf372d6548a4169bdad9bfa760a20f4359478532d",
+    "noaa_sha256": {
+      "2018": "19702480f50cd2a8dacce5e57891feba156afb87b1ea5cbb4eaeda69d2b964a4",
+      "2019": "f5043ecc776818b0feffdf1e0fcbaf63329db0635eab1057c7b8ba00ef332e3b",
+      "2020": "895c56fd46991c4d9a135d67558dc4b447a02a2314efac0ace645135b98f9c9d"
+    }
+  },
+  "counts": [
+    {
+      "disaster_number": 4393,
+      "decision": "supported",
+      "rows": 150
+    },
+    {
+      "disaster_number": 4393,
+      "decision": "unresolved",
+      "rows": 10
+    },
+    {
+      "disaster_number": 4465,
+      "decision": "supported",
+      "rows": 55
+    },
+    {
+      "disaster_number": 4465,
+      "decision": "unresolved",
+      "rows": 5
+    },
+    {
+      "disaster_number": 4487,
+      "decision": "rejected",
+      "rows": 35
+    },
+    {
+      "disaster_number": 4543,
+      "decision": "unresolved",
+      "rows": 35
+    }
+  ],
+  "rules_sha256": "4191e57ffc978dab4019c51119c27e705c4d24e17143f68979f93c4cb407cc28",
+  "model_linkage_approved": false,
+  "national_model_ready": false
+}
