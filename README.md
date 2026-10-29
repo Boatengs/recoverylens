@@ -5,8 +5,9 @@
 > **Pilot release v1.0 (29 October 2026).** A retrospective description of FEMA Public
 > Assistance across three North Carolina declarations (Florence 2018, Dorian 2019,
 > February 2020 storms), with reviewed storm links, a fixed funding window, 2022 dollar
-> prices and an honest model check. Read the [pilot release](docs/pilot-release.md) or run
-> the [explorer](#pilot-evidence-explorer). Independent review is outstanding.
+> prices and an honest model check. Open the [live explorer](https://recoverylens-bjaakzckctemxkk5eyy7zz.streamlit.app), read the
+> [pilot release](docs/pilot-release.md), or [run it locally](#pilot-evidence-explorer).
+> Independent review is outstanding.
 
 RecoveryLens is an open-source decision-intelligence project for examining whether federal disaster-recovery resources align with disaster exposure, documented losses, population, and social vulnerability across U.S. counties.
 
@@ -166,6 +167,8 @@ See [docs/data-quality.md](docs/data-quality.md) for validation levels and revie
 The commands write their analytical outputs to `data/processed/`. Raw and processed data are excluded from version control because the pipeline should reproduce them from official sources.
 
 ## Pilot evidence explorer
+
+**Live:** [recoverylens-bjaakzckctemxkk5eyy7zz.streamlit.app](https://recoverylens-bjaakzckctemxkk5eyy7zz.streamlit.app)
 
 `dashboard/` is a Streamlit explorer for pilot v1.0. Its pages cover the declarations and headline evidence, a county map, Public Assistance funding by category, attribution and timing, storm losses and link review decisions, release gates with their evidence, the pilot analysis (county indicators, model check, county profiles and CSV download) and methodology with sources. County tables are sorted alphabetically; nothing is ranked.
 
