@@ -1,6 +1,6 @@
 {
   "review_date": "2026-10-26",
-  "replay_basis": "counts_pending_pin",
+  "replay_basis": "content_verified",
   "observed_counts": {
     "4393:rejected": 9,
     "4393:supported": 150,
@@ -11,7 +11,7 @@
     "4543:supported": 35
   },
   "current_sources": {
-    "declarations_sha256": "644e2e031a6d06b58ccad81cf372d6548a4169bdad9bfa760a20f4359478532d",
+    "declarations_sha256": "c2f3ae0c1d14e95c61080dbfc4199d8b8fb58b6d87e92e26dc78a7a116d4dcb4",
     "noaa_sha256": {
       "2018": "19702480f50cd2a8dacce5e57891feba156afb87b1ea5cbb4eaeda69d2b964a4",
       "2019": "f5043ecc776818b0feffdf1e0fcbaf63329db0635eab1057c7b8ba00ef332e3b",
@@ -55,7 +55,7 @@
       "rows": 35
     }
   ],
-  "rules_sha256": "59819823b0ae62e8feb1c7ba497fbe254b6a74d5252b4c816dea472f799d63ef",
+  "rules_sha256": "4122995a9a91de9314540633898fb01ef1d945ac7d093070968a56e7ec4627a7",
   "model_linkage_approved": false,
   "national_model_ready": false
 }
