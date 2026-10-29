@@ -1,16 +1,15 @@
 {
-  "built_at": "2026-10-29T12:52:30+00:00",
+  "built_at": "2026-10-29T13:21:34+00:00",
   "release_posture": "Pre-release evidence explorer. Bounded pilot only; no rankings, scores or funding-gap estimates.",
   "milestone_5_complete": false,
   "review": {
-    "replayed": false,
-    "detail": "Current NOAA or FEMA files differ from the reviewed snapshots, so the 26 October decisions were not replayed. Candidates below are unreviewed for this build.",
-    "error": "ValueError: Declaration snapshot changed; repeat review"
+    "replayed": true,
+    "detail": "Sources match the reviewed snapshots; decisions replayed."
   },
   "review_ledger": {
     "reviewer": "Codex documentary review; not independent expert approval",
     "review_date": "2026-10-26",
-    "sha256": "58ece429cbd8e459fad128a55cee514e02134b469381aa2d6704b7e192e1bbed"
+    "sha256": "4122995a9a91de9314540633898fb01ef1d945ac7d093070968a56e7ec4627a7"
   },
   "funding_status": [
     {
@@ -85,12 +84,12 @@
     },
     "historical_context": {
       "source_counties": 3142,
-      "requested_counties": 61,
-      "matched_counties": 61,
+      "requested_counties": 68,
+      "matched_counties": 68,
       "missing_counties": 0,
-      "matched_with_baseline_values": 61,
+      "matched_with_baseline_values": 68,
       "published_zero_population_moe_count": 3029,
-      "requested_zero_population_moe_count": 61,
+      "requested_zero_population_moe_count": 68,
       "publication_status": "review_required",
       "historical_availability_verified": false,
       "model_context_approved": false,
@@ -100,10 +99,10 @@
         2016
       ],
       "svi_vintage": 2016,
-      "requested_input_sha256": "3b32c5f1bcc51a52976a5d721ba2a1998256772f49b019ec73dd35d7dfc82ef4"
+      "requested_input_sha256": "edb300a872f1306d1ae9f9dc7036df4859699e08c4353a9ded962fdbd79357f7"
     },
     "boundary_audit": {
-      "requested_counties": 61,
+      "requested_counties": 68,
       "source_note_rows": 95,
       "county_note_rows_2016_2020": 26,
       "pilot_county_note_rows": 17,
@@ -130,9 +129,9 @@
         "filename": "nc_notes_2014_2020.txt",
         "sha256": "efe8e4cbd6842e04b549a3ef0beddb81f428c356e46d67ec4baba1f97aff9918",
         "bytes": 18142,
-        "retrieved_at": "2026-10-29T12:52:17.373345+00:00"
+        "retrieved_at": "2026-10-29T13:21:20.111474+00:00"
       },
-      "requested_input_sha256": "3b32c5f1bcc51a52976a5d721ba2a1998256772f49b019ec73dd35d7dfc82ef4"
+      "requested_input_sha256": "edb300a872f1306d1ae9f9dc7036df4859699e08c4353a9ded962fdbd79357f7"
     },
     "inflation": {
       "publication_status": "warning",
