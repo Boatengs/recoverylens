@@ -8,6 +8,9 @@ descriptive residuals, chronological holdout errors, and sensitivity diagnostics
 It does not establish aid entitlement, discrimination, causal effects, or unmet need.
 
 **The model has not been validated on an approved national funding/loss panel.**
+Its first empirical run, on the North Carolina pilot in retrospective mode, did not
+beat a training-median baseline on the 2020 holdout; see the
+[pilot release](pilot-release.md).
 Tests use explicitly synthetic fixtures to verify arithmetic, withholding, and
 absence of holdout-target leakage. Synthetic performance is not published as
 empirical model performance. Milestone 5's national validation gate remains open.
@@ -28,7 +31,8 @@ is automatically accepted. Required columns:
 | svi | National rank in [0,1] from the appropriate vintage |
 | funding_dollars, loss_dollars | Nonnegative funding and positive loss in the same constant-dollar price base |
 | price_base_year | One common price year across the panel |
-| context_available_year | Actual availability year, no later than observation year |
+| context_available_year | Actual availability year, no later than observation year (forecast mode) |
+| context_reference_year | Last year the context describes, no later than observation year (`--mode retrospective` only; no forecasting claim) |
 | linkage_reviewed, geography_reviewed | Explicit true after review of event assignment and geography |
 | funding_complete, loss_complete | Explicit true after scope and missingness review |
 | source_reference | Traceable source/run reference |

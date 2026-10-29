@@ -41,24 +41,38 @@ def adjust_dollars(values: pd.Series, years: pd.Series, cpi: pd.DataFrame,
                          "adjusted_dollars": nominal * series.loc[base_year] / price})
 
 
-def indicators(panel: pd.DataFrame) -> pd.DataFrame:
-    """Retain every input row and disclose reasons for withholding model inputs."""
-    missing = REQUIRED - set(panel)
+MODES = ("forecast", "retrospective")
+
+
+def indicators(panel: pd.DataFrame, mode: str = "forecast") -> pd.DataFrame:
+    """Retain every input row and disclose reasons for withholding model inputs.
+
+    ``forecast`` requires context released no later than the row's year. ``retrospective``
+    describes past disasters with context measured no later than the row's year
+    (``context_reference_year``); its results carry no forecasting claim.
+    """
+    if mode not in MODES:
+        raise ValueError(f"mode must be one of {MODES}")
+    required = set(REQUIRED)
+    if mode == "retrospective":
+        required = (required - {"context_available_year"}) | {"context_reference_year"}
+    missing = required - set(panel)
     if missing:
         raise ValueError(f"Missing panel fields: {sorted(missing)}")
     out = panel.copy().reset_index(drop=True)
     if (not out.county_fips.astype("string").str.fullmatch(r"\d{5}", na=False).all()
             or out.duplicated(["county_fips", "year"]).any()):
         raise ValueError("Invalid or duplicate county-year keys")
+    context_year = "context_reference_year" if mode == "retrospective" else "context_available_year"
     numeric = ["year", "population", "population_moe", "svi", "funding_dollars",
-               "loss_dollars", "price_base_year", "context_available_year"]
+               "loss_dollars", "price_base_year", context_year]
     for col in numeric:
         out[col] = pd.to_numeric(out[col], errors="coerce").where(lambda x: np.isfinite(x))
     if out.year.isna().any() or not out.year.mod(1).eq(0).all():
         raise ValueError("Year must be a finite integer")
     if out.duplicated(["county_fips", "year"]).any():
         raise ValueError("Duplicate county-year keys after numeric normalization")
-    for col in ("price_base_year", "context_available_year"):
+    for col in ("price_base_year", context_year):
         if not out[col].dropna().mod(1).eq(0).all():
             raise ValueError(f"{col} must contain integer years")
     if out.price_base_year.dropna().nunique() != 1:
@@ -72,7 +86,7 @@ def indicators(panel: pd.DataFrame) -> pd.DataFrame:
         "funding_unavailable_or_negative": ~out.funding_dollars.ge(0),
         "loss_unavailable_or_zero": ~out.loss_dollars.gt(0),
         "price_base_unavailable": out.price_base_year.isna(),
-        "future_or_unknown_context": ~out.context_available_year.le(out.year),
+        "future_or_unknown_context": ~out[context_year].le(out.year),
         "source_reference_missing": out.source_reference.fillna("").str.strip().eq(""),
     }
     for col in ("linkage_reviewed", "geography_reviewed", "funding_complete", "loss_complete"):
@@ -92,6 +106,7 @@ def indicators(panel: pd.DataFrame) -> pd.DataFrame:
     ).where(ready & out.population.gt(out.population_moe))
     out["log_population"] = np.log1p(out.population.where(ready))
     out["log_loss_per_resident"] = np.log1p((out.loss_dollars / out.population).where(ready))
+    out["analysis_mode"] = mode
     return out.sort_values(["year", "county_fips"]).reset_index(drop=True)
 
 
@@ -121,9 +136,10 @@ def _clusters(x: np.ndarray, k: int) -> tuple:
     return centers, False
 
 
-def evaluate(panel: pd.DataFrame, *, holdout_year: int, clusters: int = 3) -> tuple:
+def evaluate(panel: pd.DataFrame, *, holdout_year: int, clusters: int = 3,
+             mode: str = "forecast") -> tuple:
     """Fit only earlier years; publish holdout errors and fixed-parameter sensitivity."""
-    out = indicators(panel)
+    out = indicators(panel, mode)
     train = out.model_eligible & out.year.lt(holdout_year)
     test = out.model_eligible & out.year.ge(holdout_year)
     if train.sum() < 20 or test.sum() < 5 or out.loc[train, "year"].nunique() < 2:
@@ -188,6 +204,7 @@ def evaluate(panel: pd.DataFrame, *, holdout_year: int, clusters: int = 3) -> tu
         for a in sensitivity.ridge_alpha]
     report = {
         "publication_status": "exploratory_review_required", "holdout_year": holdout_year,
+        "analysis_mode": mode,
         "training_rows": int(train.sum()), "holdout_rows": int(test.sum()),
         "excluded_rows": int((~out.model_eligible).sum()),
         "features": FEATURES, "training_feature_mean": mean.tolist(),
@@ -209,11 +226,16 @@ def main() -> None:
     parser.add_argument("--panel", type=Path, required=True)
     parser.add_argument("--holdout-year", type=int, required=True)
     parser.add_argument("--clusters", type=int, default=3)
+    parser.add_argument("--mode", choices=MODES, default="forecast")
+    parser.add_argument("--exclude-boundary-flagged", action="store_true")
     parser.add_argument("--output-dir", type=Path, default=Path("data/processed/modeling"))
     args = parser.parse_args()
     panel = pd.read_csv(args.panel, dtype={"county_fips": "string"})
+    if args.exclude_boundary_flagged:
+        panel = panel.loc[~panel.boundary_note_flag.astype(str).str.lower().eq("true")]
     result, sensitivity, report = evaluate(
-        panel, holdout_year=args.holdout_year, clusters=args.clusters)
+        panel, holdout_year=args.holdout_year, clusters=args.clusters, mode=args.mode)
+    report["boundary_flagged_excluded"] = args.exclude_boundary_flagged
     report["input_sha256"] = hashlib.sha256(args.panel.read_bytes()).hexdigest()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     result.to_csv(args.output_dir / "county_analysis.csv", index=False)

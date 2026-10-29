@@ -6,6 +6,7 @@ from common import (
     disaster_label,
     footnote,
     gate_banner,
+    md_usd,
     page_setup,
     require_data,
     status,
@@ -54,16 +55,35 @@ c[1].metric("NOAA event to declaration candidates", f"{int(links.candidate_event
 review = info["review"]
 c[2].metric("Documentary review", "Replayed" if review["replayed"] else "Not replayed")
 if not review["replayed"]:
-    c[2].caption("Source files changed since the 26 October review. See Losses and Links.")
+    c[2].caption("Current source files differ from the reviewed evidence. See Losses and Links.")
+else:
+    c[2].caption("Reviewed decisions reproduced from current NOAA and FEMA files.")
 footnote("A candidate is a NOAA storm event whose county and dates overlap a declaration. It is "
          "not a confirmed causal link.")
 
-st.subheader("What this explorer does not do")
+st.subheader("What pilot v1.0 found")
+model = info.get("model_summary") or {}
+if model.get("model_holdout_mae") is not None:
+    st.markdown(
+        f"- On the 2020 declaration, a ridge model using population, known loss per resident and "
+        f"SVI missed county funding per resident by {md_usd(model['model_holdout_mae'])} on "
+        f"average, against {md_usd(model['baseline_holdout_mae'])} for simply guessing the 2018 "
+        "to 2019 "
+        f"median. {'It beat' if model['model_beats_baseline'] else 'It did not beat'} that "
+        "baseline.\n"
+        "- Much of the money cannot be placed in a county: statewide and multi-county projects "
+        "are reported on the Funding page and never spread across counties.\n"
+        "- Details, county profiles and downloads are on the Pilot Analysis page."
+    )
+
+st.subheader("What it does not do")
 st.markdown(
     "- It does not rank counties or publish a recovery equity score.\n"
-    "- It does not compare funding with losses or call any county under- or over-funded.\n"
-    "- It does not treat county and date overlap as proof that a storm caused a declaration.\n"
-    "- It does not treat 2016 county context as historically verified or model-approved."
+    "- It does not call any county under- or over-funded; funding per dollar of loss compares "
+    "two different things (eligible public costs and reported property and crop damage).\n"
+    "- It does not treat county and date overlap as proof that a storm belongs to a declaration; "
+    "only reviewed links count.\n"
+    "- It does not forecast. Context data describe 2012 to 2016 and are used retrospectively.\n"
+    "- It covers three North Carolina declarations, not the nation."
 )
-footnote(f"Data built {info['built_at']}. Review ledger {info['review_ledger']['review_date']} "
-         f"({info['review_ledger']['reviewer']}).")
+footnote(f"Data built {info['built_at']}. Review ledger: {info['review_ledger']['reviewer']}.")

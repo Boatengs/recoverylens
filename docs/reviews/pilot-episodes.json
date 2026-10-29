@@ -7,6 +7,15 @@
     "2019": "f5043ecc776818b0feffdf1e0fcbaf63329db0635eab1057c7b8ba00ef332e3b",
     "2020": "895c56fd46991c4d9a135d67558dc4b447a02a2314efac0ace645135b98f9c9d"
   },
+  "expected_counts": {
+    "4393:rejected": 9,
+    "4393:supported": 150,
+    "4393:unresolved": 1,
+    "4465:rejected": 5,
+    "4465:supported": 55,
+    "4487:rejected": 35,
+    "4543:supported": 35
+  },
   "episodes": [
     {
       "disaster_number": 4393,
@@ -45,16 +54,20 @@
       "episode_id": 131357,
       "narrative_sha256": "26441f849239f2c5d649dfa412b32504fb447d6ced4614021e40f55be352022d",
       "decision": "unresolved",
-      "reason": "Episode narrative does not establish named-disaster identity; further attribution review required",
-      "excerpt": "Isolated severe thunderstorm near a stationary boundary produced a weak tornado across portions of northeast North Carolina."
+      "reason": "Tornado on Florence's landfall day attributed to a stationary boundary; the narrative neither names Florence nor rules it out",
+      "excerpt": "Isolated severe thunderstorm near a stationary boundary produced a weak tornado",
+      "reviewer": "Claude documentary review; not independent expert approval",
+      "review_date": "2026-10-29"
     },
     {
       "disaster_number": 4393,
       "episode_id": 131385,
       "narrative_sha256": "d23797a5bde3c179847413c739c2463ce9144eec7c116e5da5fd7994df32e786",
-      "decision": "unresolved",
-      "reason": "Episode narrative does not establish named-disaster identity; further attribution review required",
-      "excerpt": "A cluster of thunderstorms producing pockets of damaging wind gusts moved into the North Carolina Piedmont from Upstate South Carolina during the evening. Several areas of wind damage were reported along the I-77 corrido"
+      "decision": "rejected",
+      "reason": "Narrative attributes the 27 September wind damage to a thunderstorm cluster moving in from South Carolina, after Florence had dissipated; hazard event differs",
+      "excerpt": "A cluster of thunderstorms producing pockets of damaging wind gusts moved into the North Carolina Piedmont from Upstate South Carolina",
+      "reviewer": "Claude documentary review; not independent expert approval",
+      "review_date": "2026-10-29"
     },
     {
       "disaster_number": 4393,
@@ -76,17 +89,21 @@
       "disaster_number": 4393,
       "episode_id": 133721,
       "narrative_sha256": "c03ff0270c227b14887a4712e0654db121a931dfb4d5edabbe9dbe0d52d01d38",
-      "decision": "unresolved",
-      "reason": "Episode narrative does not establish named-disaster identity; further attribution review required",
-      "excerpt": "Isolated severe storms developed ahead of a cold front during the late afternoon in a moist and unstable air mass. A more organized comma head and trailing line of storms moved into the area mid to late evening. Some of "
+      "decision": "rejected",
+      "reason": "Narrative attributes the wind damage to storms ahead of a cold front, a separate system from Florence",
+      "excerpt": "Isolated severe storms developed ahead of a cold front during the late afternoon",
+      "reviewer": "Claude documentary review; not independent expert approval",
+      "review_date": "2026-10-29"
     },
     {
       "disaster_number": 4393,
       "episode_id": 133723,
       "narrative_sha256": "740e9f23cb29efce610397511567edade657d2f5c41803d80d4d4eda6b561b9f",
-      "decision": "unresolved",
-      "reason": "Episode narrative does not establish named-disaster identity; further attribution review required",
-      "excerpt": "A weak wedge front extended through the Piedmont, with stratus lasting through the day in the northwest Piedmont. Convection formed along the wedge front, coincident with a weak surface low over the Upstate of South Caro"
+      "decision": "rejected",
+      "reason": "Narrative attributes the 10 September wind damage to convection on a wedge front, before Florence made landfall",
+      "excerpt": "Convection formed along the wedge front, coincident with a weak surface low over the Upstate of South Carolina",
+      "reviewer": "Claude documentary review; not independent expert approval",
+      "review_date": "2026-10-29"
     },
     {
       "disaster_number": 4465,
@@ -132,33 +149,44 @@
       "disaster_number": 4465,
       "episode_id": 142992,
       "narrative_sha256": "e0016ba4b14cc93ce9b5a844cd60c53bfb6ed254dd00ad272e6b97e17a146b3e",
-      "decision": "unresolved",
-      "reason": "Episode narrative does not establish named-disaster identity; further attribution review required",
-      "excerpt": "A stationary front produced strong storms with  hail and strong winds."
+      "decision": "rejected",
+      "reason": "Narrative attributes the 9 September hail and wind to a stationary front after Dorian had left the state",
+      "excerpt": "A stationary front produced strong storms with  hail and strong winds.",
+      "reviewer": "Claude documentary review; not independent expert approval",
+      "review_date": "2026-10-29"
     },
     {
       "disaster_number": 4543,
       "episode_id": 145042,
       "narrative_sha256": "f35eeb2ef23173d19b425aecf02356c4f0d04f05d8ccf359c307bfa1b3475054",
-      "decision": "unresolved",
-      "reason": "Episode narrative does not establish named-disaster identity; further attribution review required",
-      "excerpt": "A deep upper-level trough moved slowly across the central and eastern U.S. bringing abundant moisture northward and combined with a complex frontal boundary with several waves of low pressure to bring repeated rounds of "
+      "decision": "supported",
+      "reason": "Narrative describes the 5 to 7 February 2020 heavy rain and flooding with infrastructure damage, matching the declared severe storms, tornadoes and flooding; events before the 6 February incident start stay unresolved",
+      "excerpt": "Numerous rivers and streams flooded, some reaching crests in the 25- to 50-year flood recurrence interval",
+      "reviewer": "Claude documentary review; not independent expert approval",
+      "review_date": "2026-10-29",
+      "require_incident_period_overlap": true
     },
     {
       "disaster_number": 4543,
       "episode_id": 145216,
       "narrative_sha256": "5f1835edd068b023db2e86aeeda6d5ab13fe15ede727a4160135e64d7ae5ed00",
-      "decision": "unresolved",
-      "reason": "Episode narrative does not establish named-disaster identity; further attribution review required",
-      "excerpt": "Unusually high levels of moisture for early February combined with a slow-moving frontal system to produce an extended period of moderate to heavy rainfall across western North Carolina from the morning of the 5th until "
+      "decision": "supported",
+      "reason": "Narrative describes the 5 to 7 February 2020 flash flooding and tornadoes in western North Carolina, matching the declared hazards; events before the 6 February incident start stay unresolved",
+      "excerpt": "Intense rain rates associated with bands of heavy rain showers and embedded thunderstorms",
+      "reviewer": "Claude documentary review; not independent expert approval",
+      "review_date": "2026-10-29",
+      "require_incident_period_overlap": true
     },
     {
       "disaster_number": 4543,
       "episode_id": 145578,
       "narrative_sha256": "4469d9f661c773e3506363bf18ce3eae42e0fd84f2e9be55746380d4804d15bb",
-      "decision": "unresolved",
-      "reason": "Episode narrative does not establish named-disaster identity; further attribution review required",
-      "excerpt": "A strong upper-level trough tracked eastward across North Carolina from the Gulf Coast states and brought heavy rain and severe weather. A warm front produced heavy rain and flash flooding along with the first round of s"
+      "decision": "supported",
+      "reason": "Narrative describes the 6 February 2020 severe storms, flash flooding and two EF1 tornadoes, matching the declared hazards and incident period",
+      "excerpt": "two EF1 tornadoes were confirmed, one in Randolph County and one in Stanly County",
+      "reviewer": "Claude documentary review; not independent expert approval",
+      "review_date": "2026-10-29",
+      "require_incident_period_overlap": true
     }
   ]
 }

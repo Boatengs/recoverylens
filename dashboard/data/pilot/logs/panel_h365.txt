@@ -1,0 +1,12 @@
+/home/runner/work/recoverylens/recoverylens/src/recoverylens/pilot_panel.py:170: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  panel["loss_complete"] = panel.supported_complete.fillna(False).astype(bool) & panel[
+{
+  "rows": 98,
+  "rows_by_year": {
+    "2018": 51,
+    "2019": 28,
+    "2020": 19
+  },
+  "linkage_reviewed_rows": 73,
+  "loss_complete_rows": 59
+}

@@ -33,6 +33,17 @@ This review retains those source texts without treating every detail as verified
 fact or silently correcting them. Named-episode support is narrower than an
 independently verified causal allocation of every reported dollar.
 
+## Update, 29 October 2026
+
+The eight episodes left undecided above were reviewed from their NOAA narratives
+(Claude documentary review; not independent approval). Five were rejected because the
+narrative attributes the damage to a different weather system. The Bertie County
+tornado of 14 September 2018 stays unresolved. The three February 2020 episodes were
+supported for events overlapping the declared incident period. Current counts are in
+`expected_counts` in [the ledger](reviews/pilot-episodes.json) and in the
+[pilot release](pilot-release.md). Replay now also accepts current source files when
+they reproduce the reviewed narrative hashes and exact decision counts.
+
 ## Replay and safeguards
 
 ```bash
