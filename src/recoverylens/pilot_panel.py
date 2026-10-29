@@ -78,6 +78,8 @@ def county_funding(raw_root: Path, declarations: pd.DataFrame, cpi: pd.DataFrame
         dated["amount_2022"] = priced.adjusted_dollars
         window = dated.loc[in_window]
         attributed = window.loc[window.county_fips.notna()]
+        designated = set(declarations.loc[declarations.disaster_number.eq(number),
+                                          "county_fips"])
         by_county = attributed.groupby("county_fips").agg(
             funding_nominal=("amount", "sum"), funding_dollars=("amount_2022", "sum"),
             funded_projects=("pwNumber", "nunique"), activities=("id", "size")).reset_index()
@@ -94,6 +96,10 @@ def county_funding(raw_root: Path, declarations: pd.DataFrame, cpi: pd.DataFrame
             "net_in_window_county_attributed_nominal": round(float(attributed.amount.sum()), 2),
             "net_in_window_not_county_attributed_nominal": round(
                 float(window.loc[window.county_fips.isna(), "amount"].sum()), 2),
+            "net_in_window_attributed_outside_pa_designation_nominal": round(float(
+                attributed.loc[~attributed.county_fips.isin(designated), "amount"].sum()), 2),
+            "counties_attributed_outside_pa_designation": sorted(
+                set(attributed.county_fips) - designated),
             "net_after_window_nominal": round(float(dated.loc[~in_window, "amount"].sum()), 2),
         })
     return pd.concat(rows, ignore_index=True), audit
