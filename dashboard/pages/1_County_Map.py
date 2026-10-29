@@ -67,6 +67,13 @@ footnote(f"Circles sit at 2016 Census county centroids and are sized by the sele
          f"{len(frame)} counties are designated for this declaration; {len(shown)} have a value "
          "above zero for this measure. Counties without a value are not shown as zero.")
 
+if column == "known_damage_2022":
+    origin = ("a committed extract of the published BLS annual averages, because BLS refused "
+              "the download from the build server"
+              if info.get("cpi_source_mode") == "committed_snapshot" else "the current BLS file")
+    footnote("2022 dollars use CPI-U, U.S. city average, all items, annual averages, from "
+             f"{origin}. CPI measures consumer prices, not construction costs.")
+
 st.subheader("County values")
 table = frame[["designated_area", column]].rename(
     columns={"designated_area": "County", column: label}).sort_values("County")

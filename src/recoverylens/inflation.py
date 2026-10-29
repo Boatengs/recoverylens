@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -17,6 +18,8 @@ from .storm_damage import analyze_storm_event_damage, read_storm_event_details
 CPI_URL = "https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems"
 SERIES = "CUUR0000SA0"
 AMOUNTS = ["damage_property_dollars", "damage_crops_dollars", "known_total_damage_dollars"]
+SNAPSHOT = Path(__file__).resolve().parents[2] / "data" / "reference" / "cpi_u_annual_m13.tsv"
+SNAPSHOT_RETRIEVED = "2026-10-29"
 
 
 def read_cpi(path: Path) -> pd.DataFrame:
@@ -37,6 +40,29 @@ def read_cpi(path: Path) -> pd.DataFrame:
     selected["source_url"] = CPI_URL
     return selected[["year", "cpi", "series_id", "period", "value", "footnote_codes",
                      "source_url"]].sort_values("year").reset_index(drop=True)
+
+
+def load_cpi(cpi_dir: Path, snapshot: Path = SNAPSHOT) -> tuple[pd.DataFrame, dict]:
+    """Download the current BLS file; fall back to the committed annual extract.
+
+    BLS refuses some automated hosts, including GitHub-hosted runners. The extract
+    holds only the published M13 rows of the same series, copied from the BLS file,
+    so a fallback run uses published values and says so in its source record.
+    """
+    target = cpi_dir / "cu.data.1.AllItems"
+    try:
+        source = acquire(CPI_URL, target)
+        source["mode"] = "live"
+        return read_cpi(target), source
+    except Exception as error:  # any download failure uses the committed extract
+        if not snapshot.exists():
+            raise
+        data = snapshot.read_bytes()
+        source = {"url": CPI_URL, "mode": "committed_snapshot",
+                  "filename": snapshot.name, "sha256": hashlib.sha256(data).hexdigest(),
+                  "bytes": len(data), "retrieved_at": SNAPSHOT_RETRIEVED,
+                  "live_download_error": f"{type(error).__name__}: {error}"[:300]}
+        return read_cpi(snapshot), source
 
 
 def adjust_events(events: pd.DataFrame, cpi: pd.DataFrame, base_year: int) -> tuple:
@@ -85,8 +111,7 @@ def main() -> None:
     args = parser.parse_args()
     verified = verified_storm_events_files(
         args.input_dir, dataset="details", start_year=args.start_year, end_year=args.end_year)
-    source = acquire(CPI_URL, args.cpi_dir / "cu.data.1.AllItems")
-    cpi = read_cpi(args.cpi_dir / "cu.data.1.AllItems")
+    cpi, source = load_cpi(args.cpi_dir)
     damage = analyze_storm_event_damage(read_storm_event_details(verified))
     events, annual = adjust_events(damage.events, cpi, args.base_year)
     withheld = int((~events.inflation_eligible).sum())
