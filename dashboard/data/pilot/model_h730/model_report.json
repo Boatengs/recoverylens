@@ -23,9 +23,9 @@
   "ridge_alpha": 1.0,
   "ridge_coefficients": [
     2.7365738434702025,
-    -0.25108064321106754,
+    -0.2510806432110675,
     0.5352305929579965,
-    0.031005291009889493
+    0.03100529100988952
   ],
   "cluster_count": 3,
   "cluster_centers_standardized": [
@@ -81,7 +81,7 @@
   "baseline_holdout_mae": 8.207995270209416,
   "baseline_training_median": 10.210110386180954,
   "outlier_mad": 12.717716106005874,
-  "outlier_center": 1.5474637112763192,
+  "outlier_center": 1.5474637112763183,
   "interpretation": "Residuals describe this model, not unmet entitlement or causal gaps",
   "validation_scope": "later years of observed counties; not unseen-county validation",
   "boundary_flagged_excluded": false,
