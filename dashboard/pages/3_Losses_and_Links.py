@@ -37,9 +37,8 @@ per = (losses.groupby("disaster_number", as_index=False)
             counties=("county_fips", "nunique")))
 c = st.columns(len(per))
 for col, (_, row) in zip(c, per.iterrows(), strict=True):
-    col.metric(disaster_label(row.disaster_number), f"{int(row.candidate_events):,} candidates",
-               f"{int(row.counties)} counties, {usd_m(row.known_damage_nominal)} known damage",
-               delta_color="off")
+    col.metric(disaster_label(row.disaster_number), f"{int(row.candidate_events):,} candidates")
+    col.caption(f"{int(row.counties)} counties, {usd_m(row.known_damage_nominal)} known damage")
 footnote("Known damage is NOAA's reported property and crop loss for candidate events with valid "
          "values, in nominal dollars. Missing or invalid values stay missing; they are never "
          "counted as zero. It is not total economic impact.")
