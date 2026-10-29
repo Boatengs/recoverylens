@@ -40,7 +40,7 @@ with left:
                  labels={"net_total_obligated": "Net obligated ($)", "damage_category_label": ""})
     fig.update_layout(height=380, margin=dict(l=10, r=10, t=40, b=10),
                       title="Obligations by FEMA work category")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 with right:
     att = csv("funding_attribution.csv")
     att = att.loc[att.disaster_number.eq(disaster)]
@@ -49,7 +49,7 @@ with right:
                  labels={"county_attribution_status": "", "total_obligated": "Obligated ($)"})
     fig.update_layout(height=380, margin=dict(l=10, r=10, t=40, b=10),
                       title="How projects attribute to counties")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     attributed = att.loc[att.county_attribution_status.eq("attributed"), "total_obligated"].sum()
     footnote(f"{usd_m(attributed)} of {usd_m(att.total_obligated.sum())} attributes to a single "
              "county. Statewide and multi-county projects stay visible here and are never "
@@ -61,7 +61,7 @@ fig = px.histogram(timing, x="days_to_first_obligation", nbins=60, color_discret
                    labels={"days_to_first_obligation": "Days from declaration to first obligation"})
 fig.update_layout(height=320, margin=dict(l=10, r=10, t=40, b=10), yaxis_title="Projects",
                   title="When projects first received an obligation")
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 footnote("Intervals describe recorded administrative milestones, not processing delay or the "
          "cause of any delay.")
 
@@ -70,6 +70,6 @@ recon = csv("funding_reconciliation.csv")
 recon = recon.loc[recon.disaster_number.eq(disaster)].T.reset_index()
 recon.columns = ["field", "value"]
 recon["value"] = recon["value"].astype(str)
-st.dataframe(recon, hide_index=True, use_container_width=True)
+st.dataframe(recon, hide_index=True, width="stretch")
 footnote("Award activities are summed per project and compared with funded project totals. "
          "Negative activities (deobligations) are kept.")

@@ -59,7 +59,7 @@ fig = px.bar(melted, x="links", y="declaration", color="decision", orientation="
              labels={"declaration": ""})
 fig.update_layout(height=300, margin=dict(l=10, r=10, t=10, b=10), barmode="stack",
                   legend=dict(orientation="h", y=-0.25))
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 footnote("Source: docs/reviews/pilot-episodes.json, replayed in this build. Supported means the "
          "NOAA episode narrative ties the damage to the declared event: it names the hurricane, "
          "or for 2020 describes the declared storms and flooding inside the incident period. "
@@ -70,6 +70,6 @@ st.subheader("Reviewed NOAA episodes")
 episodes = csv("review_episodes.csv")
 episodes["declaration"] = episodes.disaster_number.map(disaster_label)
 st.dataframe(episodes[["declaration", "episode_id", "decision", "reason", "excerpt"]],
-             hide_index=True, use_container_width=True)
+             hide_index=True, width="stretch")
 footnote(f"Ledger SHA-256 {info['review_ledger']['sha256'][:16]}... Each decision is tied to the "
          "exact narrative text it was made on.")
