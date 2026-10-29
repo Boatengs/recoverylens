@@ -1,10 +1,20 @@
 {
-  "built_at": "2026-10-29T13:23:41+00:00",
-  "release_posture": "Pre-release evidence explorer. Bounded pilot only; no rankings, scores or funding-gap estimates.",
-  "milestone_5_complete": false,
+  "built_at": "2026-10-29T13:26:40+00:00",
+  "release_posture": "Pilot release v1.0: retrospective description of three North Carolina declarations. No rankings, causal claims or funding-gap estimates. Independent review outstanding.",
+  "milestone_5_status": "Pilot scope complete; independent review outstanding",
   "review": {
     "replayed": true,
-    "detail": "Sources match the reviewed snapshots; decisions replayed."
+    "detail": "Current NOAA and FEMA files reproduce the reviewed links and narrative text exactly, so every recorded decision was replayed.",
+    "replay_basis": "content_verified",
+    "observed_counts": {
+      "4393:rejected": 9,
+      "4393:supported": 150,
+      "4393:unresolved": 1,
+      "4465:rejected": 5,
+      "4465:supported": 55,
+      "4487:rejected": 35,
+      "4543:supported": 35
+    }
   },
   "review_ledger": {
     "reviewer": "Codex documentary review; not independent expert approval",
@@ -42,13 +52,57 @@
   ],
   "inflation_available": true,
   "cpi_source_mode": "committed_snapshot",
-  "gates": {
-    "historical_availability_verified": false,
-    "model_context_approved": false,
-    "geography_reviewed": false,
-    "independent_review_complete": false,
-    "model_linkage_approved": false,
-    "national_model_ready": false
+  "gates": [
+    {
+      "gate": "Storm-to-declaration link review (pilot)",
+      "status": "documentary review complete",
+      "evidence": "290 links decided from NOAA narratives; 1 left unresolved. Codex 26 Oct, Claude 29 Oct. Replayed by content against current NOAA and FEMA files."
+    },
+    {
+      "gate": "Independent interpretation review",
+      "status": "outstanding",
+      "evidence": "No reviewer outside the build has checked the interpretation."
+    },
+    {
+      "gate": "County geography",
+      "status": "notes read; sensitivity run",
+      "evidence": "18 panel rows are in counties with a 2016 to 2020 Census border note. The model is rerun without them."
+    },
+    {
+      "gate": "Population uncertainty",
+      "status": "resolved",
+      "evidence": "County ACS totals are controlled to official estimates, so their zero margins mean no sampling error is published, not a measured zero."
+    },
+    {
+      "gate": "Context timing",
+      "status": "retrospective use only",
+      "evidence": "Context describes 2012 to 2016. The SVI 2016 release date could not be verified, so no forecasting claim is made."
+    },
+    {
+      "gate": "Price adjustment",
+      "status": "complete",
+      "evidence": "Obligations priced by obligation year, losses by event year; CPI-U annual averages, 2022 dollars."
+    },
+    {
+      "gate": "Funding observation window",
+      "status": "fixed",
+      "evidence": "Net federal share obligated within 730 days of declaration; 365 days as a sensitivity check. Deobligations kept."
+    },
+    {
+      "gate": "Model validation (2020 holdout)",
+      "status": "run; does not beat baseline",
+      "evidence": "Ridge model mean absolute error $10.06 per resident against $8.21 for the training median."
+    },
+    {
+      "gate": "National scope",
+      "status": "out of scope for v1.0",
+      "evidence": "Three North Carolina declarations only."
+    }
+  ],
+  "model_summary": {
+    "model_holdout_mae": 10.061787507782446,
+    "baseline_holdout_mae": 8.207995270209416,
+    "model_beats_baseline": false
   },
   "processed_summaries": {
     "pilot_losses": {
@@ -129,7 +183,7 @@
         "filename": "nc_notes_2014_2020.txt",
         "sha256": "efe8e4cbd6842e04b549a3ef0beddb81f428c356e46d67ec4baba1f97aff9918",
         "bytes": 18142,
-        "retrieved_at": "2026-10-29T13:23:23.848907+00:00"
+        "retrieved_at": "2026-10-29T13:26:15.977271+00:00"
       },
       "requested_input_sha256": "edb300a872f1306d1ae9f9dc7036df4859699e08c4353a9ded962fdbd79357f7"
     },
