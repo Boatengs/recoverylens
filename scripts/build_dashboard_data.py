@@ -372,6 +372,7 @@ def main() -> None:
         },
         "funding_status": funding_status,
         "inflation_available": processed["inflation"] is not None,
+        "cpi_source_mode": ((processed["inflation"] or {}).get("cpi_source") or {}).get("mode"),
         "gates": {
             "historical_availability_verified": False,
             "model_context_approved": False,

@@ -5,13 +5,15 @@ name: Dashboard data
 on:
   workflow_dispatch:
   push:
-    branches: [main, feature/streamlit-evidence-explorer]
+    branches: [main, "fix/**"]
     paths:
       - ".github/workflows/dashboard-data.yml"
       - "scripts/build_dashboard_data.py"
       - "scripts/check_pilot_losses.py"
       - "scripts/review_pilot_links.py"
       - "docs/reviews/pilot-episodes.json"
+      - "src/recoverylens/inflation.py"
+      - "data/reference/**"
 
 permissions:
   contents: write

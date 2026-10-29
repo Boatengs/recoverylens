@@ -10,6 +10,14 @@ file is downloaded without an API key, atomically, with retrieval time, byte siz
 and SHA-256 recorded. Each run downloads the current BLS revision; retain the raw
 file and summary to reproduce a specific revision.
 
+BLS refuses downloads from some automated hosts, including GitHub-hosted runners.
+When the download fails, the command reads `data/reference/cpi_u_annual_m13.tsv`
+instead: the 113 published `M13` rows of `CUUR0000SA0` (1913 to 2025), copied from
+the BLS file on 29 October 2026 and checked value by value against it. The run's
+`cpi_source` then records `mode: committed_snapshot`, the extract's SHA-256 and the
+download error, so a fallback run is never presented as a live retrieval. Refresh
+the extract after BLS publishes a new annual average or revises one.
+
 Only published annual-average (`M13`) observations for `CUUR0000SA0` are used:
 CPI-U, U.S. city average, all items, not seasonally adjusted. Other series and
 monthly records are excluded. No partial-year average, interpolation, or substitute
