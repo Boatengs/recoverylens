@@ -1,0 +1,55 @@
+name: Pilot review evidence
+
+# Re-derives pilot link candidates from official sources, replays the review ledger,
+# and commits the undecided episode narratives a reviewer needs to read.
+on:
+  workflow_dispatch:
+  push:
+    branches: ["feature/pilot-v1"]
+    paths:
+      - ".github/workflows/pilot-review.yml"
+      - "scripts/review_pilot_links.py"
+      - "scripts/export_review_narratives.py"
+      - "docs/reviews/pilot-episodes.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pilot-review-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install project
+        run: pip install -e .
+      - name: Download NOAA Storm Events details 2018-2020
+        run: recoverylens noaa-download --dataset details --start-year 2018 --end-year 2020
+      - name: Assess pilot loss candidates
+        run: python scripts/check_pilot_losses.py
+      - name: Replay review ledger
+        id: replay
+        continue-on-error: true
+        run: |
+          mkdir -p docs/reviews/pending
+          python scripts/review_pilot_links.py > docs/reviews/pending/replay.txt 2>&1 \
+            || { tail -5 docs/reviews/pending/replay.txt; exit 1; }
+      - name: Export undecided narratives
+        run: |
+          python scripts/export_review_narratives.py
+          cp data/processed/pilot_link_review/summary.json docs/reviews/pending/replay_summary.json || true
+          echo "replay_outcome=${{ steps.replay.outcome }}" > docs/reviews/pending/replay_outcome.txt
+      - name: Commit review evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/reviews/pending
+          git diff --cached --quiet || git commit -m "Pilot review evidence from run ${{ github.run_id }}"
+          git push
