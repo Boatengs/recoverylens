@@ -90,3 +90,36 @@ def test_cli_preserves_blocked_status_and_provenance(tmp_path, monkeypatch, empt
     assert report["withheld_event_count"] == (0 if empty else 4)
     assert len(pd.read_csv(output / "event_damage_adjusted.csv")) == (0 if empty else 7)
     assert "event_year" in pd.read_csv(output / "damage_adjusted_by_year.csv")
+
+
+def test_load_cpi_falls_back_to_committed_snapshot(tmp_path, monkeypatch):
+    from recoverylens import inflation
+
+    def refused(url, target):
+        raise ConnectionError("403 Forbidden")
+
+    monkeypatch.setattr(inflation, "acquire", refused)
+    snapshot = cpi_file(tmp_path / "snapshot.tsv")
+    cpi, source = inflation.load_cpi(tmp_path / "cpi", snapshot)
+    assert source["mode"] == "committed_snapshot"
+    assert "403" in source["live_download_error"]
+    assert list(cpi.year) == [2005, 2022]
+
+
+def test_load_cpi_raises_without_snapshot(tmp_path, monkeypatch):
+    from recoverylens import inflation
+
+    def refused(url, target):
+        raise ConnectionError("403 Forbidden")
+
+    monkeypatch.setattr(inflation, "acquire", refused)
+    with pytest.raises(ConnectionError):
+        inflation.load_cpi(tmp_path / "cpi", tmp_path / "missing.tsv")
+
+
+def test_committed_snapshot_is_valid_annual_cpi():
+    from recoverylens.inflation import SNAPSHOT
+
+    cpi = read_cpi(SNAPSHOT)
+    assert cpi.year.is_monotonic_increasing and {2018, 2019, 2020, 2022} <= set(cpi.year)
+    assert cpi.set_index("year").cpi[2022] == pytest.approx(292.655)
