@@ -3,15 +3,18 @@ on:
   push:
     branches: [probe/bls-access]
 jobs:
-  probe:
+  current_agent:
     runs-on: ubuntu-latest
     steps:
-      - name: Current user agent
-        continue-on-error: true
-        run: curl -sSf -o /dev/null -A "RecoveryLens/0.1 (public-data research)" https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems
-      - name: User agent with contact
-        continue-on-error: true
-        run: curl -sSf -o /dev/null -A "RecoveryLens/0.1 (https://github.com/Boatengs/recoverylens; noreply@github.com)" https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems
-      - name: Public API v1
-        continue-on-error: true
-        run: curl -sSf https://api.bls.gov/publicAPI/v1/timeseries/data/CUUR0000SA0 | grep -q REQUEST_SUCCEEDED
+      - run: curl -sSf -o /dev/null -A "RecoveryLens/0.1 (public-data research)" https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems
+  contact_agent:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -sSf -o /dev/null -A "RecoveryLens/0.1 (https://github.com/Boatengs/recoverylens; noreply@github.com)" https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems
+  python_requests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install -q -e . && python -c "from recoverylens.context import acquire; from pathlib import Path; print(acquire('https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems', Path('cpi/x')))"
