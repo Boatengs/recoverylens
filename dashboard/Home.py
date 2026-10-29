@@ -40,9 +40,10 @@ footnote("COVID-19 (4487) overlaps the 2020 storm window. It is shown because co
 st.subheader("Headline evidence")
 cols = st.columns(len(recon) if len(recon) else 1)
 for col, (_, row) in zip(cols, recon.iterrows(), strict=False):
-    col.metric(disaster_label(row.disaster_number), usd_m(float(row.project_net_dollars)),
-               f"{int(row.reconciled_projects):,} of {int(row.project_rows):,} projects reconciled",
-               delta_color="off")
+    col.metric(disaster_label(row.disaster_number), usd_m(float(row.project_net_dollars)))
+    col.caption(
+        f"{int(row.reconciled_projects):,} of {int(row.project_rows):,} projects reconciled"
+    )
 footnote("Public Assistance net obligations, reconciled award activity by award activity to "
          "funded projects. Obligations are not payments and not unmet need. Current OpenFEMA "
          "extracts, not historical publication snapshots.")
@@ -51,8 +52,9 @@ c = st.columns(3)
 c[0].metric("Pilot counties with NOAA candidates", f"{info['pilot_county_count']}")
 c[1].metric("NOAA event to declaration candidates", f"{int(links.candidate_events.sum()):,}")
 review = info["review"]
-c[2].metric("Documentary review", "Replayed" if review["replayed"] else "Not replayed",
-            review["detail"][:60] + "..." if not review["replayed"] else None, delta_color="off")
+c[2].metric("Documentary review", "Replayed" if review["replayed"] else "Not replayed")
+if not review["replayed"]:
+    c[2].caption("Source files changed since the 26 October review. See Losses and Links.")
 footnote("A candidate is a NOAA storm event whose county and dates overlap a declaration. It is "
          "not a confirmed causal link.")
 
