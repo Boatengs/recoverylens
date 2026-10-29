@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-10-29T12:24:39+00:00",
+  "built_at": "2026-10-29T12:52:30+00:00",
   "release_posture": "Pre-release evidence explorer. Bounded pilot only; no rankings, scores or funding-gap estimates.",
   "milestone_5_complete": false,
   "review": {
@@ -41,7 +41,8 @@
       "last_obligation_days_median": 697.0
     }
   ],
-  "inflation_available": false,
+  "inflation_available": true,
+  "cpi_source_mode": "committed_snapshot",
   "gates": {
     "historical_availability_verified": false,
     "model_context_approved": false,
@@ -129,11 +130,74 @@
         "filename": "nc_notes_2014_2020.txt",
         "sha256": "efe8e4cbd6842e04b549a3ef0beddb81f428c356e46d67ec4baba1f97aff9918",
         "bytes": 18142,
-        "retrieved_at": "2026-10-29T12:24:35.218289+00:00"
+        "retrieved_at": "2026-10-29T12:52:17.373345+00:00"
       },
       "requested_input_sha256": "3b32c5f1bcc51a52976a5d721ba2a1998256772f49b019ec73dd35d7dfc82ef4"
     },
-    "inflation": null
+    "inflation": {
+      "publication_status": "warning",
+      "price_base_year": 2022,
+      "cpi_series": "CUUR0000SA0",
+      "cpi_source": {
+        "url": "https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems",
+        "mode": "committed_snapshot",
+        "filename": "cpi_u_annual_m13.tsv",
+        "sha256": "53e67dd39c55da4d34249f84e77a6de3165ef2249083c9942fa9ced0fa6b2010",
+        "bytes": 3173,
+        "retrieved_at": "2026-10-29",
+        "live_download_error": "HTTPError: 403 Client Error: Forbidden for url: https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems"
+      },
+      "nominal_damage_diagnostics": {
+        "event_count": 191844,
+        "unique_event_count": 191844,
+        "source_file_count": 3,
+        "source_filenames": [
+          "StormEvents_details-ftp_v1.0_d2018_c20260323.csv.gz",
+          "StormEvents_details-ftp_v1.0_d2019_c20260323.csv.gz",
+          "StormEvents_details-ftp_v1.0_d2020_c20260323.csv.gz"
+        ],
+        "source_data_years": [
+          2018,
+          2019,
+          2020
+        ],
+        "source_schema_versions": [
+          "1.0"
+        ],
+        "missing_event_id_count": 0,
+        "duplicate_event_id_count": 0,
+        "duplicate_event_id_record_count": 0,
+        "source_year_inconsistency_count": 0,
+        "property_parsed_count": 38213,
+        "property_reported_zero_count": 115238,
+        "property_missing_count": 38393,
+        "property_invalid_count": 0,
+        "crops_parsed_count": 2286,
+        "crops_reported_zero_count": 152340,
+        "crops_missing_count": 37218,
+        "crops_invalid_count": 0,
+        "valid_property_damage_count": 153451,
+        "valid_property_damage_rate": 0.799874,
+        "valid_crop_damage_count": 154626,
+        "valid_crop_damage_rate": 0.805999,
+        "complete_damage_event_count": 149844,
+        "complete_damage_event_rate": 0.781072,
+        "invalid_damage_event_count": 0,
+        "missing_damage_component_event_count": 42000,
+        "positive_known_damage_event_count": 39070,
+        "known_property_damage_dollars": 70645203270.0,
+        "known_crop_damage_dollars": 7024065840.0,
+        "known_total_damage_dollars": 77669269110.0,
+        "publication_status": "warning",
+        "warning_flags": [
+          "missing_damage_values"
+        ]
+      },
+      "event_count": 191844,
+      "withheld_event_count": 0,
+      "complete_adjusted_event_count": 149844,
+      "interpretation": "Known reported losses, not total economic or reconstruction cost"
+    }
   },
   "committed_evidence": {
     "m5-pilot-2026-10-24.json": {
