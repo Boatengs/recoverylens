@@ -58,4 +58,4 @@ No reviewer outside the build has checked the interpretation. The pilot has 98
 county rows, of which 46 pass every gate, and low vulnerability counties are nearly
 absent. A national version needs the same link review at far larger scale.
 
-[Technical report](pilot-release.md) · [Repository](https://github.com/Boatengs/recoverylens)
+[Live explorer](https://recoverylens-bjaakzckctemxkk5eyy7zz.streamlit.app) · [Technical report](pilot-release.md) · [Repository](https://github.com/Boatengs/recoverylens)
