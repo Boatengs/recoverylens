@@ -69,11 +69,11 @@ had more money in the window than they hold today. The all dates totals match th
 
 ## Decisions made for v1.0
 
-**Link review replay by content.** The 26 October ledger was pinned to file hashes,
-and FEMA's declarations response changes bytes on every request. The replay now
-also accepts current files when they reproduce the reviewed narrative hashes and the
-exact decision counts, with no episode outside the ledger. Any other change stops
-the build.
+**Link review replay by content.** The 26 October ledger was pinned to file hashes.
+The NOAA files still match those hashes, but a fresh FEMA declarations download does
+not match byte for byte, so every rebuild stopped the replay. The replay now also
+accepts current files when they reproduce the reviewed narrative hashes and the exact
+decision counts, with no episode outside the ledger. Any other change stops the build.
 
 **Eight undecided episodes reviewed (29 October).** Four Florence and one Dorian
 episodes were rejected because their narratives attribute the damage to a different
