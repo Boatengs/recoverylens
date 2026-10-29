@@ -123,7 +123,9 @@ def centroids(fips: set[str]) -> pd.DataFrame:
     response.raise_for_status()
     with zipfile.ZipFile(io.BytesIO(response.content)) as archive:
         member = next(n for n in archive.namelist() if n.endswith(".txt"))
-        table = pd.read_csv(archive.open(member), sep="\t", dtype={"GEOID": str})
+        table = pd.read_csv(
+            archive.open(member), sep="\t", dtype={"GEOID": str}, encoding="latin-1"
+        )
     table.columns = [c.strip() for c in table.columns]
     table = table.loc[table.GEOID.isin(fips), ["GEOID", "NAME", "INTPTLAT", "INTPTLONG"]]
     return table.rename(
