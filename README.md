@@ -149,6 +149,21 @@ See [docs/data-quality.md](docs/data-quality.md) for validation levels and revie
 
 The commands write their analytical outputs to `data/processed/`. Raw and processed data are excluded from version control because the pipeline should reproduce them from official sources.
 
+## Pilot evidence explorer
+
+`dashboard/` is a Streamlit explorer for the North Carolina 2018 to 2020 pilot (declarations 4393, 4465 and 4543). It shows what the pipeline has assembled and which review it has passed: Public Assistance obligations by county, work category and timing; NOAA storm events that overlap each declaration; the 26 October documentary link review; and the release gates. It does not rank counties, score equity or compare funding with losses. Those stay withheld until Milestone 5 validation.
+
+The [dashboard data workflow](.github/workflows/dashboard-data.yml) runs the pilot pipeline from official sources and commits compact tables to `dashboard/data/`. To run the explorer locally:
+
+```bash
+pip install -r dashboard/requirements.txt
+streamlit run dashboard/Home.py
+```
+
+On Streamlit Community Cloud, set the main file path to `dashboard/Home.py`.
+
+If current NOAA or FEMA files differ from the snapshots the link review was made on, the build does not replay those decisions and the explorer labels the candidates as unreviewed. Inflation adjusted damage appears only when the BLS CPI download succeeds.
+
 ## Repository structure
 
 ```text
@@ -156,6 +171,7 @@ src/recoverylens/   Reusable data-access and metric code
 tests/              Unit tests for transformations and scoring
 docs/               Methodology, source registry, and project roadmap
 wiki/               Reviewable source for the published GitHub Wiki
+dashboard/          Streamlit pilot evidence explorer and its committed data
 data/               Local-only raw and processed data directories
 .github/workflows/  Automated quality checks
 ```

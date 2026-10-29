@@ -1,0 +1,262 @@
+{
+  "built_at": "2026-10-29T10:22:31+00:00",
+  "release_posture": "Pre-release evidence explorer. Bounded pilot only; no rankings, scores or funding-gap estimates.",
+  "milestone_5_complete": false,
+  "review": {
+    "replayed": false,
+    "detail": "Current NOAA or FEMA files differ from the reviewed snapshots, so the 26 October decisions were not replayed. Candidates below are unreviewed for this build.",
+    "error": "ValueError: Declaration snapshot changed; repeat review"
+  },
+  "review_ledger": {
+    "reviewer": "Codex documentary review; not independent expert approval",
+    "review_date": "2026-10-26",
+    "sha256": "58ece429cbd8e459fad128a55cee514e02134b469381aa2d6704b7e192e1bbed"
+  },
+  "funding_status": [
+    {
+      "disaster_number": 4393,
+      "publication_status": "ready",
+      "project_count": 2669,
+      "category_coverage_rate": 1.0,
+      "complete_timing_rate": 1.0,
+      "first_obligation_days_median": 342.0,
+      "last_obligation_days_median": 410.0
+    },
+    {
+      "disaster_number": 4465,
+      "publication_status": "ready",
+      "project_count": 491,
+      "category_coverage_rate": 1.0,
+      "complete_timing_rate": 1.0,
+      "first_obligation_days_median": 210.0,
+      "last_obligation_days_median": 215.0
+    },
+    {
+      "disaster_number": 4543,
+      "publication_status": "ready",
+      "project_count": 97,
+      "category_coverage_rate": 1.0,
+      "complete_timing_rate": 1.0,
+      "first_obligation_days_median": 241.0,
+      "last_obligation_days_median": 697.0
+    }
+  ],
+  "inflation_available": false,
+  "gates": {
+    "historical_availability_verified": false,
+    "model_context_approved": false,
+    "geography_reviewed": false,
+    "independent_review_complete": false,
+    "model_linkage_approved": false,
+    "national_model_ready": false
+  },
+  "processed_summaries": {
+    "pilot_losses": {
+      "status": "review_required",
+      "pilot": [
+        {
+          "disaster_number": 4393,
+          "candidate_rows": 160,
+          "candidate_counties": 47,
+          "complete_damage_candidates": 142,
+          "ambiguous_candidates": 0,
+          "confirmed_links": 0
+        },
+        {
+          "disaster_number": 4465,
+          "candidate_rows": 60,
+          "candidate_counties": 17,
+          "complete_damage_candidates": 53,
+          "ambiguous_candidates": 0,
+          "confirmed_links": 0
+        },
+        {
+          "disaster_number": 4543,
+          "candidate_rows": 35,
+          "candidate_counties": 11,
+          "complete_damage_candidates": 35,
+          "ambiguous_candidates": 35,
+          "confirmed_links": 0
+        }
+      ],
+      "declaration_rows": 263,
+      "limitation": "County/date candidates are not reviewed causal links"
+    },
+    "historical_context": {
+      "source_counties": 3142,
+      "requested_counties": 61,
+      "matched_counties": 61,
+      "missing_counties": 0,
+      "matched_with_baseline_values": 61,
+      "published_zero_population_moe_count": 3029,
+      "requested_zero_population_moe_count": 61,
+      "publication_status": "review_required",
+      "historical_availability_verified": false,
+      "model_context_approved": false,
+      "geography_policy": "exact keys only; boundary continuity not certified",
+      "acs_period": [
+        2012,
+        2016
+      ],
+      "svi_vintage": 2016,
+      "requested_input_sha256": "3b32c5f1bcc51a52976a5d721ba2a1998256772f49b019ec73dd35d7dfc82ef4"
+    },
+    "boundary_audit": {
+      "requested_counties": 61,
+      "source_note_rows": 95,
+      "county_note_rows_2016_2020": 26,
+      "pilot_county_note_rows": 17,
+      "pilot_counties_with_notes": 13,
+      "flagged_county_fips": [
+        "37009",
+        "37019",
+        "37037",
+        "37045",
+        "37047",
+        "37057",
+        "37071",
+        "37085",
+        "37149",
+        "37153",
+        "37155",
+        "37165",
+        "37179"
+      ],
+      "geography_reviewed": false,
+      "policy": "Notes are a screen, not a complete boundary crosswalk. Effective and submission dates do not establish the first affected Census product.",
+      "source": {
+        "url": "https://www2.census.gov/geo/docs/reference/bndrychange/st37_nc_gcn_2014_2020.txt",
+        "filename": "nc_notes_2014_2020.txt",
+        "sha256": "efe8e4cbd6842e04b549a3ef0beddb81f428c356e46d67ec4baba1f97aff9918",
+        "bytes": 18142,
+        "retrieved_at": "2026-10-29T10:22:26.987254+00:00"
+      },
+      "requested_input_sha256": "3b32c5f1bcc51a52976a5d721ba2a1998256772f49b019ec73dd35d7dfc82ef4"
+    },
+    "inflation": null
+  },
+  "committed_evidence": {
+    "m5-pilot-2026-10-24.json": {
+      "assessment_date": "2026-10-24",
+      "milestone_5_complete": false,
+      "loss_candidates": {
+        "status": "review_required",
+        "pilot": [
+          {
+            "disaster_number": 4393,
+            "candidate_rows": 160,
+            "candidate_counties": 47,
+            "complete_damage_candidates": 142,
+            "ambiguous_candidates": 0,
+            "confirmed_links": 0
+          },
+          {
+            "disaster_number": 4465,
+            "candidate_rows": 60,
+            "candidate_counties": 17,
+            "complete_damage_candidates": 53,
+            "ambiguous_candidates": 0,
+            "confirmed_links": 0
+          },
+          {
+            "disaster_number": 4543,
+            "candidate_rows": 35,
+            "candidate_counties": 11,
+            "complete_damage_candidates": 35,
+            "ambiguous_candidates": 35,
+            "confirmed_links": 0
+          }
+        ],
+        "declaration_rows": 263,
+        "sources": {
+          "declarations_url": "https://www.fema.gov/api/open/v2/DisasterDeclarationsSummaries?%24filter=state+eq+%27NC%27+and+declarationType+eq+%27DR%27+and+incidentBeginDate+le+%272020-12-31T23%3A59%3A59.999Z%27+and+%28incidentEndDate+ge+%272018-01-01T00%3A00%3A00.000Z%27+or+incidentEndDate+eq+null%29&%24top=1000&%24orderby=disasterNumber",
+          "retrieved_at": "2026-10-24T21:05:45.906013+00:00",
+          "declarations_sha256": "0a4206e38ebd8d5dccf8710d8759dfb35ed2741e3ea13ed35145ae3f747cb629",
+          "noaa": [
+            {
+              "byte_size": 9585982,
+              "data_year": 2018,
+              "dataset": "details",
+              "filename": "StormEvents_details-ftp_v1.0_d2018_c20260323.csv.gz",
+              "noaa_created_on": "2026-03-23",
+              "retrieved_at": "2026-10-24T21:04:38Z",
+              "schema_version": "1.0",
+              "sha256": "19702480f50cd2a8dacce5e57891feba156afb87b1ea5cbb4eaeda69d2b964a4",
+              "source_url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2018_c20260323.csv.gz"
+            },
+            {
+              "byte_size": 11602648,
+              "data_year": 2019,
+              "dataset": "details",
+              "filename": "StormEvents_details-ftp_v1.0_d2019_c20260323.csv.gz",
+              "noaa_created_on": "2026-03-23",
+              "retrieved_at": "2026-10-24T21:04:38Z",
+              "schema_version": "1.0",
+              "sha256": "f5043ecc776818b0feffdf1e0fcbaf63329db0635eab1057c7b8ba00ef332e3b",
+              "source_url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2019_c20260323.csv.gz"
+            },
+            {
+              "byte_size": 10444606,
+              "data_year": 2020,
+              "dataset": "details",
+              "filename": "StormEvents_details-ftp_v1.0_d2020_c20260323.csv.gz",
+              "noaa_created_on": "2026-03-23",
+              "retrieved_at": "2026-10-23T18:53:22Z",
+              "schema_version": "1.0",
+              "sha256": "895c56fd46991c4d9a135d67558dc4b447a02a2314efac0ace645135b98f9c9d",
+              "source_url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2020_c20260323.csv.gz"
+            }
+          ]
+        },
+        "limitation": "County/date candidates are not reviewed causal links"
+      },
+      "fema_metadata_sha256": "b1193bde32f715b7b09e38062bc0b4de7d582202c2ea3767cfda8e889afa1ce1",
+      "decision": "withhold model fit: no confirmed loss links, historical context not assembled, valuation and coverage not certified"
+    },
+    "historical-context-2026-10-27.json": {
+      "source_counties": 3142,
+      "requested_counties": 61,
+      "matched_counties": 61,
+      "missing_counties": 0,
+      "matched_with_baseline_values": 61,
+      "published_zero_population_moe_count": 3029,
+      "requested_zero_population_moe_count": 61,
+      "publication_status": "review_required",
+      "historical_availability_verified": false,
+      "model_context_approved": false,
+      "geography_policy": "exact keys only; boundary continuity not certified",
+      "acs_period": [
+        2012,
+        2016
+      ],
+      "svi_vintage": 2016,
+      "requested_input_sha256": "3b32c5f1bcc51a52976a5d721ba2a1998256772f49b019ec73dd35d7dfc82ef4"
+    },
+    "boundary-audit-2026-10-27.json": {
+      "requested_counties": 61,
+      "source_note_rows": 95,
+      "county_note_rows_2016_2020": 26,
+      "pilot_county_note_rows": 17,
+      "pilot_counties_with_notes": 13,
+      "flagged_county_fips": [
+        "37009",
+        "37019",
+        "37037",
+        "37045",
+        "37047",
+        "37057",
+        "37071",
+        "37085",
+        "37149",
+        "37153",
+        "37155",
+        "37165",
+        "37179"
+      ],
+      "geography_reviewed": false,
+      "policy": "Notes are a screen, not a complete boundary crosswalk. Effective and submission dates do not establish the first affected Census product.",
+      "requested_input_sha256": "3b32c5f1bcc51a52976a5d721ba2a1998256772f49b019ec73dd35d7dfc82ef4"
+    }
+  },
+  "pilot_county_count": 61
+}

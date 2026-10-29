@@ -1,0 +1,25 @@
+disaster_number,damage_category_code,damage_category_label,damage_category_group,damage_category_status,project_count,unique_project_count,net_total_obligated,absolute_total_obligated,valid_first_timing_count,first_obligation_days_p25,first_obligation_days_median,first_obligation_days_p75,valid_last_timing_count,last_obligation_days_median,valid_window_count,obligation_window_days_median
+4393,A,Debris Removal,emergency_work,mapped,315,315,163692524.48,163692524.48,315,210.0,266.0,342.0,315,284.0,315,0.0
+4393,B,Emergency Protective Measures,emergency_work,mapped,544,544,190150402.61,190150402.61,544,204.0,258.0,342.0,544,266.0,544,0.0
+4393,C,Roads and Bridges,permanent_work,mapped,303,303,86561449.45,86561449.45,303,350.5,627.0,900.5,303,952.0,303,0.0
+4393,D,Water Control Facilities,permanent_work,mapped,68,68,23783158.22,23783158.22,68,265.5,404.0,608.25,68,429.5,68,0.0
+4393,E,Buildings and Equipment,permanent_work,mapped,601,601,62428025.58,62428025.58,601,279.0,405.0,536.0,601,425.0,601,0.0
+4393,F,Utilities,permanent_work,mapped,245,245,80040205.86,80040205.86,245,250.0,363.0,500.0,245,410.0,245,0.0
+4393,G,"Parks, Recreational, and Other Facilities",permanent_work,mapped,228,228,109997397.34,109997397.34,228,291.0,405.0,536.0,228,433.0,228,0.0
+4393,Z,Management Costs,management_costs,mapped,365,365,74644858.68,74644858.68,365,273.0,420.0,595.0,365,1092.0,365,634.0
+4465,A,Debris Removal,emergency_work,mapped,65,65,11221779.52,11221779.52,65,151.0,180.0,210.0,65,187.0,65,0.0
+4465,B,Emergency Protective Measures,emergency_work,mapped,157,157,10568785.59,10568785.59,157,139.0,166.0,220.0,157,167.0,157,0.0
+4465,C,Roads and Bridges,permanent_work,mapped,30,30,1105732.77,1105732.77,30,336.0,495.0,564.0,30,495.0,30,0.0
+4465,D,Water Control Facilities,permanent_work,mapped,3,3,53331.89,53331.89,3,270.0,320.0,390.5,3,320.0,3,0.0
+4465,E,Buildings and Equipment,permanent_work,mapped,51,51,2696213.76,2696213.76,51,200.0,215.0,286.0,51,215.0,51,0.0
+4465,F,Utilities,permanent_work,mapped,30,30,6933916.15,6933916.15,30,189.0,205.0,221.0,30,212.5,30,0.0
+4465,G,"Parks, Recreational, and Other Facilities",permanent_work,mapped,29,29,26696062.53,26696062.53,29,227.0,248.0,410.0,29,300.0,29,0.0
+4465,Z,Management Costs,management_costs,mapped,126,126,4166312.87,4166312.87,126,167.0,210.0,261.0,126,983.0,126,742.0
+4543,A,Debris Removal,emergency_work,mapped,13,13,767973.91,767973.91,13,208.0,214.0,222.0,13,697.0,13,483.0
+4543,B,Emergency Protective Measures,emergency_work,mapped,7,7,210890.05,210890.05,7,150.5,164.0,191.5,7,697.0,7,533.0
+4543,C,Roads and Bridges,permanent_work,mapped,51,51,10769744.49,10769744.49,51,227.5,453.0,468.0,51,697.0,51,270.0
+4543,D,Water Control Facilities,permanent_work,mapped,1,1,7650.0,7650.0,1,150.0,150.0,150.0,1,697.0,1,547.0
+4543,E,Buildings and Equipment,permanent_work,mapped,2,2,9000.0,9000.0,2,157.0,185.0,213.0,2,697.0,2,512.0
+4543,F,Utilities,permanent_work,mapped,7,7,1104273.58,1104273.58,7,171.0,193.0,210.5,7,697.0,7,609.0
+4543,G,"Parks, Recreational, and Other Facilities",permanent_work,mapped,4,4,94444.01,94444.01,4,184.0,218.0,257.0,4,697.0,4,479.0
+4543,Z,Management Costs,management_costs,mapped,12,12,680828.46,680828.46,12,164.5,208.5,285.5,12,726.5,12,488.5
