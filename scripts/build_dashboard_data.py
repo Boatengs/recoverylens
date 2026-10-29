@@ -341,9 +341,9 @@ def release_gates(review: dict) -> tuple[list[dict], dict]:
     gates = [
         {"gate": "Storm-to-declaration link review (pilot)",
          "status": "documentary review complete" if review.get("replayed") else "not replayed",
-         "evidence": f"{sum(counts.values())} links decided from NOAA narratives; {unresolved} "
-                     "left unresolved. Codex 26 Oct, Claude 29 Oct. Replayed by content against "
-                     "current NOAA and FEMA files."},
+         "evidence": f"{sum(counts.values())} candidate links reviewed from NOAA narratives; "
+                     f"{unresolved} left unresolved. Codex 26 Oct, Claude 29 Oct. Replayed "
+                     "by content against current NOAA and FEMA files."},
         {"gate": "Independent interpretation review", "status": "outstanding",
          "evidence": "No reviewer outside the build has checked the interpretation."},
         {"gate": "County geography",
@@ -434,8 +434,12 @@ def main() -> None:
         "milestone_5_status": "Pilot scope complete; independent review outstanding",
         "review": review,
         "review_ledger": {
-            "reviewer": episodes["reviewer"],
-            "review_date": episodes["review_date"],
+            "reviewer": "Codex 26 Oct and Claude 29 Oct 2026; documentary review, not "
+            "independent expert approval"
+            if any(e.get("reviewer", "").startswith("Claude") for e in episodes["episodes"])
+            else episodes["reviewer"],
+            "review_date": max(e.get("review_date", episodes["review_date"])
+                               for e in episodes["episodes"]),
             "sha256": sha256(Path("docs/reviews/pilot-episodes.json")),
         },
         "funding_status": funding_status,
