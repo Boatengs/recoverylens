@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-10-29T12:52:30+00:00",
+  "built_at": "2026-10-29T13:12:50+00:00",
   "release_posture": "Pre-release evidence explorer. Bounded pilot only; no rankings, scores or funding-gap estimates.",
   "milestone_5_complete": false,
   "review": {
@@ -130,7 +130,7 @@
         "filename": "nc_notes_2014_2020.txt",
         "sha256": "efe8e4cbd6842e04b549a3ef0beddb81f428c356e46d67ec4baba1f97aff9918",
         "bytes": 18142,
-        "retrieved_at": "2026-10-29T12:52:17.373345+00:00"
+        "retrieved_at": "2026-10-29T13:12:38.393694+00:00"
       },
       "requested_input_sha256": "3b32c5f1bcc51a52976a5d721ba2a1998256772f49b019ec73dd35d7dfc82ef4"
     },
