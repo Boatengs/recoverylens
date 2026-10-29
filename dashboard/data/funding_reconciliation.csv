@@ -1,0 +1,4 @@
+publication_status,activity_rows,project_rows,reconciled_projects,unreconciled_projects,dated_funding_candidate_projects,negative_activity_count,invalid_date_count,unsupported_status_count,activity_net_dollars,project_net_dollars,historical_availability_verified,national_model_ready,disaster_number
+review_required,3570,2669,2669,0,2669,523,0,0,791298022.22,791298022.22,False,False,4393
+review_required,639,491,491,0,491,117,0,0,63442135.08,63442135.08,False,False,4465
+review_required,212,97,97,0,97,22,0,0,13644804.50,13644804.50,False,False,4543
