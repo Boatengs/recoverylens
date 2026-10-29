@@ -59,8 +59,9 @@ fig = px.scatter_geo(
     hover_data={column: ":,.2f", "latitude": False, "longitude": False},
     color_discrete_sequence=[BLUE],
 )
-fig.update_geos(scope="usa", fitbounds="locations", showsubunits=True, subunitcolor="#9ca3af",
-                showland=True, landcolor="#f9fafb")
+# Explicit North Carolina framing; newer Streamlit plotly bundles ignore fitbounds here.
+fig.update_geos(scope="usa", center=dict(lat=35.25, lon=-79.6), projection_scale=5.2,
+                showsubunits=True, subunitcolor="#9ca3af", showland=True, landcolor="#f9fafb")
 fig.update_layout(height=520, margin=dict(l=0, r=0, t=10, b=0))
 st.plotly_chart(fig, use_container_width=True)
 footnote(f"Circles sit at 2016 Census county centroids and are sized by the selected measure. "
