@@ -18,15 +18,32 @@ DISASTER_NAMES = {
 INK, MUTED, BLUE, AMBER, RED, GREEN = (
     "#1f2937", "#6b7280", "#1d4ed8", "#b45309", "#b91c1c", "#047857")
 GATE_TEXT = (
-    "Pre-release evidence explorer for the North Carolina 2018 to 2020 pilot. It shows what the "
-    "pipeline has assembled and what review it has passed. It does not rank counties, score "
-    "equity or estimate funding gaps; those stay withheld until Milestone 5 validation."
+    "RecoveryLens pilot release v1.0: a retrospective description of three North Carolina "
+    "disaster declarations, 2018 to 2020. It does not rank counties, claim causes or estimate "
+    "funding gaps, and no reviewer outside the build has checked it yet."
 )
+YEAR_TO_DISASTER = {2018: 4393, 2019: 4465, 2020: 4543}
 
 
 @st.cache_data
 def csv(name: str, **kwargs) -> pd.DataFrame:
     return pd.read_csv(DATA / name, dtype={"county_fips": str}, **kwargs)
+
+
+def pilot_csv(name: str) -> pd.DataFrame:
+    path = DATA / "pilot" / name
+    return csv(f"pilot/{name}") if path.exists() else pd.DataFrame()
+
+
+def pilot_json(name: str) -> dict:
+    path = DATA / "pilot" / name
+    return json.loads(path.read_text()) if path.exists() else {}
+
+
+def usd(value, digits: int = 2) -> str:
+    if value is None or pd.isna(value):
+        return "n/a"
+    return f"{'-' if value < 0 else ''}${abs(value):,.{digits}f}"
 
 
 @st.cache_data

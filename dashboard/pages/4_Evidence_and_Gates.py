@@ -13,13 +13,13 @@ info = status()
 st.title("Evidence and release gates")
 gate_banner()
 
-st.subheader("Gates that must pass before any comparison or ranking")
-gates = pd.DataFrame([
-    {"Gate": "Milestone 5 complete", "Status": info["milestone_5_complete"]},
-    *[{"Gate": k.replace("_", " ").capitalize(), "Status": v} for k, v in info["gates"].items()],
-])
-gates["Status"] = gates["Status"].map({True: "passed", False: "not yet"})
+st.subheader("Release gates for pilot v1.0")
+st.markdown(f"**Milestone 5:** {info.get('milestone_5_status', 'not recorded')}")
+gates = pd.DataFrame(info["gates"]).rename(
+    columns={"gate": "Gate", "status": "Status", "evidence": "Evidence"})
 st.dataframe(gates, hide_index=True, use_container_width=True)
+footnote("A gate marked outstanding or out of scope is a stated limit of this release, not a "
+         "pending fix hidden from view.")
 
 st.subheader("County context and boundary screen")
 counties = csv("pilot_counties.csv")
