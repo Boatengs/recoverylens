@@ -1,11 +1,12 @@
 # RecoveryLens
 
-Annual CPI-adjusted NOAA losses are available through
-`python -m recoverylens.inflation --start-year 2005 --end-year 2005 --base-year 2022`.
-See the [inflation guide](docs/inflation.md) and
-[historical panel readiness assessment](docs/historical-panel-readiness.md).
-
 **U.S. Disaster Recovery Funding & Equity Observatory**
+
+> **Pilot release v1.0 (29 October 2026).** A retrospective description of FEMA Public
+> Assistance across three North Carolina declarations (Florence 2018, Dorian 2019,
+> February 2020 storms), with reviewed storm links, a fixed funding window, 2022 dollar
+> prices and an honest model check. Read the [pilot release](docs/pilot-release.md) or run
+> the [explorer](#pilot-evidence-explorer). Independent review is outstanding.
 
 RecoveryLens is an open-source decision-intelligence project for examining whether federal disaster-recovery resources align with disaster exposure, documented losses, population, and social vulnerability across U.S. counties.
 
@@ -43,9 +44,24 @@ The completed foundation and current funding-pipeline slice include:
 
 The repository intentionally does **not** publish a national ranking yet. A ranking will only be released after funding, loss, population, and vulnerability inputs have been validated together.
 
-## Current milestone: NOAA loss and impact pipeline
+## Pilot release v1.0: what it found
 
-Milestone 3 includes a version-aware NOAA/NCEI Storm Events downloader, a transparent property- and crop-damage parser, auditable injury/fatality aggregation, and a FEMA–NOAA candidate-link assessment. The downloader discovers annual details, fatalities, and locations files from the official directory; selects revisions using the schema version and NOAA creation date encoded in each filename; downloads files atomically; and records byte sizes and SHA-256 checksums in a manifest. Impact pipelines preserve missingness, calculate only known totals, and reconcile event death counts to unique fatality records without double-counting them. The matching assessment uses county identity and overlapping incident windows to expose zero, one, or multiple possible declarations; it never labels those candidates as confirmed causal matches.
+For 98 county rows across declarations 4393, 4465 and 4543:
+
+- A ridge model using population, known loss per resident and SVI, trained on 2018 and
+  2019 counties, did **not** beat a median guess on 2020 counties ($10.06 against $8.21
+  mean absolute error per resident). The result holds with a one year window and without
+  counties that have Census border notes.
+- Much Public Assistance money cannot be placed in a county: 29% of Florence's and 89% of
+  the 2020 declaration's net federal share within two years went to projects not coded to
+  a single county. It is reported, never spread.
+- 46 rows meet every review gate; the other 52 stay visible with the reason.
+
+Details, definitions and limits: [docs/pilot-release.md](docs/pilot-release.md).
+
+## NOAA loss and impact pipeline
+
+Milestone 3 includes a version-aware NOAA/NCEI Storm Events downloader, a transparent property- and crop-damage parser, auditable injury/fatality aggregation, and a FEMA–NOAA candidate-link assessment. The downloader discovers annual details, fatalities, and locations files from the official directory; selects revisions using the schema version and NOAA creation date encoded in each filename; downloads files atomically; and records byte sizes and SHA-256 checksums in a manifest. Impact pipelines preserve missingness, calculate only known totals, and reconcile event death counts to unique fatality records without double-counting them. The matching assessment uses county identity and overlapping incident windows to expose zero, one, or multiple possible declarations; it never labels those candidates as confirmed causal matches. Candidates become links only through the [documentary review ledger](docs/reviews/pilot-episodes.json).
 
 ## Planned data sources
 
@@ -151,9 +167,9 @@ The commands write their analytical outputs to `data/processed/`. Raw and proces
 
 ## Pilot evidence explorer
 
-`dashboard/` is a Streamlit explorer for the North Carolina 2018 to 2020 pilot (declarations 4393, 4465 and 4543). It shows what the pipeline has assembled and which review it has passed: Public Assistance obligations by county, work category and timing; NOAA storm events that overlap each declaration; the 26 October documentary link review; and the release gates. It does not rank counties, score equity or compare funding with losses. Those stay withheld until Milestone 5 validation.
+`dashboard/` is a Streamlit explorer for pilot v1.0. Its pages cover the declarations and headline evidence, a county map, Public Assistance funding by category, attribution and timing, storm losses and link review decisions, release gates with their evidence, the pilot analysis (county indicators, model check, county profiles and CSV download) and methodology with sources. County tables are sorted alphabetically; nothing is ranked.
 
-The [dashboard data workflow](.github/workflows/dashboard-data.yml) runs the pilot pipeline from official sources and commits compact tables to `dashboard/data/`. To run the explorer locally:
+The [dashboard data workflow](.github/workflows/dashboard-data.yml) runs the whole pilot pipeline from official sources and commits compact outputs to `dashboard/data/`. To run the explorer locally:
 
 ```bash
 pip install -r dashboard/requirements.txt
@@ -162,7 +178,7 @@ streamlit run dashboard/Home.py
 
 On Streamlit Community Cloud, set the main file path to `dashboard/Home.py`.
 
-If current NOAA or FEMA files differ from the snapshots the link review was made on, the build does not replay those decisions and the explorer labels the candidates as unreviewed. Inflation adjusted damage appears only when the BLS CPI download succeeds.
+Link decisions are replayed only when current NOAA and FEMA files reproduce the reviewed narrative text and decision counts; otherwise the build stops. When BLS refuses the CPI download, the build uses the committed annual extract and records that it did.
 
 ## Repository structure
 
@@ -186,7 +202,7 @@ data/               Local-only raw and processed data directories
 
 ## Status
 
-RecoveryLens is under active development. The current code is suitable for method review and bounded data pulls, not operational emergency management or official federal reporting.
+Pilot release v1.0 covers three North Carolina declarations and is suitable for method review and discussion. It is not operational emergency management guidance, official federal reporting, or a national finding. Open items: independent interpretation review, a national panel and map, and a demonstration video. See the [roadmap](docs/roadmap.md).
 
 ## Disclaimer
 
