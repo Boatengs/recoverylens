@@ -69,6 +69,7 @@ st.subheader("Reconciliation against award activities")
 recon = csv("funding_reconciliation.csv")
 recon = recon.loc[recon.disaster_number.eq(disaster)].T.reset_index()
 recon.columns = ["field", "value"]
+recon["value"] = recon["value"].astype(str)
 st.dataframe(recon, hide_index=True, use_container_width=True)
 footnote("Award activities are summed per project and compared with funded project totals. "
          "Negative activities (deobligations) are kept.")
