@@ -23,6 +23,12 @@
       "net_in_window_nominal": 303737225.53,
       "net_in_window_county_attributed_nominal": 189201200.43,
       "net_in_window_not_county_attributed_nominal": 114536025.1,
+      "net_in_window_attributed_outside_pa_designation_nominal": 2604970.63,
+      "counties_attributed_outside_pa_designation": [
+        "37027",
+        "37097",
+        "37183"
+      ],
       "net_after_window_nominal": 487560796.69
     },
     {
@@ -36,6 +42,11 @@
       "net_in_window_nominal": 28138064.02,
       "net_in_window_county_attributed_nominal": 23458949.25,
       "net_in_window_not_county_attributed_nominal": 4679114.77,
+      "net_in_window_attributed_outside_pa_designation_nominal": 1269713.83,
+      "counties_attributed_outside_pa_designation": [
+        "37085",
+        "37183"
+      ],
       "net_after_window_nominal": 35304071.06
     },
     {
@@ -49,6 +60,10 @@
       "net_in_window_nominal": 8855846.98,
       "net_in_window_county_attributed_nominal": 1324479.19,
       "net_in_window_not_county_attributed_nominal": 7531367.79,
+      "net_in_window_attributed_outside_pa_designation_nominal": 321827.89,
+      "counties_attributed_outside_pa_designation": [
+        "37171"
+      ],
       "net_after_window_nominal": 4788957.52
     }
   ],
