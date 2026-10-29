@@ -1,6 +1,15 @@
 {
   "review_date": "2026-10-26",
-  "replay_basis": "content_verified",
+  "replay_basis": "counts_pending_pin",
+  "observed_counts": {
+    "4393:rejected": 9,
+    "4393:supported": 150,
+    "4393:unresolved": 1,
+    "4465:rejected": 5,
+    "4465:supported": 55,
+    "4487:rejected": 35,
+    "4543:supported": 35
+  },
   "current_sources": {
     "declarations_sha256": "644e2e031a6d06b58ccad81cf372d6548a4169bdad9bfa760a20f4359478532d",
     "noaa_sha256": {
@@ -12,23 +21,28 @@
   "counts": [
     {
       "disaster_number": 4393,
+      "decision": "rejected",
+      "rows": 9
+    },
+    {
+      "disaster_number": 4393,
       "decision": "supported",
       "rows": 150
     },
     {
       "disaster_number": 4393,
       "decision": "unresolved",
-      "rows": 10
+      "rows": 1
+    },
+    {
+      "disaster_number": 4465,
+      "decision": "rejected",
+      "rows": 5
     },
     {
       "disaster_number": 4465,
       "decision": "supported",
       "rows": 55
-    },
-    {
-      "disaster_number": 4465,
-      "decision": "unresolved",
-      "rows": 5
     },
     {
       "disaster_number": 4487,
@@ -37,11 +51,11 @@
     },
     {
       "disaster_number": 4543,
-      "decision": "unresolved",
+      "decision": "supported",
       "rows": 35
     }
   ],
-  "rules_sha256": "4191e57ffc978dab4019c51119c27e705c4d24e17143f68979f93c4cb407cc28",
+  "rules_sha256": "59819823b0ae62e8feb1c7ba497fbe254b6a74d5252b4c816dea472f799d63ef",
   "model_linkage_approved": false,
   "national_model_ready": false
 }
