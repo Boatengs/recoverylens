@@ -5,6 +5,7 @@ import streamlit as st
 from common import (
     AMBER,
     BLUE,
+    DATA,
     GREEN,
     csv,
     disaster_label,
@@ -43,8 +44,12 @@ footnote("Known damage is NOAA's reported property and crop loss for candidate e
          "values, in nominal dollars. Missing or invalid values stay missing; they are never "
          "counted as zero. It is not total economic impact.")
 
-st.subheader("Documentary review of candidate links (26 October 2026)")
-counts = csv("review_counts_documented.csv")
+current = review["replayed"] and (DATA / "review_counts_current.csv").exists()
+st.subheader("Review decisions on candidate links"
+             + (" (26 and 29 October 2026)" if current else " (26 October 2026)"))
+counts = csv("review_counts_current.csv" if current else "review_counts_documented.csv")
+if "label" not in counts:
+    counts["label"] = counts.disaster_number.map(disaster_label)
 melted = counts.melt(id_vars=["disaster_number", "label"],
                      value_vars=["supported", "unresolved", "rejected"],
                      var_name="decision", value_name="links")
@@ -55,9 +60,11 @@ fig = px.bar(melted, x="links", y="declaration", color="decision", orientation="
 fig.update_layout(height=300, margin=dict(l=10, r=10, t=10, b=10), barmode="stack",
                   legend=dict(orientation="h", y=-0.25))
 st.plotly_chart(fig, use_container_width=True)
-footnote("Source: docs/pilot-link-review.md. Supported means a NOAA episode narrative names the "
-         "hurricane and describes its impacts. It is a documentary review, not independent "
-         "approval, and it does not allocate every reported dollar.")
+footnote("Source: docs/reviews/pilot-episodes.json, replayed in this build. Supported means the "
+         "NOAA episode narrative ties the damage to the declared event: it names the hurricane, "
+         "or for 2020 describes the declared storms and flooding inside the incident period. "
+         "Rejected means it attributes the damage to a different weather system. This is a "
+         "documentary review, not independent approval, and it does not allocate every dollar.")
 
 st.subheader("Reviewed NOAA episodes")
 episodes = csv("review_episodes.csv")

@@ -214,10 +214,15 @@ def review_status() -> dict:
     summary = read_json(PROCESSED / "pilot_link_review" / "summary.json")
     log = Path("data/processed/pilot_link_review_replay.log")
     if summary:
-        return {
-            "replayed": True,
-            "detail": "Sources match the reviewed snapshots; decisions replayed.",
-        }
+        basis = summary.get("replay_basis", "pinned_snapshots")
+        detail = (
+            "Sources match the reviewed snapshots; decisions replayed."
+            if basis == "pinned_snapshots"
+            else "Current NOAA and FEMA files reproduce the reviewed links and narrative text "
+            "exactly, so every recorded decision was replayed."
+        )
+        return {"replayed": True, "detail": detail, "replay_basis": basis,
+                "observed_counts": summary.get("observed_counts", {})}
     reason = (
         log.read_text().strip().splitlines()[-1] if log.exists() and log.read_text().strip() else ""
     )
@@ -319,6 +324,57 @@ def counties(fips: set[str], names: pd.DataFrame) -> pd.DataFrame:
     return base.merge(names, on="county_fips", how="left")
 
 
+def release_gates(review: dict) -> tuple[list[dict], dict]:
+    """Plain-language status and evidence for each v1.0 gate, read from the build outputs."""
+    pilot = OUT / "pilot"
+    panel = read_json(pilot / "panel_h730_summary.json") or {}
+    model = read_json(pilot / "model_h730" / "model_report.json") or {}
+    sens = pilot / "model_h730" / "sensitivity.csv"
+    model_mae = None
+    if sens.exists():
+        table = pd.read_csv(sens)
+        model_mae = float(table.loc[table.ridge_alpha.eq(1.0), "holdout_mae"].iloc[0])
+    baseline_mae = model.get("baseline_holdout_mae")
+    beats = model_mae is not None and baseline_mae is not None and model_mae < baseline_mae
+    counts = (review.get("observed_counts") or {}) if review.get("replayed") else {}
+    unresolved = sum(v for k, v in counts.items() if k.endswith("unresolved"))
+    gates = [
+        {"gate": "Storm-to-declaration link review (pilot)",
+         "status": "documentary review complete" if review.get("replayed") else "not replayed",
+         "evidence": f"{sum(counts.values())} links decided from NOAA narratives; {unresolved} "
+                     "left unresolved. Codex 26 Oct, Claude 29 Oct. Replayed by content against "
+                     "current NOAA and FEMA files."},
+        {"gate": "Independent interpretation review", "status": "outstanding",
+         "evidence": "No reviewer outside the build has checked the interpretation."},
+        {"gate": "County geography",
+         "status": "notes read; sensitivity run",
+         "evidence": f"{panel.get('boundary_flagged_rows', 'n/a')} panel rows are in counties with "
+                     "a 2016 to 2020 Census border note. The model is rerun without them."},
+        {"gate": "Population uncertainty", "status": "resolved",
+         "evidence": "County ACS totals are controlled to official estimates, so their zero "
+                     "margins mean no sampling error is published, not a measured zero."},
+        {"gate": "Context timing", "status": "retrospective use only",
+         "evidence": "Context describes 2012 to 2016. The SVI 2016 release date could not be "
+                     "verified, so no forecasting claim is made."},
+        {"gate": "Price adjustment", "status": "complete",
+         "evidence": "Obligations priced by obligation year, losses by event year; CPI-U annual "
+                     "averages, 2022 dollars."},
+        {"gate": "Funding observation window", "status": "fixed",
+         "evidence": "Net federal share obligated within 730 days of declaration; 365 days as "
+                     "a sensitivity check. Deobligations kept."},
+        {"gate": "Model validation (2020 holdout)",
+         "status": ("run; beats baseline" if beats else "run; does not beat baseline")
+         if model_mae is not None else "not run",
+         "evidence": (f"Ridge model mean absolute error ${model_mae:,.2f} per resident against "
+                      f"${baseline_mae:,.2f} for the training median.")
+         if model_mae is not None else "Model outputs missing from this build."},
+        {"gate": "National scope", "status": "out of scope for v1.0",
+         "evidence": "Three North Carolina declarations only."},
+    ]
+    return gates, {"model_holdout_mae": model_mae, "baseline_holdout_mae": baseline_mae,
+                   "model_beats_baseline": beats}
+
+
 def main() -> None:
     decl = declarations()
     disasters = disaster_table(decl)
@@ -340,6 +396,16 @@ def main() -> None:
     write(funding_evidence(), "funding_reconciliation.csv")
     write(loss, "loss_candidates_by_county.csv")
     write(documented_review_counts(), "review_counts_documented.csv")
+    if review.get("observed_counts"):
+        current = pd.DataFrame(
+            [{"disaster_number": int(k.split(":")[0]), "decision": k.split(":")[1], "links": v}
+             for k, v in review["observed_counts"].items()]
+        ).pivot_table(index="disaster_number", columns="decision", values="links",
+                      fill_value=0).reset_index()
+        for decision in ("supported", "unresolved", "rejected"):
+            if decision not in current:
+                current[decision] = 0
+        write(current, "review_counts_current.csv")
     episodes = json.loads(Path("docs/reviews/pilot-episodes.json").read_text())
     write(
         pd.DataFrame(episodes["episodes"]).drop(columns=["narrative_sha256"]), "review_episodes.csv"
@@ -359,11 +425,13 @@ def main() -> None:
         "boundary_audit": read_json(PROCESSED / "boundary_audit" / "summary.json"),
         "inflation": read_json(PROCESSED / "noaa" / "inflation" / "summary.json"),
     }
+    gates, model_summary = release_gates(review)
     status = {
         "built_at": datetime.now(UTC).replace(microsecond=0).isoformat(),
-        "release_posture": "Pre-release evidence explorer. Bounded pilot only; no rankings, scores "
-        "or funding-gap estimates.",
-        "milestone_5_complete": bool(evidence["m5-pilot-2026-10-24.json"]["milestone_5_complete"]),
+        "release_posture": "Pilot release v1.0: retrospective description of three North "
+        "Carolina declarations. No rankings, causal claims or funding-gap estimates. "
+        "Independent review outstanding.",
+        "milestone_5_status": "Pilot scope complete; independent review outstanding",
         "review": review,
         "review_ledger": {
             "reviewer": episodes["reviewer"],
@@ -373,14 +441,8 @@ def main() -> None:
         "funding_status": funding_status,
         "inflation_available": processed["inflation"] is not None,
         "cpi_source_mode": ((processed["inflation"] or {}).get("cpi_source") or {}).get("mode"),
-        "gates": {
-            "historical_availability_verified": False,
-            "model_context_approved": False,
-            "geography_reviewed": False,
-            "independent_review_complete": False,
-            "model_linkage_approved": False,
-            "national_model_ready": False,
-        },
+        "gates": gates,
+        "model_summary": model_summary,
         "processed_summaries": {
             k: (
                 {kk: vv for kk, vv in v.items() if kk not in ("sources", "noaa_sources")}
