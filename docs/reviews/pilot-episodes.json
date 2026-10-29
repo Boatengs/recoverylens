@@ -7,6 +7,15 @@
     "2019": "f5043ecc776818b0feffdf1e0fcbaf63329db0635eab1057c7b8ba00ef332e3b",
     "2020": "895c56fd46991c4d9a135d67558dc4b447a02a2314efac0ace645135b98f9c9d"
   },
+  "expected_counts": {
+    "4393:rejected": 9,
+    "4393:supported": 150,
+    "4393:unresolved": 1,
+    "4465:rejected": 5,
+    "4465:supported": 55,
+    "4487:rejected": 35,
+    "4543:supported": 35
+  },
   "episodes": [
     {
       "disaster_number": 4393,
@@ -179,6 +188,5 @@
       "review_date": "2026-10-29",
       "require_incident_period_overlap": true
     }
-  ],
-  "expected_counts_pending": true
+  ]
 }
