@@ -106,4 +106,11 @@ The 2005 live run processed 53,976 NOAA events using published CPI values of 195
 
 ## County context validation
 
-The four official source downloads were checksum-verified: 3,222 ACS rows and 3,144 national SVI rows, with all SVI keys matched. All 78 unmatched ACS keys are Puerto Rico municipalities. Population MOEs comprise 3,095 controlled estimates and 127 observed margins; controlled values never become zero uncertainty. One matched county lacks a numeric income estimate. See the [county context guide](https://github.com/Boatengs/recoverylens/blob/main/docs/county-context.md) and [model card](https://github.com/Boatengs/recoverylens/blob/main/docs/model-card.md).
+The four official source downloads were checksum-verified: 3,222 ACS rows and 3,144 national SVI rows, with all SVI keys matched. All 78 unmatched ACS keys are Puerto Rico municipalities. Population MOEs comprise 3,095 controlled estimates and 127 observed margins; the importer retains controlled status and withholds a numeric MOE. This implementation policy must not be read as a claim that controlled estimates have nonzero sampling error or that zero sampling error eliminates nonsampling uncertainty. One matched county lacks a numeric income estimate. See the [county context guide](https://github.com/Boatengs/recoverylens/blob/main/docs/county-context.md) and [model card](https://github.com/Boatengs/recoverylens/blob/main/docs/model-card.md).
+
+## Population uncertainty follow-up
+
+Census methodology permits zero sampling error for verified controlled estimates.
+The imported SVI population zeros still require an exact S0601 annotation check.
+See [verification evidence](https://github.com/Boatengs/recoverylens/blob/main/docs/population-uncertainty.md).
+No model gate is approved by this documentation update. Dashboard work remains paused.
