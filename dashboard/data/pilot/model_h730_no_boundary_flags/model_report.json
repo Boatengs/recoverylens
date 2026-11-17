@@ -80,10 +80,10 @@
   ],
   "baseline_holdout_mae": 8.404584542259173,
   "baseline_training_median": 11.30924052569489,
-  "outlier_mad": 10.456394169618239,
-  "outlier_center": 3.183045416241379,
+  "outlier_mad": 10.456394169618243,
+  "outlier_center": 3.183045416241378,
   "interpretation": "Residuals describe this model, not unmet entitlement or causal gaps",
   "validation_scope": "later years of observed counties; not unseen-county validation",
   "boundary_flagged_excluded": true,
-  "input_sha256": "8c16451ae2d8ea9d7d997c1dc36dba66a07f423dfe535db0bfc3a9c5bf398416"
+  "input_sha256": "456b35c2100cc773a3ec96470b690ee8352bc55f8f805a9f0658592d460f01c7"
 }

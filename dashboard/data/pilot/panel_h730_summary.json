@@ -19,7 +19,7 @@
       "projects_reconciled": 2669,
       "projects_total": 2669,
       "all_projects_dated_candidates": true,
-      "net_federal_share_all_dates_nominal": 791298022.22,
+      "net_federal_share_all_dates_nominal": 791060158.09,
       "net_in_window_nominal": 629402025.65,
       "net_in_window_county_attributed_nominal": 446725190.62,
       "net_in_window_not_county_attributed_nominal": 182676835.03,
@@ -29,7 +29,7 @@
         "37097",
         "37183"
       ],
-      "net_after_window_nominal": 161895996.57
+      "net_after_window_nominal": 161658132.44
     },
     {
       "disaster_number": 4465,

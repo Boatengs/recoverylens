@@ -2,11 +2,11 @@ disaster_number,damage_category_code,damage_category_label,damage_category_group
 4393,A,Debris Removal,emergency_work,mapped,315,315,163692524.48,163692524.48,315,210.0,266.0,342.0,315,284.0,315,0.0
 4393,B,Emergency Protective Measures,emergency_work,mapped,544,544,190150402.61,190150402.61,544,204.0,258.0,342.0,544,266.0,544,0.0
 4393,C,Roads and Bridges,permanent_work,mapped,303,303,86561449.45,86561449.45,303,350.5,627.0,900.5,303,952.0,303,0.0
-4393,D,Water Control Facilities,permanent_work,mapped,68,68,23783158.22,23783158.22,68,265.5,404.0,608.25,68,429.5,68,0.0
+4393,D,Water Control Facilities,permanent_work,mapped,68,68,23567837.2,23567837.2,68,265.5,404.0,608.25,68,429.5,68,0.0
 4393,E,Buildings and Equipment,permanent_work,mapped,601,601,62428025.58,62428025.58,601,279.0,405.0,536.0,601,425.0,601,0.0
 4393,F,Utilities,permanent_work,mapped,245,245,80040205.86,80040205.86,245,250.0,363.0,500.0,245,410.0,245,0.0
 4393,G,"Parks, Recreational, and Other Facilities",permanent_work,mapped,228,228,109997397.34,109997397.34,228,291.0,405.0,536.0,228,433.0,228,0.0
-4393,Z,Management Costs,management_costs,mapped,365,365,74644858.68,74644858.68,365,273.0,420.0,595.0,365,1092.0,365,634.0
+4393,Z,Management Costs,management_costs,mapped,365,365,74622315.57,74622315.57,365,273.0,420.0,595.0,365,1130.0,365,720.0
 4465,A,Debris Removal,emergency_work,mapped,65,65,11221779.52,11221779.52,65,151.0,180.0,210.0,65,187.0,65,0.0
 4465,B,Emergency Protective Measures,emergency_work,mapped,157,157,10568785.59,10568785.59,157,139.0,166.0,220.0,157,167.0,157,0.0
 4465,C,Roads and Bridges,permanent_work,mapped,30,30,1105732.77,1105732.77,30,336.0,495.0,564.0,30,495.0,30,0.0
